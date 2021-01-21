@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iostream>
+using namespace std;
+
+int hansoo(int input);
+int hansoo(int input)
+{
+
+	int c;
+	int d;
+	vector<int> res(4, 0);
+	int sum=0;
+	for (int i = 1; i <= input; i++)
+	{
+		d = 0;
+		c = i;
+		while (c > 0)
+		{
+			res[d] = c % 10;
+			c = c / 10;
+			d++;
+		}
+
+		if (i < 100)
+		{
+			sum++; // 한 자리 및 두 자리 수는 필연적으로 한 수
+		}
+		if (i >= 100 && i < 1000)
+		{
+			for (int j = -4;  j <= 4; j++)
+			{
+				if (((res[0] - res[1]) == j) && ((res[1] - res[2]) == j))
+				{
+					sum++;
+				}
+			}
+		}
+	}
+	return sum;
+}
+
+int main()
+{
+	int res;
+	cin >> res;
+	res = hansoo(res);
+	cout << res;
+}
