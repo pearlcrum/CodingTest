@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iostream>
+using namespace std;
+
+void selfNumber();
+void selfNumber()
+{
+	int a;
+	int b;
+	int c;
+	int d;
+	int e;
+	int sum=0;
+	vector<int> result(1000000,0);
+	for (int i = 1; i <= 10000; i++)
+	{
+		a = i % 10;
+		b = ((i - a) % 100)/10;
+		c = ((i - a - b*10) % 1000) / 100;
+		d = ((i - a - b * 10 - c * 100) % 10000) / 1000;
+		e = ((i - a - b * 10 - c * 100-d*1000) % 100000) / 10000;
+		sum = a + b +c+d+e+ i;
+		result[sum]++;
+	}
+	for (int i = 1; i < 10000; i++)
+	{
+		if (result[i] == 0)
+		{
+			cout << i << endl;
+		}
+	}
+}
+
+int main()
+{
+	selfNumber();
+
+}
