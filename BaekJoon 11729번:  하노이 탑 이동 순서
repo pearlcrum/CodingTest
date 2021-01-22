@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <math.h>
+#pragma warning(disable: 4996)
+using namespace std;
+
+
+
+
+int calc(int num);
+void hanoi(int from, int z, int to, int n);
+void movehanoi(int a, int b);
+
+
+int main()
+{
+
+	int num;
+	scanf("%d", &num);
+	printf("%d\n", calc(num));
+	
+	hanoi(1, 2, 3, num);
+
+}
+void movehanoi(int a, int b) {
+	printf("%d %d\n", a, b);
+
+}
+
+void hanoi(int one, int two, int three, int n) //출발지, 경유지, 도착지, 옮길 원판 개수
+{
+	if (n == 1) // 출발지에 있던 마지막 n번째 stack을 도착지로 옮기는 것. 
+	{
+		movehanoi(one, three);
+
+	}
+	else
+	{
+		hanoi(one, three, two, n - 1);// one에 있는 n을 제외한 n-1의 스택 중 two에 n-1개의 스택을 옮기기 위해서는 three에 n-1개 옮겨져야 함
+		movehanoi(one, three); // one의 last stack three로 옮김
+		hanoi(two, one, three, n - 1);// two에 옮겨져 있는 스택을 three로 옮기려면 one을 경유 해야 함
+	}
+}
+
+int calc(int num)
+{
+	return ((int)pow(2, num) - 1);
+}
