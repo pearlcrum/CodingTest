@@ -1,0 +1,63 @@
+#include <iostream>
+#include <stdio.h>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include <string>
+#pragma warning(disable:4996)
+using namespace std;
+
+bool isPrime(int n);
+
+
+int main()
+{
+	int x, y;
+	int sum = 0;
+	cin >> x >> y;
+
+	int min = x;
+
+	while (x<=y)
+	{
+		if (isPrime(x))
+		{
+			min = x;
+			break;
+		}
+		x++;
+	}
+	while (x <= y)
+	{
+		if (isPrime(x))
+		{
+			sum = sum + x;
+		}
+		x++;
+	}
+	if (sum != 0)
+	{
+		cout << sum << '\n' << min;
+	}
+	else
+	{
+		cout << "-1";
+	}
+
+}
+
+bool isPrime(int n)
+{
+	if (n <= 1)
+	{
+		return false;
+	}
+	for (int i = 2; i < sqrt(n); i++) //에라토스테네스의 체를 이용 루트 n까지만
+	{
+		if ((n % i) == 0) // i의 배수이면 n%i의 값이 0이 될 것, 소수는 어떤 수의 배수가 될 수 없다.
+		{
+			return false;
+		}
+	}
+	return true;
+}
