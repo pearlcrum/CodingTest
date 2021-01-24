@@ -1,0 +1,109 @@
+#include <iostream>
+#include <stdio.h>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include <string>
+#pragma warning(disable:4996)
+using namespace std;
+
+void set(vector<int> &res1, vector<int> &res2, string a, string b);
+void show(vector<int> res1, vector<int> res2);
+void sum(vector<int> res1, vector<int>res2);
+
+int main()
+{
+	string a, b;
+	int carry=0;
+	vector<int> res1,res2;
+	cin >> a;
+	cin >> b;
+
+	int len;
+
+	len = (a.length() > b.length()) ? b.length() : a.length();
+
+	set(res1, res2, a, b);
+	//show(res1, res2);
+
+	if (a.length() < b.length())
+	{
+		for (int i = len; i < b.length(); i++)
+		{
+			res1.push_back(0);
+		}
+		
+	}
+	else if (a.length() > b.length())
+	{
+		for (int i = len; i < a.length(); i++)
+		{
+			res2.push_back(0);
+		}
+	}
+	//show(res1, res2);
+
+	sum(res1, res2);
+
+}
+
+void set(vector<int> &res1, vector<int> &res2, string a, string b)
+{
+	for (int i = a.size() - 1; i >= 0; i--)
+	{
+		res1.push_back((int)(a[i] - '0'));
+
+	}
+	for (int i = b.size() - 1; i >= 0; i--)
+	{
+		res2.push_back((int)(b[i] - '0'));
+
+	}
+}
+
+void show(vector<int> res1, vector<int> res2)
+{
+	for (int i = 0; i < res1.size(); i++)
+	{
+		cout << res1[i];
+	}
+	cout << endl;
+	for (int i = 0; i < res2.size(); i++)
+	{
+		cout << res2[i];
+	}
+	cout << endl;
+}
+
+void sum(vector<int> res1, vector<int>res2)
+{
+	vector<int> res;
+	int carry = 0;
+	int temp;
+	for (int i = 0; i <res1.size(); i++)
+	{
+		if (res1[i] + res2[i] +carry >= 10)
+		{
+			temp = res1[i] + res2[i] + carry - 10;
+			carry = 1;
+			res.push_back(temp);
+		}
+		else
+		{
+			
+			temp = res1[i] + res2[i] + carry;
+			carry = 0;
+			res.push_back(temp);
+		}
+	}
+	if (carry == 1)
+	{
+		res.push_back(1);
+	}
+
+	for (int i = (res.size() - 1); i >= 0; i--)
+	{
+		cout << res[i];
+	}
+
+}
