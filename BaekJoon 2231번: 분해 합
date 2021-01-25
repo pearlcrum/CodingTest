@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <iostream>
+
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include <string>
+#pragma warning(disable:4996)
+using namespace std;
+
+int main()
+{
+	int a,N;
+	cin >> N;
+	int min = 1000000;
+	int sum;
+	a = N;
+	int d;
+	int temp;
+
+
+	for (int i = ((N>54)?(N-54):1 ) ; i <= N; i++)
+	{
+		
+		temp = i;
+		vector<int> res;
+		while (temp != 0)
+		{
+			d = temp % 10;
+			res.push_back(d);
+			temp = temp / 10;
+		}
+		if (!res.empty())
+		{
+			sum = i;
+			for (int j = 0; j < res.size(); j++)
+			{
+				sum += res[j];
+			}
+			if (sum == N)
+			{
+				if (min > i)
+				{
+					min = i;
+				}
+			}
+		}
+	}
+	if (min == 1000000)
+	{
+		cout << 0;
+	}
+	else
+	{
+		cout << min;
+	}
+	
+}
