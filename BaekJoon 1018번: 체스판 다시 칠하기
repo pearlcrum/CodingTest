@@ -1,0 +1,141 @@
+#include <stdio.h>
+#include <iostream>
+
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include <string>
+#pragma warning(disable:4996)
+using namespace std;
+
+int isWhite(vector<string> a);
+int isBlack(vector<string> a);
+vector<string> cut(vector<string> a, int N, int M);
+int main()
+{
+	int N, M;
+	cin >> N >> M;
+	
+	vector<string> a;
+	for (int i = 0; i < N; i++)
+	{
+		string c;
+		cin >> c;
+		a.push_back(c); // string vector를 이용하여 값을 채워 넣음.
+	}
+	vector<string> temp;
+	int res;
+	int finalMin=50;
+	for (int i = 8; i <= N; i++)
+	{
+		for (int j = 8; j <= M; j++)
+		{
+			temp=cut(a, i, j); // 8*8로 자르는 과정
+			res = min(isWhite(temp), isBlack(temp));
+			if (finalMin > res)
+			{
+				finalMin = res;
+			}
+		}
+	}
+	cout << finalMin;
+
+}
+
+
+vector<string> cut(vector<string> a ,int N, int M)
+{
+	vector<string> b;
+	string u;
+	for (int i = N-8; i < N; i++)
+	{
+		for (int j = M-8; j < M; j++)
+		{
+			
+			u.push_back(a[i][j]); // string container에 하나씩 결과 값을 담고
+		}
+		b.push_back(u); //string vector에 다시 담는다.
+		u.clear();
+	}
+	return b;
+}
+
+
+int isWhite(vector<string> a)
+{
+	int count = 0;
+	for (int i = 0; i < a.size(); i++)
+	{
+		for (int j = 0; j < a[0].size(); j++)
+		{
+			if (((i % 2) == 0) && ((j % 2) == 0))
+			{
+				if (a[i][j] != 'W')
+				{
+					count++;
+				}
+			}
+			else if (((i % 2) == 1) && ((j % 2) == 1))
+			{
+				if (a[i][j] != 'W')
+				{
+					count++;
+				}
+			}
+			else if (((i % 2) == 0) && ((j % 2) == 1))
+			{
+				if (a[i][j] != 'B')
+				{
+					count++;
+				}
+			}
+			else if (((i % 2) == 1) && ((j % 2) == 0))
+			{
+				if (a[i][j] != 'B')
+				{
+					count++;
+				}
+			}
+		}
+	}
+	return count;
+}
+int isBlack(vector<string> a)
+{
+	int count = 0;
+	for (int i = 0; i < a.size(); i++)
+	{
+		for (int j = 0; j < a[0].size(); j++)
+		{
+			if (((i % 2) == 0) && ((j % 2) == 0))
+			{
+				if (a[i][j] != 'B')
+				{
+					count++;
+				}
+			}
+			else if (((i % 2) == 1) && ((j % 2) == 1))
+			{
+				if (a[i][j] != 'B')
+				{
+					count++;
+				}
+			}
+			else if (((i % 2) == 0) && ((j % 2) == 1))
+			{
+				if (a[i][j] != 'W')
+				{
+					count++;
+				}
+			}
+			else if (((i % 2) == 1) && ((j % 2) == 0))
+			{
+				if (a[i][j] != 'W')
+				{
+					count++;
+				}
+			}
+		}
+	}
+	return count;
+}
