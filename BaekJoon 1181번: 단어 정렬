@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <iostream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include <string>
+#include<map>
+#pragma warning(disable:4996)
+using namespace std;
+
+
+void showAll(vector<pair<string,int>> a);
+bool compare(pair<string,int> a, pair<string, int> b);
+//bool check(string s, vector<string> a);
+
+int main()
+{
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int c;
+	cin >> c;
+	string s;
+	int num;
+	map<string, int> strings;
+	while (c>0)
+	{
+		cin >> s;
+		num = s.size();
+		strings.insert(pair<string, int>(s, num));
+		c--;
+	}
+	vector<pair<string,int>>vec(strings.begin(), strings.end()); //정렬을 위해 vector에 담닌다.
+	sort(vec.begin(), vec.end(), compare);
+	showAll(vec);
+	//vector <string> arr;
+	//string s;
+	//while (c > 0)
+	//{
+	//	cin >> s;
+	//	if (arr.empty())
+	//	{
+	//		arr.push_back(s);
+	//	}
+	//	else 
+	//	{
+	//		if((check(s, arr)))
+	//		arr.push_back(s);
+	//	}
+	//	c--;
+	//}
+	//sort(arr.begin(), arr.end(), compare);
+	//showAll(arr);
+}
+void showAll(vector<pair<string, int>> a)
+{
+	for (int i = 0; i < a.size(); i++)
+	{
+		cout << a[i].first << "\n";
+	}
+}
+
+bool compare(pair<string, int> a, pair<string, int> b)
+{
+	if (a.second == b.second)
+	{
+		return a.first < b.first;
+	}
+	else
+	{
+		return a.second < b.second;
+	}
+}
+
+
+
+
+//bool check(string s, vector<string> a)
+//{
+//	for (int i = 0; i < a.size(); i++)
+//	{
+//		if (s == a[i])
+//		{
+//			return false;
+//		}
+//	}
+//	return true;
+//}
+//
+
