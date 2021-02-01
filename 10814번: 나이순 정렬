@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <iostream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include <string>
+#include<map>
+#pragma warning(disable:4996)
+using namespace std;
+
+bool compare( pair<int,string> a, pair<int,string>b);
+void showAll(vector<pair<int, string>>arr);
+int main()
+{
+	ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+	int c;
+	cin >> c;
+	int age;
+	string name;
+	vector<pair<int, string>>arr;
+	while (c > 0)
+	{
+		cin >> age;
+		cin >> name;
+		pair<int, string>elem(age, name);
+		arr.push_back(elem);
+		c--;
+	}
+	stable_sort(arr.begin(), arr.end(), compare);
+	showAll(arr);
+}
+bool compare(pair<int, string> a, pair<int, string>b)
+{
+	return a.first < b.first;	
+}
+void showAll(vector<pair<int, string>>arr)
+{
+	for (int i = 0; i < arr.size(); i++)
+	{
+		cout << arr[i].first << " " << arr[i].second << "\n";
+	}
+}
