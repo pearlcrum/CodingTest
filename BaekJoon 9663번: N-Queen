@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <iostream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include <string>
+#include<map>
+
+#pragma warning(disable:4996)
+using namespace std;
+int col[16];
+int num;
+int ans;
+bool promissing(int i)
+{
+	int k = 1; //충돌이 없는지 1번부터 i-1번 까지 기존 모든 노드들 체크한다.
+	bool flag = true;
+	while (k < i && flag)
+	{
+		if (col[i] == col[k] || (abs(i - k) == abs(col[i] - col[k]) )  )
+		{
+			flag = false;
+		}
+		k++;
+	}
+	return flag;
+}
+void N_Queens(int i)
+{
+	if (promissing(i))
+	{
+		if (i == num)
+		{
+			ans++;
+			/*for (int u = 1; u <= num; u++)
+			{
+				cout << col[u] << " ";
+			}
+			cout << "\n";*/
+		}
+		else
+		{
+			for (int j = 1; j <= num; j++) //dfs child 확인
+			{
+				if (promissing(i))
+				{
+					col[i + 1] = j;
+					N_Queens(i + 1);
+
+				}
+			}
+		}
+	}
+	
+}
+int main()
+{
+	cin >> num;
+	N_Queens(0);
+	cout << ans;
+}
