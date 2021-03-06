@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include <string>
+#include<map>
+
+#pragma warning(disable:4996)
+using namespace std;
+
+// 곱셈이 있는 경우 가장 빠르게 수를 키우거나 줄일 수 있다.
+// 
+void push(vector<int>arr, int a);
+int pop(vector<int> &arr);
+int empty(vector<int>arr);
+int top(vector<int> arr);
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	vector<int> arr;
+	vector<int> ans;
+	for (int i = 0; i < N; i++)
+	{
+		string a;
+		cin >> a;
+		if (a == "pop")
+		{
+			ans.push_back(pop(arr));
+		}
+		else if (a == "size")
+		{
+			ans.push_back(arr.size());
+		}
+		else if (a == "empty")
+		{
+			ans.push_back(empty(arr));
+			
+		}
+		else if(a=="top")
+		{
+			ans.push_back(top(arr));
+		}
+		else if (a=="push")
+		{
+			int num;
+			cin >> num;
+			arr.push_back(num);
+		}
+	}
+	for (int i = 0; i < ans.size(); i++)
+	{
+
+		printf("%d", ans[i]);
+		printf("\n");
+	}
+	
+}
+void push(vector<int>arr, int a)
+{
+	arr.push_back(a);
+}
+int pop(vector<int> &arr) // 3 2 1 들어가 있다
+{
+	if (arr.empty())
+	{
+		return -1;
+	}
+	else
+	{
+		int a = arr.size() - 1;  // a[2]
+		int temp = arr[a];
+		arr.pop_back();
+		return temp;
+	}
+}
+int top(vector<int>arr)
+{
+	if (arr.empty())
+	{
+		return -1;
+	}
+	else
+	{
+		int a = arr.size() - 1;
+		int temp = arr[a];
+		return temp;
+	}
+}
+int empty(vector<int> arr)
+{
+	if (arr.empty())
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
