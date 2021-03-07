@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include <string>
+#include<map>
+#include<stack>
+
+#pragma warning(disable:4996)
+using namespace std;
+
+
+int main()
+{
+	int total;
+	cin >> total;
+	vector <int> a;
+	stack<int> b;
+	vector<char> ans;
+	for (int i = 0; i < total; i++)
+	{
+		int b;
+		cin >> b;
+		a.push_back(b); // 4 3 6 8 7 5 2 1 넣었음
+	}
+	for (int i = a.size() - 1; i >= 0; i--)
+	{
+		b.push(a[i]);
+	}
+	//b는 스택 4 3 6 8 7 5 2 1
+	stack<int> num; //값을 넣을 스텍;
+	bool check = false;
+	int te;
+	for (int i = 1; i <= total; i++)
+	{
+		if (b.top() == i)
+		{
+			if (check == false)
+			{
+				ans.push_back('+');
+				ans.push_back('-');
+				b.pop();
+				te = i;
+				while (!num.empty())
+				{
+					if (b.top() == num.top())
+					{
+						ans.push_back('-');
+						b.pop();
+						num.pop();
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+		}
+		else if (b.top() != i)
+		{
+			num.push(i);
+			ans.push_back('+');
+		}
+		if (i == total)
+		{
+			while (!b.empty() || !num.empty())
+				if (b.top() == num.top())
+				{
+					ans.push_back('-');
+					b.pop();
+					num.pop();
+				}
+				else
+				{
+					check = true;
+					break;
+				}
+		}
+	}
+	if (check == false)
+	{
+		for (int i = 0; i < ans.size(); i++)
+		{
+			cout << ans[i];
+			if (i == ans.size() - 1)
+			{
+				;
+			}
+			else
+			{
+				printf("\n");
+			}
+		}
+	}
+	else
+	{
+		cout << "NO";
+	}
+}
