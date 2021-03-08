@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include <string>
+#include<map>
+#include<stack>
+#include<queue>
+#pragma warning(disable:4996)
+using namespace std;
+
+
+int main()
+{
+	cin.tie(0);
+	cin.sync_with_stdio(0);
+	int a; int b;
+	cin >> a;
+	cin >> b;
+	queue<int> ans;
+	vector<int> tem;
+	for (int i = 1; i <= a; i++)
+	{
+		ans.push(i);
+
+	}
+	while (1)
+	{
+		if (ans.empty())
+		{
+			break;
+		}
+		else
+		{
+			for (int j = 1; j < b; j++)
+			{
+				int b = ans.front();
+				ans.pop();
+				ans.push(b);
+			}
+			int c = ans.front();
+			tem.push_back(c);
+			ans.pop();
+			
+		}
+		
+	}
+
+	printf("<");
+	for (int i = 0; i < tem.size(); i++)
+	{
+		printf("%d", tem[i]);
+		if (i == tem.size() - 1)
+		{
+			;
+		}
+		else
+		{
+			printf(", ");
+		}
+	}
+	printf(">");
+}
