@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include <string>
+#include<map>
+#include<stack>
+#include<queue>
+#pragma warning(disable:4996)
+using namespace std;
+
+///////////////////////////////////////////// 우선순위 큐 사용 없이 푼 문제///////////////////////////////////////
+struct it {
+	int data;
+	bool nowcheck = false;
+};
+
+int main()
+{
+	cin.tie(0);
+	cin.sync_with_stdio(0);
+	int a;
+	cin >> a;
+	for (int i = 0; i < a; i++)
+	{
+		int num, now;
+		cin >> num;
+		cin >> now;
+		vector<int> count(11, 0);
+		queue<it> res;
+		int ans = 0;
+		for (int j = 0; j < num; j++)// 입력
+		{
+			int imp;
+			cin >> imp;
+			it the;
+			the.data = imp; //데이터에 넣고
+			if (j == now)
+			{
+				the.nowcheck = true; // 현재 위치에 true 넣어줌
+			}
+			else
+			{
+				the.nowcheck = false;
+			}
+			res.push(the);
+			count[imp]++; // 카운트로 최대값 찾음
+		}
+		int answer = 0;
+		bool chek = false;;
+		for (int k = 9; k >0; k--)
+		{
+			while (1)
+			{
+				if(count[k]==0)
+				{ 
+					break;
+				}
+				else
+				{
+					if (res.front().data == k)
+					{
+						count[k]--;
+						answer++;
+						if (res.front().nowcheck == 1)
+						{
+							chek = true;
+							break;
+						}
+						res.pop();
+					}
+					else
+					{
+						it the;
+						the = res.front();
+						res.pop();
+						res.push(the);
+					}
+				}
+			}
+			if (chek == true)
+			{
+				break;
+			}
+		}
+		printf("%d\n", answer);
+	}
+}
+////////////////////////////////////////////////////우선순위 큐 사용 한 방식//////////////////////////////////////
