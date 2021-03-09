@@ -90,3 +90,61 @@ int main()
 	}
 }
 ////////////////////////////////////////////////////우선순위 큐 사용 한 방식//////////////////////////////////////
+
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include <string>
+#include<map>
+#include<stack>
+#include<queue>
+#pragma warning(disable:4996)
+using namespace std;
+
+int main()
+{
+	cin.tie(0);
+	cin.sync_with_stdio(0);
+	int count;
+	int test_case;
+	cin >> test_case;
+	int n, m, ipt;// 문서 개수, 궁금한 문서 위치, 중요도
+	for (int i = 0; i < test_case; ++i)
+	{
+		count = 0;
+		cin >> n >> m;
+		queue<pair<int, int>>q;
+		priority_queue<int> pq;
+		for (int j = 0; j < n; j++)
+		{
+			cin >> ipt;
+			q.push({ j,ipt });
+			pq.push(ipt);
+		}
+		while (!q.empty())
+		{
+			int index = q.front().first;
+			int value = q.front().second;
+			q.pop();
+			if (pq.top() == value)
+			{
+				pq.pop();
+				count++;
+				if (index == m)
+				{
+					printf("%d\n", count);
+					break;
+				}
+			}
+			else
+			{
+				q.push({ index,value });
+			}
+		}
+	}
+		
+}
