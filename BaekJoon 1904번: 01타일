@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include <string>
+#include<map>
+#include<stack>
+#include<queue>
+#pragma warning(disable:4996)
+using namespace std;
+
+vector<long long> ans(1000002, 0);
+
+long long solve(int a);
+int main()
+{
+	cin.tie(0);
+	cin.sync_with_stdio(0);
+	
+	int a;
+	cin >> a;
+	cout << solve(a);
+}
+
+long long solve(int a) //메모이제이션을 활용한 동적 계획법 규칙을 찾아 재귀함수로 만든 후 메모리에 저장한다.
+{
+
+	ans[1] = 1;
+	ans[2] = 2;
+
+	for(int i=3; i<=a; i++)
+	{ 
+		ans[i] = (ans[i - 1] + ans[i - 2]) % 15746;
+	}
+	return ans[a]%15746;
+}
