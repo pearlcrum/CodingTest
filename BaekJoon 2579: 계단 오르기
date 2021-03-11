@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <iostream>
+#include <sstream>
+#include<math.h>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include <string>
+#include<map>
+#include<stack>
+#include<queue>
+#pragma warning(disable:4996)
+using namespace std;
+
+
+int arr[301];
+int ans[301];
+int main()
+{
+	cin.tie(0);
+	cin.sync_with_stdio(0);
+	int N;
+	cin >> N;
+	for (int i = 1; i <= N; i++)
+	{
+		cin >> arr[i];
+	}
+	arr[0], ans[0] = 0;
+	ans[1] = arr[1];
+	ans[2] = arr[1] + arr[2];
+	ans[3] = max(ans[1] + arr[3], arr[2] + arr[3]);
+	for (int i = 4; i <= N; i++)
+	{
+		ans[i] = max(ans[i - 3] + arr[i - 1] + arr[i], ans[i - 2] + arr[i]);
+	}
+
+	cout << ans[N];
+
+}
+
