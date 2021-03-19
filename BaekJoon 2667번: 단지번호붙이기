@@ -1,0 +1,63 @@
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+#include <vector>
+using namespace std;
+
+int n;//입력
+int input[26][26];
+bool check[26][26];
+int temp;
+vector<int> ans;
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+void dfs(int x, int y)
+{
+	check[x][y] = 1;
+	temp++;
+	for (int i = 0; i < 4; i++)
+	{
+		int va = x + vx[i];
+		int vb = y + vy[i];
+		if (va<0 || va>n || vb<0 || vb>n)
+		{
+			continue;
+		}
+		if (input[va][vb] == 1 && !check[va][vb])
+		{
+			dfs(va, vb);
+		}
+	}
+}
+int main()
+{
+	cin.tie(0);
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+	{
+		string s;
+		cin >> s;
+		for (int j = 0; j < s.length(); j++)
+		{
+			input[i][j + 1] = s[j] - '0';
+		}
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			if (input[i][j] == 1 && !check[i][j])
+			{
+				temp = 0;
+				dfs(i, j);
+				ans.push_back(temp);
+			}
+		}
+	}
+	sort(ans.begin(), ans.end());
+	cout << ans.size() << "\n";
+	for (int i = 0; i < ans.size(); i++)
+	{
+		cout << ans[i] << "\n";
+	}
+}
