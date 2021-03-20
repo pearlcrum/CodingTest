@@ -1,0 +1,69 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+int arr[301][301];
+bool check[301][301];
+int k, l;
+int a, b, c, d;
+int minA;
+int vx[8] = { 1,2,2,1,-1,-2,-2,-1 };
+int vy[8] = { -2,-1,1,2,2,1,-1,-2 };
+queue<pair<pair<int, int>, int>> q;
+void bfs(int a, int b)
+{
+	minA = 2100000000;
+	check[a][b] = 1;
+	q.push({ { a,b }, 0 });
+	while (!q.empty())
+	{
+		int ax = q.front().first.first;
+		int by = q.front().first.second;
+		check[ax][by] = 1;
+		int cnt = q.front().second;
+		q.pop();
+
+		if (ax == c && by == d)
+		{
+			cout << cnt<<"\n";
+			while (!q.empty())
+			{
+				q.pop();
+			}
+			break;
+		}
+
+		for (int i = 0; i < 8; i++)
+		{
+			int va = ax + vx[i];
+			int vb = by + vy[i];
+
+			if (va<0 || vb<0 || va>=l || vb>=l)
+			{
+				continue;
+			}
+			if (!check[va][vb])
+			{
+				check[va][vb] = 1;
+				q.push({ {va,vb},cnt + 1 });
+			}
+
+		}
+	}
+
+}
+
+int main()
+{
+	cin >> k;
+	for (int i = 0; i < k; i++)
+	{
+		cin >> l;
+		memset(arr, 0, sizeof(arr));
+		memset(check, 0,sizeof(check));
+		cin >> a >> b >> c >> d;
+		bfs(a, b);
+	}
+}
