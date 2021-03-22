@@ -1,0 +1,50 @@
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+int n,t;
+int arr[501][501];
+int d[501];
+int solve(int x, int y)
+{
+	if (x == y)
+	{
+		return 0;
+	}
+	if (arr[x][y] != -1)
+	{
+		return arr[x][y];
+	}
+	int minNum = 987654321;
+	for (int k = x; k < y; k++)
+	{
+		minNum = min(minNum, solve(x,k) + solve(k+1,y) + (d[x-1] * d[k] * d[y])); //점화식
+	}
+	arr[x][y] = minNum;
+	return arr[x][y];
+}
+int main()
+{
+	cin.tie(0);
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		if (i == 1)
+		{
+			d[0] = a;
+			d[1] = b;
+		}
+		else
+		{
+			d[i] = b;
+		}
+
+	}
+	memset(arr, -1, sizeof(arr)); //-1로 다 만들어 두고
+	solve(1, n);// 계산하기
+	cout << arr[1][n];
+}
