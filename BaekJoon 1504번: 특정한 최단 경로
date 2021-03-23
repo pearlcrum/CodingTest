@@ -1,0 +1,112 @@
+#include <iostream>
+#include <cstring>
+#include <queue>
+#include <algorithm>
+#include <utility>
+#include <vector>
+#define SIZE 801
+#define INF 1000000000
+using namespace std;
+
+int n, e;
+vector<pair<int,int>> vec[SIZE];
+
+int dijs(int start, int end)
+{
+	int dist[SIZE];
+	for (int i = 1; i <= n; i++)
+	{
+		dist[i] = INF;
+	}
+	dist[start] = 0;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	pq.push({ 0,start }); //weight와 처음 시작 index 을 넣어주었다.
+	while (!pq.empty())
+	{
+		int curDist = pq.top().first;
+		int currIndex = pq.top().second;
+		pq.pop();
+		if (curDist > dist[currIndex])
+		{
+			continue;
+		}
+		for (int i = 0; i < vec[currIndex].size(); i++)
+		{
+			int nextDist = curDist + vec[currIndex][i].second;
+			int nextIndex = vec[currIndex][i].first;
+
+			if (nextDist < dist[nextIndex])
+			{
+				dist[nextIndex] = nextDist;
+				pq.push({ nextDist,nextIndex });
+			}
+
+		}
+	}
+	return dist[end];
+
+}
+void dijs(int start, int &oneToA, int &oneToB)
+{
+	int dist[SIZE];
+	for (int i = 1; i <= n; i++)
+	{
+		dist[i] = INF;
+	}
+	dist[start] = 0;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	pq.push({ 0,start }); //weight와 처음 시작 index 을 넣어주었다.
+	while (!pq.empty())
+	{
+		int curDist = pq.top().first;
+		int currIndex = pq.top().second;
+		pq.pop();
+		if (curDist > dist[currIndex])
+		{
+			continue;
+		}
+		for (int i = 0; i < vec[currIndex].size(); i++)
+		{
+			int nextDist = curDist + vec[currIndex][i].second;
+			int nextIndex = vec[currIndex][i].first;
+
+			if (nextDist < dist[nextIndex])
+			{
+				dist[nextIndex] = nextDist;
+				pq.push({ nextDist,nextIndex });
+			}
+
+		}
+	}
+	oneToA = dist[oneToA];
+	oneToB = dist[oneToB];
+}
+int main()
+{
+	cin.tie(0);
+	cin >> n >> e;
+	for (int i = 0; i < e; i++)
+	{
+		int from, to, w;
+		cin >> from >> to >> w;
+		vec[from]. push_back({ to,w }); //양 방향 이어줬다.
+		vec[to].push_back({ from,w });// 양방향 이어줬다.
+	}
+	int a, b;
+	cin >> a >> b;
+	int oneToA = a;
+	int oneToB = b;
+	dijs(1, oneToA, oneToB);
+	int aToB = dijs(a, b);
+	int bToN = dijs(b, n);
+	int aToN = dijs(a, n);
+	int ans = min(oneToA + aToB + bToN, oneToB + aToB + aToN);
+	if (ans >= INF || ans<=0)
+	{
+		cout << -1;
+	}
+	else
+	{
+		cout << ans;
+	}
+}
