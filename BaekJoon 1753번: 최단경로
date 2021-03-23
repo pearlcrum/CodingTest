@@ -1,0 +1,65 @@
+#include <iostream>
+#include <cstring>
+#include <queue>
+#include <algorithm>
+#include <utility>
+#define SIZE 20001
+using namespace std;
+
+
+vector<pair<int, int>> vtx[SIZE];
+int vtx_num, edge_num, start_node;
+int dist[SIZE];
+void dijs()
+{
+	for (int i = 1; i <= vtx_num; i++) // 노드의 개수만큼
+	{
+		dist[i] = 1000000000; //일부러 큰 값을 넣어준다.
+	}
+	dist[start_node] = 0;//시작점은 0이다.
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+	pq.push({ 0,start_node }); //길이와 시작점을 넣는다.
+	while (!pq.empty())
+	{
+		int iCost = pq.top().first;
+		int curIndex = pq.top().second;
+		pq.pop();
+
+		if (dist[curIndex] < iCost) //내가 뽑은 값이 길이보다 큰 경우에는 진행하지 않는다.
+		{
+			continue;
+		}
+		for (int i = 0; i < vtx[curIndex].size(); i++) //현재 인덱스에 딸려있는 것들 확인
+		{
+			int next_node = vtx[curIndex][i].first;
+			int next_cost = iCost+vtx[curIndex][i].second; //현재 가격에 다음 가격을 붙인다.
+
+			if (dist[next_node] > next_cost)//저장된 다음 값이 연결된 값보다 크면
+			{
+				dist[next_node] = next_cost;
+				pq.push({ next_cost,next_node });
+			}
+		}
+	}
+	for (int i = 1; i <= vtx_num; i++)
+	{
+		if (start_node == i) cout << "0" << "\n";
+		else if (dist[i] == 1000000000) cout << "INF" << "\n";
+		else cout << dist[i] << "\n";
+	}
+	
+}
+int main()
+{
+	cin.tie(0);
+	cin >> vtx_num >> edge_num >> start_node;
+
+	for (int i = 0; i < edge_num; i++)
+	{
+		int from, to, w;
+		cin >> from >> to >> w;
+		vtx[from].push_back({ to,w });
+	}
+	dijs();
+}
