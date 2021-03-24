@@ -1,0 +1,43 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {} //값을 넣은 상태에서 생성
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        
+        ListNode *head= new ListNode(); //새로운 리스트를 만든다.
+        
+        int carry=0; 
+        int val1,val2,val3,val3_left;
+        ListNode *curr=head; //current는 현재 head를 가르킨다.
+        while(1)
+        {
+            if(l1==0 && l2==0 && carry==0)
+                break;
+            if(l1==0)
+                val1=0;
+            else{
+                val1=l1->val; l1의 val을 가져온다. 첫 노드를 접근
+                l1=l1->next; l1을 다음 노드로 넘긴다.
+             }
+            if(l2==0)
+                val2=0;
+            else{
+                val2=l2->val;
+                l2=l2->next;
+            }
+            val3= val1+val2+carry;
+
+            val3_left= val3%10;
+            carry=val3/10;
+            
+            curr->next= new ListNode(val3_left); 현재 값은 head이니 다음 값을 넣는다.
+            curr= curr->next;
+        }
