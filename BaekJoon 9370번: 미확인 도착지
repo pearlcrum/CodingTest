@@ -1,0 +1,103 @@
+#include <iostream>
+#include <utility>
+#include <queue>
+#include <algorithm>
+#define INF 210000000
+using namespace std;
+
+int tcase;
+int n, m, t;
+int s, g, h;
+int a, b, d;
+vector<pair<int, int>> vec[2010];
+int dist[2010];
+vector<int> dest;
+
+
+int dijs(int start, int end)
+{
+	for (int i = 1; i <= 2000; i++)
+	{
+		dist[i]=INF;
+	}
+	dist[start] = 0;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int currIndex = pq.top().second;
+		int currCost = pq.top().first;
+		pq.pop();
+		if (dist[currIndex] < currCost)
+		{
+			continue;
+		}
+		for (int i = 0; i < vec[currIndex].size(); i++)
+		{
+			int nextIndex = vec[currIndex][i].first;
+			int nextCost = currCost + vec[currIndex][i].second;
+			if (nextCost < dist[nextIndex])
+			{
+				dist[nextIndex] = nextCost;
+				pq.push({ nextCost,nextIndex });
+			}
+		}
+	}
+	return dist[end];
+}
+
+int main()
+{
+	cin.tie(0);
+	cin >> tcase;
+	for (int i = 0; i < tcase; i++)
+	{
+		int gh;
+		cin >> n >> m >> t;// 교차로 도로 목적지 후보의 개수
+		cin >> s >> g >> h;//출발지 g거쳐간 곳 h거쳐간곳
+		for (int j = 0; j < m; j++)
+		{
+			cin >> a >> b >> d;//출발 도착 무게
+			vec[a].push_back({ b,d });//추후 clear 해줘야함
+			vec[b].push_back({ a,d });//양 방향 처리
+			if ((a == g && b == h)||(a==h&&b==g))
+			{
+				gh = d;
+			}
+		}
+		for (int j = 0; j < t; j++)
+		{
+			int li;
+			cin >> li;
+			dest.push_back(li);//추후 clear 해줘야함
+		}
+		sort(dest.begin(), dest.end());//다 정렬되어 있음 작은게 앞으로
+		int startTohg = dijs(s, h)+gh;//start->h->g의 최소거리
+		int startTogh = dijs(s, g)+gh;//start->g->h의 최소거리
+		vector<int> res;
+		for (int j = 0; j < t; j++)
+		{
+			res.push_back(dist[dest[j]]);
+		}
+		for (int j = 0; j < t; j++)
+		{
+			int temp = res[j];
+			/*cout << "현재 목적지 노드" << dest[j] << endl;
+			cout << "현재 목적지 까지의 값 " << dist[dest[j]] << "\n";
+	
+			cout << startTogh + dijs(h, dest[j]) << endl << startTohg + dijs(g, dest[j])<<endl;*/
+			int temp2 = min(startTohg+dijs(g, dest[j]),startTogh+dijs(h,dest[j]));
+			if (temp == temp2)
+			{
+				cout << dest[j] << " ";
+			}
+		}
+		cout << "\n";
+		for (int i = 0; i <= 2001; i++) //초기화 잘할 것
+		{
+			vec[i].clear();
+		}
+		dest.clear();
+		res.clear();
+	}
+}
