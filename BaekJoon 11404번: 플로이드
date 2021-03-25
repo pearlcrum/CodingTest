@@ -1,0 +1,82 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <algorithm>
+#define INF 210000000
+using namespace std;
+
+vector<pair<int, int>> arr[101];
+long long dist[101][101];
+int n, m;
+void floyd()
+{
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <=n; j++)
+		{
+			if (i == j)
+				dist[i][j] = 0;
+			else
+			{
+				dist[i][j] = INF;
+			}
+		}
+	}//배열 초기화 완료
+
+	for (int i = 1; i <= n; i++)
+	{
+		for (int k = 0; k < arr[i].size(); k++)
+		{
+			int from = i;
+			int to = arr[i][k].first;
+			int w = arr[i][k].second;
+			if (dist[from][to] > w)
+			{
+				dist[from][to] = w;
+			}
+		}
+	}
+
+	for (int k = 1; k <= n; k++)
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			for (int j = 1; j <=n; j++)
+			{
+				if (dist[i][k] != INF && dist[k][j] != INF)
+				{
+					dist[i][j] = min( dist[i][j],dist[i][k] + dist[k][j] );
+				}
+			}
+		}
+	}
+
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			if (dist[i][j] == INF)
+			{
+				cout << "0" << " ";
+			}
+			else
+			{
+				cout << dist[i][j] << " ";
+			}
+		}
+		cout << "\n";
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int from, to, w;
+		cin >> from >> to >> w;
+		arr[from].push_back({ to,w });
+	}
+	floyd();
+}
