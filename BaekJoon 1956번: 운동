@@ -1,0 +1,96 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <algorithm>
+#define INF 210000000
+using namespace std;
+
+vector<pair<int, int>> arr[401];
+
+int v, e;
+int dist[401][401];
+void cycle()
+{
+	for (int i = 0; i <= v; i++)
+	{
+		for (int j = 0; j <= v; j++)
+		{
+			if (i == j)
+				dist[i][j] = 0;
+			else
+				dist[i][j] = INF;
+		}
+	}
+	for (int i = 1; i <= v; i++)
+	{
+		for (int j = 0; j < arr[i].size(); j++)
+		{
+			int from = i;
+			int to = arr[i][j].first;
+			int w = arr[i][j].second;
+			dist[from][to] = w;
+		}
+	}
+	for (int k = 1; k <= v; k++)
+	{
+		for (int i = 1; i <= v; i++)
+		{
+			for (int j = 1; j <= v; j++)
+			{
+				if (dist[i][k]!=INF && dist[k][i] != INF)
+				{
+					dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+				}
+			}
+		}
+	}
+	vector<int> ans;
+	
+	for (int k = 1; k <= v; k++)
+	{
+		int min = INF;
+		for (int i = 1; i <= v; i++)
+		{
+			if (k == i)
+			{
+				continue;
+			}
+			if (dist[k][i] != INF && dist[i][k] != INF)
+			{
+				int b;
+				b= dist[k][i] + dist[i][k];
+				if (b < min)
+				{
+					min = b;
+				}
+			}
+			if (min != INF)
+			{
+				ans.push_back(min);
+			}
+		}
+	}
+	if (ans.size() == 0)
+	{
+		cout << -1 << "\n";
+	}
+	else
+	{
+		sort(ans.begin(), ans.end());
+		cout << ans[0];
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> v >> e;
+	for (int i = 0; i < e; i++)
+	{
+		int from, to, w;
+		cin >> from >> to >> w;
+		arr[from].push_back({ to,w });
+	}
+	cycle();
+}
