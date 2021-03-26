@@ -1,0 +1,66 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#define INF 20002
+using namespace std;
+vector<pair<int,int>> arr[20001];
+int dist[20001];
+int maxNum;
+bool compare(int a,int b)
+{
+    return a>b;
+}
+int solution(int n, vector<vector<int>> edge) {
+
+    maxNum=0;
+    for(int i=0;i<edge.size();i++)
+    {
+        arr[edge[i][0]].push_back({edge[i][1],1});
+        arr[edge[i][1]].push_back({edge[i][0],1});
+
+    }
+    for(int i=1;i<=n;i++)
+    {
+        dist[i]=INF;
+    }
+    dist[1]=0;
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+    pq.push({0,1});
+    while(!pq.empty())
+    {
+        int currIndex=pq.top().second;
+        int currDist=pq.top().first;
+        pq.pop();
+        if(dist[currIndex]<currDist)
+        {
+            continue;
+        }
+       
+        for(int j=0;j<arr[currIndex].size();j++)
+        {
+            int nextIndex=arr[currIndex][j].first;
+            int nextDist=currDist+arr[currIndex][j].second;
+            if(nextDist<dist[nextIndex])
+            {
+                if(maxNum< nextDist)
+                {
+                    maxNum=nextDist;
+                }
+                dist[nextIndex]=nextDist;
+                pq.push({nextDist,nextIndex});
+            }
+        }
+        
+    }
+    int answer=0;
+    for(int i=1;i<=n;i++)
+    {
+        if(maxNum==dist[i])
+        {
+            answer++;
+        }
+    }
+
+    return answer;
+}
