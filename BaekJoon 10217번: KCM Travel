@@ -1,0 +1,90 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <utility>
+#include <algorithm>
+#include <queue>
+#define INF 210000000
+using namespace std;
+
+int t;
+int n, m, k;
+int u, v, c, d;
+vector<pair<int, pair<int, int>>> arr[101];
+int dist[101][10001]; //2차원 다익스트라
+void dijs()
+{
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= m; j++)
+		{
+			dist[i][j] = INF;
+		}
+	}
+	dist[1][0] = 0;
+	priority_queue < pair<int, pair<int, int>>, vector< pair<int, pair<int, int>>>, greater< pair<int, pair<int, int>>>> pq;
+	pq.push({ 0,{0,1} });//dist cost index
+	while (!pq.empty())
+	{
+		int currDist = pq.top().first;
+		int currCost = pq.top().second.first;
+		int currIndex = pq.top().second.second;
+		pq.pop();
+		if (dist[currIndex][currCost] < currDist) 
+		{
+			continue;
+		}
+		for (int j = 0; j < arr[currIndex].size(); j++)
+		{
+			int nextIndex = arr[currIndex][j].first;//도착 공항
+			int nextCost = currCost + arr[currIndex][j].second.first; //비용
+			int nextDist = currDist + arr[currIndex][j].second.second;//소요시간
+			if (nextCost > m)
+			{
+				continue;
+			}
+			if ((dist[nextIndex][nextCost] > nextDist))
+			{
+				dist[nextIndex][nextCost] = nextDist;
+				pq.push({ nextDist,{nextCost,nextIndex} });
+			}
+		}
+	
+	}
+	int ret = INF;
+	for (int i = 1; i <= m; i++)
+	{
+		ret = min(ret, dist[n][i]);
+	}
+	if (ret == INF)
+	{
+		cout << "Poor KCM" << "\n";
+
+	}
+	else
+	{
+		cout << ret << "\n";
+	}
+
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> t;
+	for (int p = 0; p < t; p++)//p번 반복
+	{
+		cin >> n >> m >> k;//공항 지원 비용 티켓 수
+		for (int i = 0; i < k; i++)
+		{
+			cin >> u >> v >> c >> d;
+			arr[u].push_back({ v,{c,d} });//도착 비용 소요 시간
+		}
+		dijs();
+		for (int i = 1; i <= n; i++)
+		{
+			arr[i].clear();
+		}
+	}
+	
+}
