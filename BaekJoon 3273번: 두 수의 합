@@ -1,0 +1,41 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+int n, x, leftP, rightP,ansP;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0); cout.tie(NULL);
+	cin >> n;
+	vector<int> seq(n);
+	for (int i = 0; i < n; i++)
+	{
+		cin >> seq[i];
+	}
+	cin >> x;
+	sort(seq.begin(),seq.end());
+	leftP = 0;
+	rightP = n - 1;
+	ansP = 0;
+	while (leftP < rightP)
+	{
+		int sum = seq[leftP] + seq[rightP];
+		if (sum== x)
+		{
+			ansP++;
+			rightP--;
+		}
+		else if (sum < x)
+		{
+			leftP++;
+		}
+		else
+		{
+			rightP--;
+		}
+	}
+	cout << ansP<<"\n";
+	
+}
