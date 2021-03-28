@@ -1,0 +1,51 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int n;
+vector<int> arr;
+pair<int, int> pr;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int x;
+		cin >> x;
+		arr.push_back(x);
+	}
+	sort(arr.begin(), arr.end());
+	
+	int start = 0;
+	int end = n - 1;
+	long long val;
+
+	int min = 2000000000; // 큰 값을 넣어두고
+	long long res=arr[start]+arr[end];
+	vector<int> answer(2);
+	while (start < end)
+	{
+		val = (long long)arr[start]+(long long)arr[end]; //합을 val로 둔다.
+		if (min > abs(val)) //0과 가까워지고 있으면
+		{
+			min = abs(val);
+			answer[0] = arr[start];
+			answer[1] = arr[end];
+			if (val == 0)
+				break;
+		}
+		if (val < 0)
+		{
+			start++;
+		}
+		else
+		{
+			end--;
+		}
+		
+	}
+	cout << answer[0] << " " << answer[1];
+}
