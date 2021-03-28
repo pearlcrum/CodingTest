@@ -1,0 +1,55 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int n;
+vector<int> arr;
+pair<int, int> pr;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	int s;
+	cin >> s;
+	for (int i = 0; i < n; i++)
+	{
+		int x;
+		cin >> x;
+		arr.push_back(x);
+	}
+	int start = 0;
+	int end = 0;
+	int sum = 0;
+	int minLen = 100000001;
+	sort(arr.begin(), arr.end());
+	for (int i = 0; i < arr.size(); i++)
+	{
+		cout << arr[i] << " ";
+	}
+	while (start <= end)
+	{
+		if (sum >= s)
+		{
+			minLen = min(minLen, end - start);
+			sum = sum - arr[start];
+			start++;
+		}
+		else if (end == n)
+		{
+			break;
+		}
+		else
+		{
+			sum = sum + arr[end];
+			end++;
+		}
+	}
+	if (minLen == 100000001)
+		cout << 0 << "\n";
+	else
+		cout << minLen;
+	
+}
