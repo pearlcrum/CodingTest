@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int n;
+vector<bool> check;
+vector<int> primes;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n;
+    //에라토스테네스의 체
+    check.resize(n + 1, true);
+    for (int i = 2; i * i <= n; i++)
+    {
+        if (!check[i]) continue;
+        for (int j = i * i; j <= n; j += i)
+        {
+            check[j] = false;
+        }
+    }
+    for (int i = 2; i <= n; i++)
+    {
+        if (check[i]) primes.push_back(i);
+    }
+    int start = 0, end = 0, sum = 0;
+    vector<int> ans;
+
+    while (start <= end)
+    {
+        if (sum >= n)
+        {
+            sum = sum - primes[start]; //크면 앞에거 뺀다.
+            start++;
+        }
+        else if (end == primes.size())
+        {
+            break; // 사이즈와 같아지면 제거
+        }
+        else if (sum < n)
+        {
+            sum = sum + primes[end]; //작으면 뒤에거 더한다.
+            end++;
+        }
+        if (sum == n)
+        {
+            ans.push_back(1);//같은 경우 갯수 세기 위하여
+        }
+      
+    }
+    cout << ans.size();
+}
