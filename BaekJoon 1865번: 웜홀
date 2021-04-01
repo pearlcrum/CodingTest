@@ -1,0 +1,81 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+#include <utility>
+#define INF 2100000000
+using namespace std;
+int tc;
+vector<pair<int,int>> arr[501];
+long long dist[501];
+void bellman(int n)
+{
+	for (int i = 1; i <= n; i++)
+	{
+		dist[i] = 0; //거리 0으로 초기화
+	}
+	for (int k = 1; k <= n-1; k++) //n-1번
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			for (int j = 0; j < arr[i].size(); j++)
+			{
+				int from = i;
+				int to = arr[i][j].first;
+				int time = arr[i][j].second;
+			
+				if (dist[to] > dist[from] + time)
+				{
+					dist[to] = dist[from] + time;
+				}
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++)//음의 사이클 존재하는지 check
+	{
+		for (int j = 0; j < arr[i].size(); j++)
+		{
+			int from = i;
+			int to = arr[i][j].first;
+			int w = arr[i][j].second;
+			if (dist[from] == INF)
+				continue;
+			if (dist[to] > dist[from] + w)
+			{
+				cout << "YES" << "\n";
+				return;	
+			}
+		}
+	}
+
+	cout << "NO" << "\n";
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> tc;
+	for (int i = 0; i < tc; i++)
+	{
+		for (int j = 1; j <= 500; j++)
+		{
+			arr[j].clear();
+		}
+		int n, m, w;
+		cin >> n >> m >> w;
+		for (int j = 0; j < m; j++)
+		{
+			int s, e, t;
+			cin >> s >> e >> t;
+			arr[s].push_back({ e,t });
+			arr[e].push_back({ s,t });
+		}
+		for (int j = 0; j < w; j++)
+		{
+			int s, e, t;
+			cin >> s >> e >> t; // 일방향이다.
+			arr[s].push_back({ e,-1*t });//웜홀
+		}
+		bellman(n);
+	}
+}
