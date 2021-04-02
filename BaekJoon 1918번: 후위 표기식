@@ -1,0 +1,61 @@
+#include <iostream>
+#include <stack>
+#include <cstring>
+
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	string a;
+	cin >> a;
+	stack<char> st;
+
+	for (int i = 0; i < a.length(); i++)
+	{
+		if (a[i] >= 'A' && a[i] <= 'Z')
+		{
+			cout << a[i];
+		}
+		else
+		{
+			if (a[i] == '(')
+			{
+				st.push(a[i]);
+			}
+			else if (a[i] == '*' || a[i] == '/')
+			{
+				while (!st.empty() && (st.top() == '*' || st.top() == '/'))
+				{
+					cout << st.top();
+					st.pop();
+				}
+				st.push(a[i]);
+			}
+			else if (a[i] == '+' || a[i] == '-')
+			{
+				while (!st.empty() && st.top() != '(')
+				{
+					cout << st.top();
+					st.pop();
+				}
+				st.push(a[i]);
+			}
+			else if (a[i] == ')')
+			{
+				while (!st.empty() && st.top() != '(')
+				{
+					cout << st.top();
+					st.pop();
+				}
+				st.pop();
+			}
+		}
+	}
+	while (!st.empty())
+	{
+		cout << st.top();
+		st.pop();
+	}
+}
