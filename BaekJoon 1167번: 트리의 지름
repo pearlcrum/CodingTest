@@ -1,0 +1,78 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+#define INF 100001
+using namespace std;
+
+int n;
+vector<pair<int,int>>arr[INF];
+bool visited[INF];
+int dist[INF];
+int maxIndex, maxNum;
+int distance(int num)
+{
+	for (int i = 1; i <= n; i++)
+	{
+		dist[i] = 0;
+	}
+	queue<pair<int, int>> q;
+	q.push({ num,0 });
+	visited[num] = true;
+	while(!q.empty())
+	{
+		int now = q.front().first;
+		int cnt = q.front().second;
+		
+		q.pop();
+		for (int i = 0; i < arr[now].size(); i++)
+		{
+			int next = arr[now][i].first;
+			int weight = arr[now][i].second;
+			if (!visited[next])
+			{
+				q.push({ next,cnt + 1 });
+				dist[next] = dist[now] + weight;
+				visited[next] = true;
+			}
+		}
+	}
+	maxNum = 0;
+	maxIndex = 0;
+	for (int i = 1; i <= n; i++)
+	{
+		if (maxNum < dist[i])
+		{
+			maxNum = dist[i];
+			maxIndex = i;
+		}
+	}
+	return maxIndex;
+
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int a, b,c;
+		cin >> a >> b>>c;
+		arr[a].push_back({ b,c });
+		while (b != -1)
+		{
+			cin >> b;
+			if (b == -1)
+				break;
+			cin >> c;
+			arr[a].push_back({ b,c });
+		}
+	}
+	memset(visited, false, sizeof(visited));
+	int x = distance(1); //1 기준으로 가장 먼 것.
+	memset(visited, false, sizeof(visited));
+	int y = distance(x); // 1에서 가장 먼 x 기준 제일 먼 y
+	cout << maxNum;
+}
