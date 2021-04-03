@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#define INF 100001
+using namespace std;
+
+int n;
+vector<int>arr[INF];
+int parent[INF];
+bool visited[INF];
+void dfs(int node)
+{
+	visited[node] = true;
+	for (int i = 0; i < arr[node].size(); i++)
+	{
+		int next = arr[node][i];
+		if (!visited[next])
+		{
+			parent[next] = node;
+			dfs(next);
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n - 1; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		arr[a].push_back(b);
+		arr[b].push_back(a);
+	}
+	dfs(1);
+	for (int i = 2; i <= n; i++)
+	{
+		cout << parent[i] << "\n";
+	}
+}
