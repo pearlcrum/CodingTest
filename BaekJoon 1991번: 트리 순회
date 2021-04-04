@@ -1,0 +1,56 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <cstring>
+#include <stack>
+using namespace std;
+
+int n;
+struct node {
+	char left;
+	char right;
+};
+struct node arr[27];
+
+void pre(char root)
+{
+	if (root == '.')
+		return;
+	cout << root;
+	pre(arr[root].left);
+	pre(arr[root].right);
+}
+void middle(char root)
+{
+	if (root == '.')
+		return;
+	middle(arr[root].left);
+	cout << root;
+	middle(arr[root].right);
+}
+void post(char root)
+{
+	if (root == '.')
+		return;
+	post(arr[root].left);
+	post(arr[root].right);
+	cout << root;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		char a, b, c;
+		cin >> a >> b >> c;
+		arr[a].right = c;
+		arr[a].left = b;//좌측 노드면 0
+	}
+	pre('A');
+	cout << "\n";
+	middle('A');
+	cout << "\n";
+	post('A');
+}
