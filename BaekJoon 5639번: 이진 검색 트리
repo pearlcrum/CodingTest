@@ -1,0 +1,64 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <cstring>
+#include <stack>
+#include <math.h>
+using namespace std;
+
+int n;
+struct node {
+	int left;
+	int right;
+};
+vector<int> vec;
+node arr[1000001];
+int rot = -1;
+void makeTree(int root, int num)
+{
+	if (num < root)
+	{
+		if (arr[root].left == 0)
+		{
+			arr[root].left = num;
+			return;
+		}
+		root = arr[root].left;
+		makeTree(root, num);
+	}
+	else if(root < num)
+	{
+		if (arr[root].right == 0)
+		{
+			arr[root].right = num;
+			return;
+		}
+		root = arr[root].right;
+		makeTree(root, num);
+	}
+}
+
+void post(int root)
+{
+	if (root == 0)
+		return;
+	post(arr[root].left);
+	post(arr[root].right);
+	cout << root << "\n";
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int num;
+	while (cin>>num)
+	{	
+		if (rot == -1)
+			rot = num;
+		if (num==EOF)
+			break;
+		makeTree(rot, num);
+	}
+	post(rot);
+}
