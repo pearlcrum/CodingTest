@@ -1,0 +1,66 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <cstring>
+
+#define INF 10001
+using namespace std;
+
+int n;
+vector<pair<int, int>> vec[INF];
+int maxVal,maxIndex;
+bool visited[INF];
+int dist[INF];
+
+int bfs(int num)
+{
+	for (int i = 1; i <= n; i++)
+	{
+		visited[i] = false;
+		dist[i] = 0;
+	}
+	
+	visited[num] = true;
+	queue<int> q;
+	q.push(num);
+	maxVal = 0;
+	maxIndex = 0;
+	while (!q.empty())
+	{
+		int now = q.front();
+		q.pop();
+		for (int i = 0; i < vec[now].size(); i++)
+		{
+			int next = vec[now][i].first;
+			int w = dist[now]+vec[now][i].second;
+			if (!visited[next])
+			{
+				dist[next] = w;
+				if (w > maxVal)
+				{
+					maxVal = w;
+					maxIndex = next;
+				}
+				visited[next] = true;
+				q.push(next);
+			}
+		}
+	}
+	return maxIndex;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n - 1; i++)
+	{
+		int parent, child, weight;
+		cin >> parent >> child >> weight;
+		vec[parent].push_back({ child,weight });
+		vec[child].push_back({ parent,weight });
+	}
+	int x=bfs(1);
+	bfs(x);
+	cout << maxVal;
+}
