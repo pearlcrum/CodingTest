@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int n, m;
+vector<int> vec;
+int arr[9];
+bool visited[10001];
+void backtracking(int level, int last)
+{
+	if (level == m)
+	{
+		for (int i = 0; i < m; i++)
+		{
+			cout << arr[i] << " ";
+		}
+		cout << "\n";
+		return;
+	}
+	for (int i = 0; i < vec.size(); i++)
+	{
+		if (visited[vec[i]])
+		{
+			continue;
+		}
+		if (last > vec[i])
+		{
+			continue;
+		}
+		visited[vec[i]] = true;
+		arr[level] = vec[i];
+		backtracking(level+1, arr[level]);
+		visited[vec[i]] = false;
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		int a;
+		cin >> a;
+		vec.push_back(a);
+	}
+	sort(vec.begin(), vec.end());
+	backtracking(0, 0);
+}
