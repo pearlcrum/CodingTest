@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int n, m;
+vector<int> vec;
+int arr[9];
+bool visited[9];
+void backtracking(int level)
+{
+	if (level == m)
+	{
+		for (int i = 0; i < m; i++)
+		{
+			cout << arr[i] << " ";
+		}
+		cout << "\n";
+		return;
+	}
+	int temp = 0;//level이 올라갈때 마다 0으로 초기화 됨
+	//level이 올랐을 때 출력되는 경우는 초기화 되지 않음.
+	for (int i = 0; i < vec.size(); i++)
+	{
+		if (visited[i])
+		{
+			continue;
+		}
+		if (temp== vec[i])
+		{
+			continue;
+		}
+		visited[i] = true;
+		arr[level] = vec[i];
+		temp = vec[i];
+		backtracking(level + 1);
+		visited[i] = false;
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		int a;
+		cin >> a;
+		vec.push_back(a);
+	}
+	sort(vec.begin(), vec.end());
+	backtracking(0);
+}
