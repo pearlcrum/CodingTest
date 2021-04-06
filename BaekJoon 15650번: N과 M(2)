@@ -1,62 +1,40 @@
-// DFS 알고리즘과 백트래킹을 활용하여 문제를 풀었습니다.
-
-#include <stdio.h>
 #include <iostream>
-#include<math.h>
-#include<algorithm>
-#include<vector>
-#include <string>
-#include<map>
-
-#pragma warning(disable:4996)
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 int n, m;
-vector<bool> check(8, 0);
-vector<int>ans;
-vector<int> arr;
-void print()
+int arr[9];
+bool check[9];
+void backtracking(int level,int last) //level 과 앞 글자를 가지고 온다.
 {
-    for (int i = 0; i < ans.size(); i++)
-    {
-        cout << ans[i] << " ";
-    }
-    cout << "\n";
+	if (m == level)
+	{
+		for (int i = 0; i < m; i++)
+		{
+			cout<<arr[i] << " ";
+		}
+		cout << "\n";
+		return;
+	}
+
+	for (int i = last; i <= n; i++)//이전 값 보다 커야 하니 i=last
+	{
+		if (check[i])//방문한 적이 있다면
+		{
+			continue;
+		}
+		check[i] = true;
+		arr[level] = i;
+		backtracking(level + 1, i);
+		check[i] = false;
+	}
 }
 
-void dfs(int cnt)
+int main()
 {
-    if (cnt == m)
-    {
-        for (int j = 1; j < ans.size(); j++)
-        {
-            if (ans[j - 1] > ans[j])
-            {
-                return;
-            }
-        }
-        print();
-        return;
-    }
-    for (int i = 0; i < n;i++)
-    {
-        if (check[i] == true)
-        {
-            continue;
-        }
-        check[i] = true;
-        ans.push_back(arr[i]);
-        dfs(cnt + 1);
-        ans.pop_back();
-        check[i] = false;
-    }
-}
-
-int main() {
-    cin >> n >> m;
-    for (int i = 1; i <= n; i++)
-    {
-        arr.push_back(i);
-    }
-    dfs(0);
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	backtracking(0,1);//최소 시작 값이 1이므로 last에 1을 넣어준다.
 }
