@@ -1,0 +1,42 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int n, m;
+vector<int> vec;
+int arr[9];
+void backtracking(int level, int last)
+{
+	if (level == m)
+	{
+		for (int i = 0; i < m; i++)
+		{
+			cout << arr[i] << " ";
+		}
+		cout << "\n";
+		return;
+	}
+	for (int i = 0; i < vec.size(); i++)
+	{
+		if (last > vec[i])
+		{
+			continue;
+		}
+		arr[level] = vec[i];
+		backtracking(level+1, arr[level]);
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		int a;
+		cin >> a;
+		vec.push_back(a);
+	}
+	sort(vec.begin(), vec.end());
+	backtracking(0, 0);
+}
