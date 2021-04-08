@@ -1,0 +1,44 @@
+#include <iostream>
+#include<math.h>
+using namespace std;
+int n,r,c;
+int arr[2][2] = { {3,2},{1,0} };
+void z(int r, int c,int n, long long max)
+{
+	if (n == 1)
+	{
+		cout << max-arr[r][c];
+		return;
+	}
+	int a = (int)pow(2, n);
+	
+	if (r < a / 2 && c < a / 2)
+	{
+		max = max- (int)pow(4, n - 1)*3;
+		z(r, c, n - 1,max);
+	}
+	else if (r < a / 2 && c >= a / 2)
+	{
+		max = max - (int)pow(4, n - 1)*2;
+		z(r, c-a / 2, n - 1,max);
+	}
+	else if (r >= a / 2 && c < a/2)
+	{
+		max = max - (int)pow(4, n - 1);
+		z(r-a / 2, c, n - 1,max);
+	}
+	else
+	{
+		z(r-a / 2, c-a / 2, n - 1,max);
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> r >> c;
+	long long a = int(pow(2,n))*int(pow(2,n))-1;
+
+	z(r, c, n,a); // 1 1
+	
+}
