@@ -1,40 +1,37 @@
-#include <stdio.h>
 #include <iostream>
-#include <sstream>
-#include<math.h>
-#include<algorithm>
-#include<vector>
-#include<cstring>
-#include <string>
-#include<map>
-#include<stack>
-#include<queue>
-#pragma warning(disable:4996)
+#include <vector>
+#include <algorithm>
+#include <stdio.h>
+#include <cstring>
 using namespace std;
 
-
-int arr[301];
-int ans[301];
+int n;
+vector<int> arr;
+int ans[301][2];
+void dp()
+{
+	ans[1][0] = arr[1];
+	ans[1][1] = 0;
+	ans[2][0] = arr[2];
+	ans[2][1] = arr[1] + arr[2];
+	for (int i = 3; i <= n; i++)
+	{
+		ans[i][0] = max(ans[i - 2][0], ans[i - 2][1]) + arr[i];
+		ans[i][1] = ans[i - 1][0] + arr[i];
+	}
+	cout << max(ans[n][0], ans[n][1]);
+}
 int main()
 {
+	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin.sync_with_stdio(0);
-	int N;
-	cin >> N;
-	for (int i = 1; i <= N; i++)
+	cin >> n;
+	arr.push_back(0);
+	for (int i = 0; i < n; i++)
 	{
-		cin >> arr[i];
+		int a;
+		cin >> a;
+		arr.push_back(a);
 	}
-	arr[0], ans[0] = 0;
-	ans[1] = arr[1];
-	ans[2] = arr[1] + arr[2];
-	ans[3] = max(ans[1] + arr[3], arr[2] + arr[3]);
-	for (int i = 4; i <= N; i++)
-	{
-		ans[i] = max(ans[i - 3] + arr[i - 1] + arr[i], ans[i - 2] + arr[i]);
-	}
-
-	cout << ans[N];
-
+	dp();
 }
-
