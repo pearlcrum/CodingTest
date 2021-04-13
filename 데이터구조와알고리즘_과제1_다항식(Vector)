@@ -1,0 +1,123 @@
+#include <vector>
+#include <math.h>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+class polynomial
+{
+public:
+	vector<int> coef;
+	polynomial(vector<int>coef)
+	{
+		this->coef = coef;
+	}
+	int degree();
+	int evaluate(int scalar);
+	polynomial add(polynomial expr);
+	polynomial substract(polynomial expr);
+	void display();
+};
+int polynomial::degree()
+{
+	int degree = coef.size() - 1;//최고 차항의 차수
+	return degree;
+}
+int polynomial::evaluate(int scalar)
+{
+	int sum = 0;
+	for (int i = 0; i <= degree(); i++)
+	{
+		if (i == 0)
+			sum += coef[i]; //0일떄는 그냥
+		else
+			sum += coef[i]*(int)pow(scalar, i);//아닌 경우에는 계산
+	}
+	return sum;
+}
+polynomial polynomial::add(polynomial expr)
+{
+	vector<int> ans;
+	int num = max(coef.size(), expr.coef.size());
+	if (coef.size() > expr.coef.size())
+	{
+		while (expr.coef.size() != num)
+			expr.coef.push_back(0);//더하기 위해 크기를 맞추었습니다.
+	}
+	else
+	{
+		while (coef.size() != num)
+			coef.push_back(0); //더하기 위해 크기를 맞추었습니다.
+	}
+	for (int i = 0; i < num; i++)
+		ans.push_back(coef[i] + expr.coef[i]);
+	return ans;
+}
+polynomial polynomial::substract(polynomial expr)
+{
+	vector<int> ans;
+	int num = max(coef.size(), expr.coef.size());
+	if (coef.size() > expr.coef.size())
+	{
+		while (expr.coef.size() != num)
+			expr.coef.push_back(0);//빼기 위해 크기를 맞추었습니다.
+	}
+	else
+	{
+		while (coef.size() != num)
+			coef.push_back(0); //빼기 위해 크기를 맞추었습니다.
+	}
+	for (int i = 0; i < num; i++)
+		ans.push_back(coef[i] - expr.coef[i]);
+	return ans;
+}
+void polynomial::display()
+{
+	for (int i = degree(); i >= 0; i--)
+	{
+		if (coef[i] == 0)
+			continue;
+		if (i == 0)
+		{ 
+			if (coef[i] < 0)
+				cout << "  " << coef[i];
+			else
+				cout << "+ " << coef[i];
+
+		}
+		else
+		{
+			if (i != degree())
+			{
+				if (coef[i] < 0)
+					cout << "  ";
+				else
+					cout << "+ ";
+			}
+			cout<<coef[i] << "x^" << i << " ";
+		}
+	}
+	cout << "\n\n";
+}
+
+
+int main()
+{
+	cout.tie(0);
+	vector<int> num1 = { -1,-8,6,4 };
+	polynomial expr1 = polynomial(num1);
+	cout << "expr1 객체를 display한 결과는 :";
+	expr1.display();
+	vector<int> num2 = { 5,1,2,8,-7,9 };
+	polynomial expr2 = polynomial(num2);
+	cout << "expr2 객체를 display한 결과는 :";
+	expr2.display();
+	polynomial expr3 = expr1.add(expr2);
+	cout << "expr3 객체를 display한 결과는 :";
+	expr3.display();
+	cout << "expr3 객체에 2을 넣은 결과는 :";
+	cout<<expr3.evaluate(2)<<"\n\n";
+	polynomial expr4 = expr1.substract(expr2);
+	cout << "expr4 객체를 display한 결과는 :";
+	expr4.display();
+}
