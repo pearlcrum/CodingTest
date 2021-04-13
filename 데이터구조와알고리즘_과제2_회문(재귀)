@@ -1,0 +1,72 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+int is_panlindrome(string input_str)
+{
+	
+	if (input_str.size()<=1)
+	{
+		return 1;
+	}
+	else
+	{
+		char a = input_str[0];
+		char b = input_str[input_str.size() - 1];
+		
+		if (a == b)
+		{
+			string temp=input_str.substr(1, input_str.size()-2);
+			return is_panlindrome(temp);
+		}
+		else if(a!=b)
+		{
+			return 0;
+		}
+	}
+}
+void print(int val)
+{
+	if (val >0)
+	{
+		cout << "다음 panlindrome은 회문이 맞습니다" << "\n\n";
+	}
+	else
+	{
+		cout<< "다음 panlindrome은 회문이 아닙니다" << "\n\n";
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	//cout << "level 은 회문입니까?" << "\n";
+	//print(is_panlindrome("level"));
+	//cout << "kayak 은 회문입니까?" << "\n";
+	//print(is_panlindrome("kayak"));
+	//cout << "abba 는 회문입니까?" << "\n";
+	//print(is_panlindrome("abba"));
+	//cout << "summuus 는 회문입니까?" << "\n";
+	//print(is_panlindrome("summuus"));
+	//cout << "ipreferpi 는 회문입니까?" << "\n";
+	//print(is_panlindrome("ipreferpi"));
+	//cout << "comcom 은 회문입니까?" << "\n";
+	//print(is_panlindrome("comcom"));
+	//
+
+	cout << "회문인 것 두번 출력" << "\n\n";
+	
+	cout << "autootua 은 회문입니까?" << "\n";
+	print(is_panlindrome("autootua"));
+
+	cout << "maraprparam 는 회문입니까?" << "\n";
+	print(is_panlindrome("maraprparam"));
+	cout << "\n" << "\n";
+	cout << "회문이 아닌 것 두번 출력" << "\n\n";
+
+	cout << "marrac 은 회문입니까?" << "\n";
+	print(is_panlindrome("marrac"));
+
+	cout << "openstenpo 는 회문입니까?" << "\n";
+	print(is_panlindrome("openstnepo"));
+}
