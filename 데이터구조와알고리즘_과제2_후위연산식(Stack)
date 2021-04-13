@@ -1,0 +1,134 @@
+#include <iostream>
+#include <vector>
+#include <cstring>
+using namespace std;
+class ArrayStack
+{
+private:
+	vector<char>stack;
+public:
+	ArrayStack()
+	{
+		;
+	}
+	ArrayStack(vector<char>stack)
+	{
+		this->stack = stack;//생성자
+	}
+	bool is_empty()
+	{
+		return stack.empty();
+	}
+	int size()
+	{
+		return stack.size();
+	}
+	void clear()
+	{
+		stack.clear();
+	}
+	char peek()
+	{
+		if (is_empty())
+			return NULL;
+		else
+			return stack[size() - 1];
+	}
+	void push(char item)
+	{
+		stack.push_back(item);
+	}
+	char pop()
+	{
+		if (is_empty())
+			return NULL;
+		else
+		{
+			char a = stack[size() - 1];
+			stack.pop_back();
+			return a;
+		}
+	}
+	vector<char> infix_to_postfix(vector<char> expr)
+	{
+		ArrayStack stack =  ArrayStack();
+		vector<char> ans;
+		for (int i = 0; i < expr.size(); i++)//들어온 expr 배열을 탐색
+		{
+			if ( (expr[i] >= 'A' && expr[i] <= 'Z')||(expr[i]>'0' &&expr[i]<='9'))//단순 문자거나 숫자이면
+				ans.push_back(expr[i]);
+			else
+			{
+				if (expr[i] == '(')//괄호가 있을 경우 스택에 넣는다.
+					stack.push(expr[i]);
+				else if (expr[i] == '*' || expr[i] == '/')
+				{
+					while (!stack.is_empty() && (stack.peek() == '*' || stack.peek() == '/'))
+					{
+						//stack이 빌때까지나 *이나 /이 나올떄 까지
+						//A*B*C/D =AB*CD/*
+						ans.push_back(stack.pop());
+					}
+					stack.push(expr[i]);
+				}
+				else if (expr[i] == '+' || expr[i] == '-')
+				{
+					while (!stack.is_empty() && stack.peek() != '(')
+						ans.push_back(stack.pop());
+					stack.push(expr[i]);
+				}
+				else if (expr[i] == ')')
+				{
+					while (!stack.is_empty() && stack.peek() != '(')
+						ans.push_back(stack.pop());
+					stack.pop();//'(' 없애기 용
+				}
+			}
+		}
+		while (!stack.is_empty())
+			ans.push_back(stack.pop());//남은 것들 다 ans에 넣는다
+		return ans;
+	}
+};
+void printPostFix(vector<char> ans)
+{
+	cout << "후위 표기:  [";
+	for (int i = 0; i < ans.size(); i++)
+	{
+		cout << "'"<<ans[i] << "'";
+		if (i != ans.size() - 1)
+			cout << " , ";
+	}
+	cout << "]\n\n";
+}
+void printInFix(vector<char> ans)
+{
+	cout << "중위 표기:  [";
+	for (int i = 0; i < ans.size(); i++)
+	{
+		cout << "'" << ans[i] << "'";
+		if (i != ans.size() - 1)
+			cout << " , ";
+	}
+	cout << "]\n\n";
+}
+int main()
+{
+	ArrayStack stack;
+	/*printInFix({ '8', '/', '2', '-', '3', '+', '(', '3', '*', '2', ')' });
+	printPostFix(stack.infix_to_postfix({ '8', '/', '2', '-', '3', '+', '(', '3', '*', '2', ')' }));
+	printInFix({ '1', '/', '2', '*', '4', '*', '(', '1', '/', '4', ')' });
+	printPostFix(stack.infix_to_postfix({ '1', '/', '2', '*', '4', '*', '(', '1', '/', '4', ')' }));
+	printInFix({ '(', 'X', '+', 'Y', ')', '-', '(', 'W', '*', 'Z', ')', '/', 'V' });
+	printPostFix(stack.infix_to_postfix({ '(', 'X', '+', 'Y', ')', '-', '(', 'W', '*', 'Z', ')', '/', 'V' }));*/
+
+	printInFix({ 'A', '*', '(', 'B', '+', 'C', ')'});
+	printPostFix(stack.infix_to_postfix({ 'A', '*', '(', 'B', '+', 'C', ')' }));
+
+	printInFix({ '(', '(', '(', 'A', '+', 'B', ')', ')', ')' });
+	printPostFix(stack.infix_to_postfix({ '(', '(', '(', 'A', '+', 'B', ')', ')', ')' }));
+
+
+	printInFix({ 'A', '*', 'D', '+', 'B', '+', 'C', '*', 'E' });
+	printPostFix(stack.infix_to_postfix({ 'A', '*', 'D', '+', 'B', '+', 'C', '*', 'E' }));
+}
