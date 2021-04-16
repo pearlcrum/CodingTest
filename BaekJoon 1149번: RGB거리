@@ -1,38 +1,32 @@
-#include <stdio.h>
 #include <iostream>
-#include <sstream>
-#include<math.h>
-#include<algorithm>
-#include<vector>
-#include<cstring>
-#include <string>
-#include<map>
-#include<stack>
-#include<queue>
-#pragma warning(disable:4996)
+#include <algorithm>
 using namespace std;
 
-
-
+int n;
+int arr[1001][3];
+int ans[1001][3];
 int main()
 {
 	cin.tie(0);
-	cin.sync_with_stdio(0);
-	int N;
-	cin >> N;
-	int cost[3];
-	int house[1001][3];
-	house[0][0] = 0;
-	house[0][1] = 0;
-	house[0][2] = 0;
-	for (int i = 1; i <= N; i++)
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; i++)
 	{
-		cin >> cost[0] >> cost[1] >> cost[2];
-		house[i][0] = min(house[i - 1][1], house[i - 1][2]) + cost[0];
-		house[i][1] = min(house[i - 1][0], house[i - 1][2]) + cost[1];
-		house[i][2] = min(house[i - 1][0], house[i - 1][1]) + cost[2];
+		for (int j = 0; j < 3; j++)
+		{
+			int a;
+			cin >> a;
+			arr[i][j] = a;
+		}
 	}
-	cout << min(house[N][2], min( house[N][1], house[N][0]));
-
+	ans[0][0] = 0;
+	ans[0][1] = 0;
+	ans[0][2] = 0;
+	for (int i = 1; i <= n; i++)
+	{
+		ans[i][0] = min(ans[i - 1][1], ans[i - 1][2]) + arr[i][0];
+		ans[i][1] = min(ans[i - 1][0], ans[i - 1][2]) + arr[i][1];
+		ans[i][2] = min(ans[i - 1][0], ans[i - 1][1]) + arr[i][2];
+	}
+	cout << min(ans[n][0], min(ans[n][1], ans[n][2]));
 }
-
