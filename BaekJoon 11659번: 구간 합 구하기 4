@@ -1,0 +1,33 @@
+#include <iostream>
+#include<vector>
+#include <algorithm>
+using namespace std;
+
+int n, m;
+int arr[100001];
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	arr[0] = 0;
+	int temp = 0;
+	for (int i = 1; i <= n; i++)
+	{
+		int a;
+		cin >> a;
+		temp += a;
+		arr[i] = temp;
+	}
+	vector<int> ans;
+	for (int k = 1; k <= m; k++)
+	{
+		int i, j;
+		cin >> i >> j;
+		ans.push_back(arr[j] - arr[i - 1]);
+	}
+	for (int i = 0; i < ans.size(); i++)
+	{
+		cout << ans[i] << "\n";
+	}
+}
