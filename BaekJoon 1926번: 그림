@@ -1,0 +1,76 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+using namespace std;
+
+int n, m;
+int arr[501][501];
+bool visited[501][501];
+int vx[4] = { 0,1,-1,0 };
+int vy[4] = { -1,0,0,1 };
+int ea; //그림의 개수
+int area;//넓이
+void bfs(int i, int j)
+{
+	ea++;
+	visited[i][j] = true;
+	queue<pair<int, int>> q;
+	int tempArea=0;//비교를 위한 tempea;
+	q.push({ i, j });
+	while (!q.empty())
+	{
+		int tempx = q.front().first;
+		int tempy = q.front().second;
+		q.pop();
+		tempArea++;
+		for (int a = 0; a < 4; a++)
+		{
+	
+			int nx = tempx + vx[a];
+			int ny = tempy + vy[a];
+			if (nx<1 || nx>n || ny<1 || ny>m)
+				continue;
+			if (visited[nx][ny] || arr[nx][ny] != 1)
+				continue;
+			
+			visited[nx][ny] = true;
+			q.push({ nx,ny });
+			
+		}
+	}
+	area = max(tempArea, area);
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= m; j++)
+		{
+			cin >> arr[i][j];
+			visited[i][j] = false;
+		}
+	}
+
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= m; j++)
+		{
+
+			if (visited[i][j]&&arr[i][j]==0)
+				continue;
+			else
+			{
+				if (!visited[i][j]&&arr[i][j] == 1)
+				{
+					bfs(i, j);
+				}
+
+			}
+		}
+	}
+	cout << ea << "\n";
+	cout << area;
+}
