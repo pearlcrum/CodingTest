@@ -61,3 +61,62 @@ int main()
 	}
 	cout << bfs(1, 1);
 }
+
+//----------------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <queue>
+#include <cstring>
+using namespace std;
+
+int vx[4] = { 1,0,-1,0 };
+int vy[4] = {0,-1,0,1};
+int arr[101][101];
+bool visited[101][101];
+int n, m;
+void bfs(int x, int y, int count)
+{
+	queue<pair<int, pair<int, int>>> q;
+	visited[x][y] = true;
+	q.push({ x,{y,count} });
+	while (!q.empty())
+	{
+		int tempx = q.front().first;
+		int tempy = q.front().second.first;
+		int cnt = q.front().second.second;
+		q.pop();
+		if (tempx == n && tempy == m)
+		{
+			cout << cnt;
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			int tx = tempx + vx[i];
+			int ty = tempy + vy[i];
+			if (tx < 1 || tx>n || ty<1 || ty>m)
+				continue;
+			if (visited[tx][ty])
+				continue;
+			if (arr[tx][ty] == 1)
+			{
+				visited[tx][ty] = true;
+				q.push({ tx,{ty,cnt + 1} });
+			}
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		string s;
+		cin >> s;
+		for (int j = 0; j < s.length(); j++)
+		{
+			arr[i][j + 1] = s[j] - '0';
+		}
+	}
+	bfs(1,1,1);
+}
