@@ -1,95 +1,78 @@
 #include <iostream>
-#include <cstring>
-#include <algorithm>
 #include <queue>
+#include <cstring>
 using namespace std;
+
+int vx[4] = { 1,0,-1,0 };
+int vy[4] = {0,-1,0,1};
 int arr[1001][1001];
-int m, n;
-int ans;
-int tempx, tempy;
-bool check[1001][1001];
-int cnt;
-queue<pair< pair< int, int>, int>> q;
-int vx[4] = { 1,0,0,-1 };
-int vy[4] = { 0,1,-1,0 };
-int xxx;
-int maxNum=0;
-void bfs(int x, int y)
+bool visited[1001][1001];
+int n, m;
+int count = 0;
+void bfs(int x, int y, int count)
 {
-	check[x][y] = 1;
-	q.push({ { x,y }, 0});
-	for (int i = 0; i < n; i++)
+	queue<pair<int, pair<int, int>>> q;
+	for (int i = 1; i <= n; i++)
 	{
-		for (int j = 0; j < m; j++)
+		for (int j = 1; j <= m; j++)
 		{
-			if (arr[i][j] == 1 &&!check[i][j])
+			if (arr[i][j] == 1) // 1인 것들 찾아서 넣는다.
 			{
-				check[i][j] = 1;
-				q.push({ { i,j }, 0 });
+				visited[i][j] = true;
+				q.push({ i,{j,0} });
+			}
+			if (arr[i][j] == -1)
+			{
+				visited[i][j] = true;
 			}
 		}
 	}
 	while (!q.empty())
 	{
-		x = q.front().first.first;
-		y = q.front().first.second;
-		cnt = q.front().second;
+		int tempx = q.front().first;
+		int tempy = q.front().second.first;
+		int cnt = q.front().second.second;
+		count = max(count, cnt);
 		q.pop();
-		if (cnt >= maxNum)
-		{
-			maxNum = cnt;
-		}
 		for (int i = 0; i < 4; i++)
 		{
-			int va = x + vx[i];
-			int vb = y + vy[i];
-			if (va < 0 || vb < 0 || va >= n || vb >= m)
-			{
+			int tx = tempx + vx[i];
+			int ty = tempy + vy[i];
+			if (tx < 1 || tx>n || ty<1 || ty>m)
 				continue;
-			}
-			if (arr[va][vb] == 0 && !check[va][vb])
+			if (visited[tx][ty])
+				continue;
+			if (arr[tx][ty] == 0)
 			{
-				check[va][vb] = 1;
-				arr[va][vb] = 1;
-				q.push({ {va,vb},cnt+1});
+				visited[tx][ty] = true;
+				q.push({ tx,{ty,cnt + 1} });
 			}
-			
 		}
 	}
-	for (int i = 0; i < n; i++)
+	for (int i = 1; i <= n; i++)
 	{
-		for (int j = 0; j < m; j++)
+		for (int j = 1; j <= m; j++)
 		{
-			if (arr[i][j] == 0)
+			if (arr[i][j] == 0 && visited[i][j] == false)
 			{
-				maxNum = -1;
+				cout << -1;
+				return;
 			}
 		}
 	}
-	cout << maxNum;
+	cout << count;
 }
 int main()
 {
+	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> m >> n;
-	for (int i = 0; i < n; i++)
+	for (int i = 1; i <= n; i++)
 	{
-		for (int j = 0; j < m; j++)
+		for (int j = 1; j <= m; j++)
 		{
 			cin >> arr[i][j];
-			if (arr[i][j] == 1 && !check[i][j])
-			{
-				xxx = 1;
-				tempx = i;
-				tempy = j;
-			}
 		}
 	}
-	if (xxx != 1)
-	{
-		cout << 0;
-		return 0;
-	}
-	bfs(tempx, tempy);
-
+	bfs(1,1,0);
 }
