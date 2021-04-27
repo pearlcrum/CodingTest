@@ -1,0 +1,150 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+bool visited[1001][1001];
+bool visitedF[1001][1001];
+char arr[1001][1001];
+int ansj[1001][1001];
+int ansf[1001][1001];
+int vx[4] = { 1,0,-1,0 };
+int vy[4] = {0,-1,0,1};
+queue<pair<int, int>> fire;
+int r, c;
+int jx, jy, fx, fy;//지훈이와 불의 초기 위치를 위함
+int countMax;
+void bfsj(int jx, int jy, int count)
+{
+	queue<pair<int,pair<int, int>>> q;
+	visited[jx][jy] = true;
+	q.push({ jx,{jy,count } });
+	while (!q.empty())
+	{
+		int tempx = q.front().first;
+		int tempy = q.front().second.first;
+		int count = q.front().second.second;
+		ansj[tempx][tempy] = count;
+		q.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			int tx = tempx + vx[i];
+			int ty = tempy + vy[i];
+			if (tx<1 || tx>r || ty<1 || ty>c)
+				continue;
+			if (visited[tx][ty])
+				continue;
+			if (ansf[tx][ty] <=count+1)
+				continue;
+			if (arr[tx][ty] == '.')
+			{
+				visited[tx][ty] = true;
+				q.push({ tx,{ty,count + 1} });
+			}
+			
+		}
+
+	}
+}
+void bfsf(int count)
+{
+	queue<pair<int, pair<int,int>>> fq;
+
+	for (int i = 1; i <= r; i++)
+	{
+		for (int j = 1; j <= c; j++)
+		{
+			if (arr[i][j] == 'F')
+			{
+				visitedF[i][j] = true;
+				fq.push({ i,{j,1 } });
+			}
+			if (arr[i][j] == '#')
+			{
+				visitedF[i][j] = true;
+			}
+			ansf[i][j] = 1000;
+		}
+	}
+	while (!fq.empty())
+	{
+		int tempx = fq.front().first;
+		int tempy = fq.front().second.first;
+		int count = fq.front().second.second;
+		ansf[tempx][tempy] = count;
+		fq.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			int tx = tempx + vx[i];
+			int ty = tempy + vy[i];
+			if (tx<1 || tx>r || ty<1 || ty>c)
+				continue;
+			if (visitedF[tx][ty])
+				continue;
+			visitedF[tx][ty] = true;
+			fq.push({ tx,{ty,count + 1} });
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> r >> c;
+	for (int i = 1; i <= r; i++)
+	{
+		string a;
+		cin >> a;
+		for (int j = 0; j < c; j++)
+		{
+			arr[i][j + 1] = a[j];
+			if (a[j] == 'J')
+			{
+				jx = i;
+				jy = j + 1;
+			}
+		}
+	}
+	bfsf(1);
+	bfsj(jx, jy, 1);
+	/*for (int i = 1; i <= r; i++)
+	{
+		for (int j = 1; j <= c; j++)
+		{
+			cout << ansf[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl << endl;
+	for (int i = 1; i <= r; i++)
+	{
+		for (int j = 1; j <= c; j++)
+		{
+			cout << ansj[i][j] << " ";
+		}
+		cout << endl;
+	}*/
+
+
+
+	vector<int> realAns;
+	for (int i = 1; i <= r; i++)
+	{
+		for (int j = 1; j <= c; j++)
+		{
+			if ((i==1 || j==1|| i == r || j == c) && ansj[i][j]!=0)
+			{
+				realAns.push_back(ansj[i][j]);
+			}
+		}
+	}
+	if (realAns.empty())
+	{
+		cout<< "IMPOSSIBLE";
+	}
+	else
+	{
+		sort(realAns.begin(), realAns.end());
+		cout << realAns[0];
+	}
+}
