@@ -1,60 +1,59 @@
-#include<iostream>
-#include<algorithm>
-#include<cstring>
-#include<queue>
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <cstring>
 using namespace std;
+
+int arr[100001];
+bool visited[100001];
 int n, k;
-bool arr[100005];
-int minO = 100001;
-queue<pair<int, int>> q;
+int minimum=100001;
 void bfs(int n)
 {
-	
-	q.push({ n,0 });
+	visited[n] = true;
+	queue<pair<int, int>>q;
+	q.push({ n, 0 });
 	while (!q.empty())
 	{
-		int x = q.front().first;
-		arr[x] = 1;
-		int cnt = q.front().second;
+		int now = q.front().first;
+		int count = q.front().second;
 		q.pop();
-		if (x == k)
+		if (now == k)
 		{
-			minO = cnt;
-			break;
-		}
-		else if (x < k && x<100001 && x>=0)
-		{
-			if (x > 0)
+			minimum = min(minimum, count);
+			while (!q.empty())
 			{
-				if (!arr[x - 1])
+				int now = q.front().first;
+				int count = q.front().second;
+				q.pop();
+				if (now == k)
 				{
-					q.push({ x - 1,cnt + 1 });
+					minimum = min(minimum, count);
 				}
 			}
-			if (!arr[x + 1])
-			{
-				q.push({ x + 1,cnt + 1 });
-			}
-			if (2 * x < 100001)
-			{
-				if (!arr[2 * x])
-				{
-					q.push({ 2 * x,cnt + 1 });
-				}
-			}
+			cout << minimum;
 		}
-		else if( x>k && x<100001 && x>0)
+		if (now*2<100001 && !visited[now * 2])
 		{
-			if (!arr[x - 1])
-			{
-				q.push({ x - 1,cnt + 1 });
-			}
+			visited[now * 2]=true;
+			q.push({ now * 2,count + 1 });
+		}
+		if (now + 1 < 100001 && !visited[now + 1])
+		{
+			visited[now + 1]=true;
+			q.push({ now + 1,count + 1 });
+		}
+		if (now - 1 >= 0 && !visited[now - 1])
+		{
+			visited[now - 1] = true;
+			q.push({ now - 1,count + 1 });
 		}
 	}
-	cout << minO;
 }
 int main()
 {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	cin >> n >> k;
 	bfs(n);
 }
