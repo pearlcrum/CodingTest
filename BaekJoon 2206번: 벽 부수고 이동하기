@@ -1,0 +1,67 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+
+int n, m;
+int arr[1001][1001];
+int vx[4] = { 1,0,-1,0 };
+int vy[4] = { 0,-1,0,1 };
+
+int visited[1001][1001][2]; //벽 부신지 확인
+
+int bfs()
+{
+	queue < pair<int, pair<int, int>>> q;
+	q.push({ 1,{1,1 } });
+	visited[1][1][1] = 1; //처음 칸도 센다.
+	while (!q.empty())
+	{
+		int tx = q.front().first; //x좌표
+		int ty = q.front().second.first;//y좌표
+		int power = q.front().second.second; //벽 부실 수 있는지 여부
+		q.pop();
+		if (tx == n && ty == m)
+		{
+			return visited[n][m][power];
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			int ux = tx + vx[i];
+			int uy = ty + vy[i];
+			if (ux<1 || ux>n || uy<1 || uy>m)
+				continue;
+			if (visited[ux][uy][power])
+				continue;
+			if (arr[ux][uy] == 0)
+			{
+				visited[ux][uy][power] = visited[tx][ty][power]+1;
+				q.push({ ux,{uy,power} });
+
+			}
+			if (power && arr[ux][uy]==1)
+			{
+				visited[ux][uy][power-1] = visited[tx][ty][power]+1;
+				q.push({ ux,{uy,power-1} });
+			}
+		}
+	}
+	return -1;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		string a;
+		cin >> a;
+		for (int j = 0; j< a.size(); j++)
+		{
+			arr[i][j + 1] = a[j]-'0';
+		}
+	}
+	cout << bfs();
+}
