@@ -1,0 +1,33 @@
+queue<int> weightQ;
+int totWeight = 0;
+
+int solution(int bridge_length, int weight, vector<int> truck_weights) {
+
+    int answer = 0;
+    int i=0;
+    while (1)
+    {
+        answer++;
+        if (weightQ.size() == bridge_length)
+        {
+            totWeight -= weightQ.front();
+            weightQ.pop();
+        }
+        if (totWeight + truck_weights[i] <= weight)
+        {
+            if (i == truck_weights.size() - 1)
+            {
+                answer += bridge_length;
+                break;
+            }
+            weightQ.push(truck_weights[i]);
+            totWeight += truck_weights[i];
+            i++;
+        }
+        else
+        {
+            weightQ.push(0);
+        }
+    }
+    return answer;
+}
