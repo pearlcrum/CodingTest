@@ -1,0 +1,34 @@
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
+    vector<int> answer;
+    queue<pair<int,int>> q;
+    for(int i=0; i<progresses.size();i++)
+    {
+        q.push({progresses[i],speeds[i]});
+    }
+    while(!q.empty())
+    {
+        int a=q.front().first;
+        int b=q.front().second;
+        int count=1;//갯수 확인
+        int temp=1;
+        while(a+b<100)
+        {
+            a=a+b;
+            count++;
+        }
+        q.pop();
+        while(!q.empty() && q.front().first+(q.front().second*count)>=100)
+        {
+            q.pop();
+            temp++;
+        }
+        answer.push_back(temp);
+    }
+    
+    return answer;
+}
