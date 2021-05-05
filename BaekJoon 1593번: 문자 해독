@@ -1,0 +1,70 @@
+#include <iostream>
+#include<string>
+#include<vector>
+#include <cstring>
+#include<algorithm>
+using namespace std;
+
+int g, s;
+string w;
+string S;
+int ans = 0;
+int wminArr[27];
+int wmaxArr[27];
+int sminArr[27];
+int smaxArr[27];
+int main()
+{
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cin >> g >> s;
+	cin >> w;
+	for (int i = 0; i < g; i++)
+	{
+		if (w[i] >= 'a' && w[i] <= 'z')
+			wminArr[(int)(w[i] - 'a')]++;
+		else
+			wmaxArr[(int)(w[i] - 'A')]++;
+
+	}
+
+	cin >> S;
+
+	for (int i = 0; i < s; i++)
+	{
+		if (i < g)
+		{
+			if (S[i] >= 'a' && S[i] <= 'z')
+				sminArr[(int)(S[i] - 'a')]++;
+			else
+				smaxArr[(int)(S[i] - 'A')]++;
+		}
+		else
+		{
+			if (S[i - g] >= 'a' && S[i - g] <= 'z')
+				sminArr[(int)(S[i - g] - 'a')]--;
+			else
+				smaxArr[(int)(S[i - g] - 'A')]--;
+
+
+			if (S[i] >= 'a' && S[i] <= 'z')
+				sminArr[(int)(S[i] - 'a')]++;
+			else
+				smaxArr[(int)(S[i] - 'A')]++;
+		}
+		bool check = true;
+		for (int j = 0; j < 27; j++)
+		{
+			if (sminArr[j] != wminArr[j] || smaxArr[j] !=wmaxArr[j])
+			{
+				check = false;
+				break;
+			}
+		}
+		if (check == true)
+		{
+			ans++;
+		}
+	}
+	cout << ans;
+}
