@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+int n, m;
+int parent[1000001];
+int find(int x)//x의 원소의 root 노드를 반환
+{
+	if (x == parent[x])
+		return x;
+	else
+	{
+		int p = find(parent[x]);//root를 찾는 재귀
+		parent[x] = p;
+		return p;
+	}
+}
+void merge(int x, int y)
+{
+	x = find(x); //x의 root를 찾는다
+	y = find(y); //y의 root를 찾는다
+
+	if (x != y)//둘의 root가 다르면
+		parent[y] = x;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		parent[i] = i;//부모 배열을 자기 자신으로 초기화
+	}
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		if (a == 0)//합 시키는 경우
+		{
+			merge(b, c);
+		}
+		else//교집합 있는지 확인하는 경우
+		{
+			int b_parent = find(b);
+			int c_parent = find(c);
+			if (b_parent == c_parent)
+				cout << "YES" << "\n";
+			else
+				cout << "NO" << "\n";
+		}
+	}
+	
+}
