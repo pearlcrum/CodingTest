@@ -1,4 +1,56 @@
 #include <iostream>
+
+using namespace std;
+int parent[101];
+int n, m;
+int countAns = 0;
+int find(int x)
+{
+	if (parent[x] == x)
+		return x;
+	else
+	{
+		int temp = find(parent[x]);
+		parent[x] = temp;
+		return temp;
+	}
+}
+void merge(int x, int y)
+{
+	x = find(x); 
+	y = find(y);
+	if (x != y)
+		parent[y] = x;
+
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		parent[i] = i;
+	}
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		merge(a, b);
+	}
+	int res = find(1);
+	for (int i = 2; i <= n; i++)
+	{
+		if (find(i) == res)
+		{
+			countAns++;
+		}
+
+	}
+	cout << countAns;
+}
+--------------------------------------------------------------------------------------------------------
+#include <iostream>
 #include <cstring>
 #include <queue>
 
