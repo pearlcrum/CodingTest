@@ -20,7 +20,80 @@ using namespace std;
 //BFS 장점: 답이 되는 경로가 여러 개인 경우에도 최단경로임을 보장한다.
 //BFS 장점: 최단 경로가 존재하면 깊이가 무한적으로 깊어져도 답을 찾을 수 있다.
 //BFS 닩점: 경로가 길 경우에는 많은 기억 공간을 필요하게 되나.
+---------------------------------스택, 큐 활용 ----------------------------------------
 
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <queue>
+#include <stack>
+using namespace std;
+
+int n, m, v;
+int arr[1001][1001];
+bool visited[1001];
+void dfs(int v)
+{
+	for (int i = 1; i <= n; i++)
+		visited[i] = false;
+	stack<int> st;
+	st.push(v);
+	while (!st.empty())
+	{
+		int temp = st.top();
+		st.pop();
+		if (visited[temp] == true)
+			continue;
+		visited[temp] = true;
+		cout << temp << " ";
+		for (int i = n; i >= 1; i--)
+		{
+			if (arr[temp][i] == 1 && !visited[i])
+				st.push(i);
+		}
+	}
+}
+void bfs(int v)
+{
+	for (int i = 1; i <= n; i++)
+		visited[i] = false;
+	queue<int> q;
+	q.push(v);
+	while (!q.empty())
+	{
+		int temp = q.front();
+		q.pop();
+		if (visited[temp] == true)
+			continue;
+		visited[temp] = true;
+		cout << temp << " ";
+		for (int i = 1; i <= n; i++)
+		{
+			if (arr[temp][i] == 1 && !visited[i])
+				q.push(i);
+		}
+
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m >> v;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		arr[a][b] = 1;
+		arr[b][a] = 1;
+	}
+	dfs(v);
+	cout << "\n";
+	bfs(v);
+}
+------------------------------재귀 구조 활용--------------------------------------------
 int n, m, v;
 int adjacent[1001][1001];
 bool visited[1001];
