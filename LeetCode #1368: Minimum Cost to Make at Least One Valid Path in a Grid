@@ -1,0 +1,54 @@
+#include<deque>
+#define INF 100001
+int vx[4] = { 0,0,1,-1 };
+int vy[4] = { 1,-1,0,0 };
+// 1은 우측으로 (0,1) 2는 좌측으로 (0,-1) 3은 아래로 (1,0) 4는 위로(-1,0)
+int arr[101][101];
+class Solution {
+public:
+    int minCost(vector<vector<int>>& grid) {
+
+        int m = grid.size();// 행
+        int n = grid[0].size();//열;
+
+        deque<pair<int, int>>q;
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+                arr[i][j] = INF; //비용 초기화
+        }
+        q.push_back({ 0,0 });
+        arr[0][0] = 0;
+        
+        while (!q.empty())
+        {
+            int x = q.front().first;
+            int y = q.front().second;
+            q.pop_front();
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                int tx = x + vx[i];
+                int ty = y + vy[i];
+                if (tx < 0 || tx >= m || ty < 0 || ty >= n)
+                    continue; // grid 배열 밖으로 벗어날 경우
+
+                int c = int(i != grid[x][y] - 1);
+                
+                if (arr[tx][ty] > arr[x][y] + c)
+                {
+                    arr[tx][ty] = arr[x][y] + c;
+                    if (c == 0)
+                        q.push_front({ tx,ty });
+                    else
+                        q.push_back({ tx,ty });
+                }
+
+            }
+
+        }
+        return arr[m - 1][n - 1];
+
+    }
+};
