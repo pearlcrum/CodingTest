@@ -1,0 +1,108 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Node:
+    def __init__(self,data,next=None):
+        self.data=data
+        self.next=next
+        
+    def set_next(self,node):
+        self.next= node
+    
+    def get_next(self):
+        return self.next
+    
+    def get_data(self):
+        return self.data
+
+class CircledQueue:
+    def __init__(self):
+        self.tail=None
+        self.count = 0
+        
+    def is_empty(self):
+        return self.tail==None
+    
+    def size(self):
+        return self.count
+    
+    def clear(self):
+        self.tail=None
+        
+    def peek(self):
+        if self.tail== None:
+            return
+        else:
+            return self.tail.next.data
+    
+    def enqueue(self,data):
+        self.count+=1
+        new_node=Node(data)
+        if self.is_empty():
+            new_node.next=new_node
+            self.tail=new_node
+        else:
+            new_node.next=self.tail.next
+            self.tail.next=new_node
+            self.tail=new_node
+            
+    def dequeue(self):
+        if self.is_empty():
+            return
+        else:
+            self.count-=1
+            front=self.tail.next
+            if front==self.tail: #데이터가 한개있을때
+                self.tail=None
+            else:  
+                self.tail.next=front.next
+        return front.data
+    
+    def display(self):
+        if self.tail == None :
+            print()
+        else : 
+            node = self.tail.get_next() # front node
+            while True:
+                if node == None:
+                    break
+                print(node.get_data(), end = ' ')
+                node = node.get_next()
+
+                
+
+
+class Solution:
+    
+        
+    def isBalanced(self, root: TreeNode):
+        if root==None:
+            return True
+        q=CircledQueue()
+        q.enqueue(root)
+        while not q.is_empty():
+            node=q.dequeue()
+            
+            right_node_height= calc_height(node.right)
+            left_node_height= calc_height(node.left)
+            
+            if left_node_height-right_node_height<=1 and left_node_height-right_node_height>=-1:
+                if node.left!= None:
+                    q.enqueue(node.left)
+                if node.right != None:
+                    q.enqueue(node.right)
+            else:
+                return False
+        return True
+def calc_height(root):
+        if root==None:
+            return 0
+        right_tree_height=calc_height(root.right)
+        left_tree_height=calc_height(root.left)
+        if right_tree_height>left_tree_height:
+            return right_tree_height+1
+        else:
+            return left_tree_height+1
