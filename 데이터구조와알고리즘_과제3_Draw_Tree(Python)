@@ -1,0 +1,67 @@
+from my_ds import *
+
+class TreeNode:
+    def __init__(self, data, left=None, right=None):
+        self.data = data
+        self.left = left
+        self.right = right
+#depth를 구하고, 이를 통해 출력의 크기를 구한다.
+#bfs로 순회하며 출력
+
+def calc_height(root):
+    if root==None:
+        return 0
+    right_tree_height=calc_height(root.right)
+    left_tree_height=calc_height(root.left)
+    if right_tree_height>left_tree_height:
+        return right_tree_height+1
+    else:
+        return left_tree_height+1
+    
+
+def pprint(root):
+    if root==None:
+        return "트리가 비었습니다"
+    height=calc_height(root);
+    size=2**(height)-1
+    mid=(size-1)//2
+    
+    dist=(2)**(height-2) #핵심
+    
+    
+    q=CircledQueue()
+    q.enqueue((mid,root))
+    
+    while not q.is_empty():
+        q_size=q.size()
+        list=[];
+        for i in range(size):
+            list.insert(i,"  ")
+        for i in range(q_size):
+            temp=q.dequeue()
+            position=temp[0]
+            node=temp[1]
+            list[position]=node.data
+            
+            if node.left!=None:
+                q.enqueue([position-dist,node.left])
+            if node.right !=None:
+                q.enqueue([position+dist,node.right])
+        
+        dist=dist//2
+        length=len(list)
+        for i in range (0,length):
+            print(list[i],end='')
+        print()
+btree4_20152217 = TreeNode(1,
+                         TreeNode(2,
+                                  TreeNode(4,
+                                          TreeNode(8),
+                                          TreeNode(9)),
+                                  TreeNode(5)),
+                          TreeNode(3,
+                                  TreeNode(6,
+                                          TreeNode(10),
+                                          TreeNode(11)),
+                                  None))
+                                  
