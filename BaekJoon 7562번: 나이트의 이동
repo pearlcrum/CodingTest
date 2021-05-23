@@ -1,3 +1,69 @@
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int t, l;
+bool visited[301][301];
+int vx[8] = { -1,-2,-2,-1,1,2,2,1 };
+int vy[8] = { -2,-1,1,2,2,1,-1,-2 };
+int bfs(int startX, int startY, int destX, int destY, int l)
+{
+	queue<pair<int,pair<int,int>>> q;
+	q.push({ startX,{startY,0} });
+	visited[startX][startY] = true;
+	while (!q.empty())
+	{
+		int tx = q.front().first;
+		int ty = q.front().second.first;
+		int cnt = q.front().second.second;
+		q.pop();
+		if (tx == destX && ty == destY)
+			return cnt;
+		for (int i = 0; i < 8; i++)
+		{
+			int bx = tx + vx[i];
+			int by = ty + vy[i];
+			if (bx < 0 || by < 0 || bx >= l || by >= l)
+				continue;
+			if (visited[bx][by] == false)
+			{
+				visited[bx][by] = true;
+				q.push({ bx,{by,cnt + 1} });
+			}
+		}
+	}
+
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> t;
+	for (int o = 0; o < t; o++)
+	{
+		cin >> l;
+		for (int i = 0; i < l; i++)
+		{
+			for (int j = 0; j < l; j++)
+			{
+				visited[i][j] = false;
+			}
+		}
+		int startX, startY;
+		int destX, destY;
+		cin >> startX >> startY;
+		cin >> destX >> destY;
+		int ans =bfs(startX, startY, destX, destY, l);
+		cout << ans << "\n";
+	}
+}
+	
+
+-----------------------------------------------
 #include <iostream>
 #include <algorithm>
 #include <queue>
