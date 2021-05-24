@@ -1,0 +1,34 @@
+from my_ds import *
+
+class TreeNode:
+    def __init__(self, data, left=None, right=None):
+        self.data = data
+        self.left = left
+        self.right = right
+
+def is_balanced(root):
+    if root==None:
+        return True
+    q=CircledQueue()
+    q.enqueue(root)
+    while not q.is_empty():
+        node=q.dequeue()
+        right_node_height=calc_height(node.right)
+        left_node_height=calc_height(node.left)
+        if left_node_height-right_node_height<=1 and left_node_height-right_node_height>=-1:
+            if node.left != None:
+                q.enqueue(node.left)
+            if node.right != None:
+                q.enqueue(node.right)
+        else:
+            return False
+    return True
+def calc_height(root):
+    if root==None:
+        return 0
+    right_tree_height=calc_height(root.right)
+    left_tree_height=calc_height(root.left)
+    if right_tree_height>left_tree_height:
+        return right_tree_height+1
+    else:
+        return left_tree_height+1
