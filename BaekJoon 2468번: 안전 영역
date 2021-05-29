@@ -1,0 +1,78 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+using namespace std;
+
+int n;
+int arr[101][101];
+bool visited[101][101];
+int temp[101][101];
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+void copy(int depth)
+{
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			if (arr[i][j] > depth)
+				temp[i][j] = arr[i][j];
+}
+void dfs(int i, int j)
+{
+	visited[i][j] = true;
+	stack<pair<int, int>> st;
+	st.push({ i,j });
+	while (!st.empty())
+	{
+		int dx = st.top().first;
+		int dy = st.top().second;
+		st.pop();
+		for (int t = 0; t < 4; t++)
+		{
+			int bx = dx + vx[t];
+			int by = dy + vy[t];
+			if (bx < 0 || bx >= n || by < 0 || by >= n)
+				continue;
+			if (!visited[bx][by] && temp[bx][by])
+			{
+				visited[bx][by] = true;
+				st.push({ bx,by });
+			}
+		}
+	}
+	
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+	int result = 1;
+	for (int depth = 1; depth <= 100; depth++)
+	{
+		memset(visited, false, sizeof(visited));
+		memset(temp, 0, sizeof(temp));
+		copy(depth);
+		int cnt = 0;
+		for(int i=0; i<n;i++)
+			for(int j=0; j<n;j++)
+				if (!visited[i][j] && temp[i][j])
+				{
+					dfs(i, j);
+					cnt++;
+				}
+		result = max(result, cnt);
+	}
+	cout << result;
+}
+	
