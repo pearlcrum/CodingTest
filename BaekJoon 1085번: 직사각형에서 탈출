@@ -1,0 +1,24 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+using namespace std;
+
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	int x, y, w, h;
+	cin >> x >> y >> w >> h;
+	int a = abs(x - w);
+	int b = abs(y - h);
+	int c = x - 0;
+	int d = y - 0;
+	int ans = min(a, min(b, min(c, d)));
+	cout << ans;
+}
+	
