@@ -2,9 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include <map>
 #include <queue>
-#include <stack>
 using namespace std;
 
 int m,n,k,t;
