@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+#include <set>
+using namespace std;
+
+int arr[5][5];
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+bool visited[1000000];
+int ans = 0;
+void dfs(int a, int b,int sum)
+{
+	stack < pair<int, pair<int, pair<int, int>>>> st;
+	st.push({ a,{b,{sum,0}} });
+	while (!st.empty())
+	{
+		int dx = st.top().first;
+		int dy = st.top().second.first;
+		int now = st.top().second.second.first;
+		int cnt = st.top().second.second.second;
+		st.pop();
+		if (cnt == 5)
+		{
+			if (visited[now] == false)
+			{
+				visited[now] = true;
+				ans++;
+			}
+			continue;
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			int bx = dx + vx[i];
+			int by = dy + vy[i];
+			if (bx < 0 || by < 0 || by >= 5 || bx >= 5)
+				continue;
+			st.push({ bx,{by,{now * 10 + arr[bx][by],cnt + 1}} });
+		}
+
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			dfs(i,j,arr[i][j]);
+		}
+	}
+	cout << ans;
+}
+	
