@@ -1,0 +1,76 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+#include <set>
+using namespace std;
+
+int t;
+char arr[101][101];
+bool visited[101][101];
+int a, b;
+int cnt;
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+void bfs(int c, int d)
+{
+	queue<pair<int, int>> q;
+	q.push({ c,d });
+	visited[c][d] = true;
+	while (!q.empty())
+	{
+		int bx = q.front().first;
+		int by = q.front().second;
+		q.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			int dx = vx[i] + bx;
+			int dy = vy[i] + by;
+			if (dx < 0 || dy < 0 || dx >= a || by >= b)
+				continue;
+			if (arr[dx][dy] == '#' && !visited[dx][dy])
+			{
+				visited[dx][dy] = true;
+				q.push({ dx,dy });
+			}
+		}
+	}
+
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> t;
+	for (int p = 0; p < t; p++)
+	{
+		
+		cin >> a >> b;
+		for (int i = 0; i < a; i++)
+		{
+			for (int j = 0; j < b; j++)
+			{
+				cin >> arr[i][j];
+				visited[i][j] = false;
+			}
+		}
+		cnt = 0;
+		for (int i = 0; i < a; i++)
+		{
+			for (int j = 0; j < b; j++)
+			{
+				if (arr[i][j] == '#' && visited[i][j]==false)
+				{
+					bfs(i,j);
+					cnt++;
+				}
+			}
+		}
+		cout << cnt<<'\n';
+	}
+
+}
+	
