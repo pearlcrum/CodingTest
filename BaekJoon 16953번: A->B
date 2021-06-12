@@ -1,0 +1,48 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+#include <set>
+using namespace std;
+#define MAXNUM 1000000000
+
+int a, b;
+int ans = 0;
+void bfs()
+{
+	queue<pair<int, int>> q;
+	q.push({ a,1});
+	while (!q.empty())
+	{
+		int now = q.front().first;
+		int cnt = q.front().second;
+		q.pop();
+		if (now == b)
+		{
+			ans = cnt;
+			break;
+		}
+		if(now*2<=b)
+			q.push({ now*2,cnt + 1 });
+		if (now <= MAXNUM / 10)
+		{
+			if (now * 10 + 1 <= b)
+				q.push({ now * 10 + 1,cnt + 1 });
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> a >> b;
+	bfs();
+	if (ans == 0)
+		cout << -1;
+	else
+		cout << ans;
+}
+	
