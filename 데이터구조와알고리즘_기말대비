@@ -1,0 +1,208 @@
+#힙 삽입,삭제 O(logn)
+#이진탐색트리 최선O(log2N) 최악 O(n)
+#삽입정렬 최선O(n)(이미정렬되어있음) 최악O(n^2)
+#버블정렬 최선O(n)(이미정렬되어있음) 최악O(n^2)
+#병합정렬 O(nlogn)
+#퀵정렬 최선O(nlogn), 최악O(n^2)(미정렬된경우)
+#순차탐색 O(n)
+#이진탐색O(logn)
+#크루스칼 O(eloge) 
+# Prim O(n^2)
+
+###힙 삽입,삭제 O(logn)
+def insert(self,val):
+        self.heap.append(val)
+        i=self.size()
+        while True:
+            if i==1 or val<=self.parent(i):
+                break
+            self.heap[i],self.heap[i//2]=self.heap[i//2],self.heap[i]
+            i=i//2
+        self.heap[i]=value        
+def delete(self):
+        if self.is_empty():
+            return
+        root=self.heap[1]
+        last=self.heap[self.size()]
+        self.heap.pop(-1)
+        i=1
+        j=2
+        while True:
+            if j>self.size(): #마지막 노드를 넘어서면
+                break
+            if j+1 <= self.size():
+                if self.left(i) < self.right(i):
+                    j=j+1
+            if last >=self.heap[j]:
+                break
+            self.heap[i] = self.heap[j]
+            i=j
+            j=2*i
+        self.heap[i] = last
+        return root
+    
+###이진탐색트리 최선O(log2N) 최악 O(n)
+def insert(r,n):
+    if n.key < r.key:
+        if r.left is None:
+            r.left=n
+            return True
+        else:
+            return insert(r.left,n)
+    elif n.key >r.key:
+        if r.right is None:
+            r.right=n
+            return True
+        else:
+            return insert(r.right,n)
+    else:
+        return False
+def delete(root,key):
+    if root==None: 
+        return None
+    parent=None
+    node=root
+    while node!=None and node.key!=key:
+        parent=node
+        if key<node.key:
+            node=node.left
+        else:
+            node=node.right;
+    if node==None:
+        return None
+    if node.left==None and node.right==None:
+        root=delete_case1(parent,node,root)
+    elif node.left==None or node.right==None:
+        root=delete_case2(parent,node,root)
+    else:
+        root=delete_case3(parent,node,root)
+    return root
+def delete_case1(parent,node,root):
+    if parent is None:
+        root=None
+    else:
+        if parent.left==node:
+            parent.left=None
+        else:
+            parent.right=None
+    return root
+def delete_case2(parent,node,root):
+    if node.left is not None:
+        child=node.left
+    else:
+        child=node.right
+    
+    if node==root:
+        root=child
+    else:
+        if node is parent.left:
+            parent.left=child
+        else:
+            parent.right=child
+    return root
+def delete_case3(parent,node,root):
+    succp=node
+    succ=node.right
+    while(succ.left !=None):
+        succp=succ
+        succ=succ.left
+    if (succp.left==succ):
+        succ.left=succ.right
+    else:
+        succp.right=succ.right
+    node.key=succ.key
+    
+    return root
+
+###선택정렬 O(n^2)
+def selection_sort(A):
+    n=len(A)
+    for i in range(n-1):
+        least=i
+        for j in range(i+1,n):
+            if (A[j]<A[least]):
+                least=j
+        tmp=A[i]
+        A[i]=A[least]
+        A[least]=tmp
+###삽입정렬 최선O(n)(이미정렬되어있음) 최악O(n^2)
+def insertion_sort(A):
+    n=len(A)
+    for i in range(1,n):
+        key=A[i]
+        j=i-1
+        while True:
+            if j<0 or A[j] <=key:
+                break
+            A[j+1] = A[j]
+            j-=1
+        A[j+1]=key
+###버블정렬 최선O(n)(이미정렬되어있음) 최악O(n^2)
+def bubble_sort(A):
+    n=len(A)
+    for i in range(n-1,0,-1):
+        swapped=False
+        for j in range(i):
+            if A[j] > A[j+1]:
+                A[j],A[j+1]=A[j+1],A[j]
+                swapped=True
+        if not swapped:
+            break
+###병합정렬 O(nlogn)
+def merge_sort(A,p,r):
+    if p<r:
+        q=(p+r)//2
+        merge_sort(A,p,q)
+        merge_sort(A,q,r)
+        merge(A,p,q,r)
+def merge(A,p,q,r):
+    tmp=[]
+    i,j=p,q+1
+    while i<=q and j<=r:
+        if A[i]<=A[j]:
+            tmp.append(A[i])
+            i+=1
+        else:
+            tmp.append(A[j])
+            j+=1
+    while i<=q:
+        tmp.append(A[i])
+        i+=1
+    while j<=r:
+        tmp.append(A[j])
+        j+=1
+    A[p:r+1]=tmp
+###퀵정렬 최선O(nlogn), 최악O(n^2)(미정렬된경우)
+def quick_sort(A,p,r):
+    if p<r:
+        q=partition(A,p,r)
+        quick_sort(A,p,q-1)
+        quick_sort(A,q+1,r)
+def partition(A,p,r):
+    pivot=A[p]
+    i=p+1
+    for j in range(p+1,r+1):
+        if A[j<=pivot:
+             A[i],A[j]=A[j],A[i]
+             i+=1
+    A[i-1],A[p]=A[p],A[i-1]
+    return i-1
+             
+
+###이진탐색O(logn)
+def binary_search(A,key,low,high):
+     if (low<=high):
+        middle=(low_high)//2 #middle=int(low+high-low)*(key-A[low].key)/A[high].key-A[low].key))
+        if key==A[middle].key:
+            return middle
+        elif (key<A[middle].key):
+             return binary_search(A,key,low,middle-1)
+        else:
+             return binary_search(A,key,middle+1,high)
+        return None
+
+##다익스트라
+dist[w]=min(dist[w],dist[u]+weight[u][w])
+
+##플로이드
+A[i][j]=min(A[i][j],A[i][k]+A[k][j])
