@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+#include <set>
+#include<map>
+using namespace std;
+int n;
+map<string,int> m;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		string s1, s2;
+		cin >> s1 >> s2;
+		if (s2 == "enter")
+		{
+			m[s1]++;
+		}
+		else
+		{
+			m.erase(s1);
+		}
+	}
+	for (auto i = m.rbegin(); i != m.rend(); i++)
+	{
+		cout << i->first << "\n";
+	}
+}
+	
