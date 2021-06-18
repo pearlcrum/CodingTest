@@ -1,0 +1,80 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+#include <set>
+#include<map>
+using namespace std;
+
+int n, m;
+char arr[21][21];
+vector<string> vec;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		string s;
+		cin >> s;
+		for (int j = 0; j < s.size(); j++)
+		{
+			arr[i][j] = s[j];
+		}
+	}
+	for (int i = 0; i < n; i++)
+	{
+		string s;
+		for (int j = 0; j < m; j++)
+		{
+			if (arr[i][j] != '#')
+			{
+				s = s + arr[i][j];
+				if (s.size() == m)
+					vec.push_back(s);
+				else if (j == m - 1 && s.size() >= 2)
+					vec.push_back(s);
+			}
+			else if (arr[i][j] == '#' && s.size() >= 2)
+			{
+				vec.push_back(s);
+				s.clear();
+			}
+			else if (arr[i][j] == '#' && s.size() < 2)
+			{
+				s.clear();
+			}
+		}
+	}
+	for (int j = 0; j < m; j++)
+	{
+		string s;
+		for (int i = 0; i< n; i++)
+		{
+			if (arr[i][j] != '#')
+			{
+				s = s + arr[i][j];
+				if (s.size() == n)
+					vec.push_back(s);
+				else if (i == n - 1 && s.size() >= 2)
+					vec.push_back(s);
+			}
+			else if (arr[i][j] == '#' && s.size() >= 2)
+			{
+				vec.push_back(s);
+				s.clear();
+			}
+			else if (arr[i][j] == '#' && s.size() < 2)
+			{
+				s.clear();
+			}
+		}
+	}
+	sort(vec.begin(), vec.end());
+	cout << vec[0];
+}
+	
