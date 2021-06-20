@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <stack>
+#include <cstring>
+#include <queue>
+#include <set>
+#include<map>
+using namespace std;
+
+int t;
+int pantaX, pantaY;
+bool visited[110];
+int dfs(int a, int b,vector<int> conX, vector<int> conY)
+{
+	int beer = 20;
+	stack<pair<int, int>> st;
+	st.push({ a,b});
+	while (!st.empty())
+	{
+		int nowX = st.top().first;
+		int nowY = st.top().second;
+		st.pop();
+		int num = abs(nowX - pantaX) + abs(nowY - pantaY);
+		if (num<=1000)
+		{
+			return 1;
+		}
+		for (int i = 0; i < conX.size(); i++)
+		{
+			if (visited[i] == 1)
+				continue;
+			num = abs(conX[i] - nowX) + abs(conY[i] - nowY);
+			if (num > 1000)
+				continue;
+			else
+			{
+				visited[i] = true;
+				st.push({ conX[i],{conY[i]} });
+			}
+		}
+	}
+	return 0;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> t;
+	for (int p = 0; p < t; p++)
+	{
+		int con;
+		cin >> con;
+		int houseX, houseY;
+		cin >> houseX >> houseY;
+		vector<int> conX;
+		vector<int> conY;
+		for (int o = 0; o < con; o++)
+		{
+			int a, b;
+			cin >> a >> b;
+			conX.push_back(a);
+			conY.push_back(b);
+		}
+		cin >> pantaX >> pantaY;
+		memset(visited, 0, sizeof(visited));
+		int res=dfs(houseX, houseY,conX,conY);
+		if (res == 1)
+			cout << "happy" << "\n";
+		else
+			cout << "sad" << "\n";
+	}
+}
+	
