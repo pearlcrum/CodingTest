@@ -1,0 +1,62 @@
+#include<iostream>
+
+using namespace std;
+int n,m;
+int arr[1025][1025];
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			int temp;
+			cin >> temp;
+			arr[i][j] = arr[i][j - 1] + temp;
+			
+		}
+	}
+	for (int i = 0; i < m; i++)
+	{
+		int x1, y1, x2, y2;
+		cin >> x1 >> y1 >> x2 >> y2;
+		int sum = 0;
+		for (int j = x1; j <= x2; j++)
+		{
+			sum += arr[j][y2] - arr[j][y1 - 1];
+		}
+
+		cout << sum<<"\n";
+	}
+
+
+}
+/*int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+	for (int i = 0; i < m; i++)
+	{
+		int x1, y1, x2, y2;
+		long long ans = 0;
+		cin >> x1 >> y1 >> x2 >> y2;
+		for (int k = x1; k <= x2; k++)
+		{
+			for (int p = y1; p <= y2; p++)
+			{
+				ans = ans + arr[k][p];
+			}
+		}
+		cout << ans << "\n";
+	}
+}*/
