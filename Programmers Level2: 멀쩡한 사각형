@@ -1,0 +1,13 @@
+#include <math.h>
+using namespace std;
+
+long long solution(int w,int h) {
+    long long answer = 0;
+    double a=-(h/(double)w);//기울기
+    for(int i=1; i<=w;i++)
+    {
+        long long temp=floor(a*i+h);
+        answer+=temp;
+    }
+    return answer*2;
+}
