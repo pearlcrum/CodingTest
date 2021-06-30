@@ -1,0 +1,89 @@
+#include <algorithm>
+#include <iostream>
+#include <queue>
+#include<vector>
+using namespace std;
+
+int n, m, x;
+int arr[1001][1001];
+vector<int> dist;
+int todist[1001];
+int fromdist[1001];
+void dijkTo(int start)
+{
+	for (int i = 1; i <= n; i++)
+		todist[i] = 10000000000;
+	priority_queue<pair<int, int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+	todist[start] = 0;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cost = pq.top().first;
+		int curIndex = pq.top().second;
+		pq.pop();
+
+		if (todist[curIndex] < cost)
+			continue;
+		for (int i = 1; i <= n; i++)
+		{
+			if(arr[curIndex][i] == 0)
+				continue;
+			int nextCost = cost + arr[curIndex][i];
+			if (todist[i] > nextCost)
+			{
+				todist[i] = nextCost;
+				pq.push({ nextCost,i });
+			}
+		}
+	}
+
+}
+void dijkFrom(int start)
+{
+	for (int i = 1; i <= n; i++)
+		fromdist[i] = 10000000000;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	fromdist[start] = 0;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cost = pq.top().first;
+		int curIndex = pq.top().second;
+		pq.pop();
+
+		if (fromdist[curIndex] < cost)
+			continue;
+		for (int i = 1; i <= n; i++)
+		{
+			if (arr[curIndex][i] == 0)
+				continue;
+			int nextCost = cost + arr[curIndex][i];
+			if (fromdist[i] > nextCost)
+			{
+				fromdist[i] = nextCost;
+				pq.push({ nextCost,i });
+			}
+		}
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> m >> x;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		arr[a][b] = c;
+	}
+	dijkFrom(x); //x에서 각 값의로의 거리
+
+	for (int i = 1; i <= n; i++)
+	{
+		dijkTo(i);
+		dist.push_back(fromdist[i]+todist[x]);
+	}
+	sort(dist.begin(), dist.end());
+	cout<<dist[dist.size() - 1];
+}
