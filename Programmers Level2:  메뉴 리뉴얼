@@ -1,0 +1,57 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+int arr[27];
+vector<string> solution(vector<string> orders, vector<int> course) {
+    vector<string> answer;
+    for(int i=0; i<course.size();i++)
+    {
+        int num=course[i];
+        map<string,int> m;
+        for(int j=0; j<orders.size();j++)
+        {
+            if(orders[j].size()>=num)
+            {
+                string s = orders[j];
+                sort(s.begin(), s.end());
+                vector<int> ind;
+                for (int k = 0; k < num; k++)
+                    ind.push_back(1);
+                for (int k = 0; k < s.size() - num; k++)
+                    ind.push_back(0);
+                sort(ind.begin(), ind.end());
+                do {
+                    string temp;
+                    for (int k = 0; k < ind.size(); k++) {
+                        if (ind[k] == 1) {
+                            temp.push_back(s[k]);
+                        }
+                    }
+                    m[temp]++;
+
+                } while (next_permutation(ind.begin(), ind.end()));
+            }
+        }
+        int c=0;
+        for(auto a=m.begin();a!=m.end();a++)
+        {
+            if(c<a->second)
+            {
+                c=a->second;
+            }
+        }
+        for(auto a=m.begin();a!=m.end();a++)
+        {
+            if(c==a->second)
+            {
+                if(c==1)
+                    continue;
+                answer.push_back(a->first);
+            }
+        }
+    }
+    sort(answer.begin(),answer.end());
+    return answer;
+}
