@@ -1,0 +1,63 @@
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+bool visited[101][101];
+int vx[4]={1,0,0,-1};
+int vy[4]={0,1,-1,0};
+// 전역 변수를 정의할 경우 함수 내에 초기화 코드를 꼭 작성해주세요.
+int number_of_area;
+int max_size_of_one_area;
+void bfs(int m, int n, vector<vector<int>> picture,int i,int j)
+{
+    queue<pair<int,pair<int,int>>> q;
+    visited[i][j]=true;
+    q.push({i,{j,1}});
+    number_of_area++;
+    int count=0;
+    while(!q.empty())
+    {
+        int nowX=q.front().first;
+        int nowY=q.front().second.first;
+        int cnt=q.front().second.second;
+        q.pop();
+        count++;
+        for(int k=0;k<4;k++)
+        {
+            int nextX=nowX+vx[k];
+            int nextY=nowY+vy[k];
+            if(nextX<0||nextY<0||nextX>=m||nextY>=n)
+                continue;
+            if(!visited[nextX][nextY]&&(picture[nowX][nowY]==picture[nextX][nextY]))
+            {
+                visited[nextX][nextY]=true;
+                q.push({nextX,{nextY,cnt+1}});
+            }
+        }
+    }
+    max_size_of_one_area=max(count,max_size_of_one_area);
+}
+vector<int> solution(int m, int n, vector<vector<int>> picture) {
+    number_of_area = 0;
+    max_size_of_one_area = 0;
+    for(int i=0; i<101;i++)
+    {
+        for(int j=0; j<101;j++)
+        {
+            visited[i][j]=false;
+        }
+    }
+    for(int i=0; i<m;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(!visited[i][j]&&picture[i][j]>0)
+                bfs(m,n,picture,i,j);
+        }
+    }
+    vector<int> answer(2);
+    answer[0] = number_of_area;
+    answer[1] = max_size_of_one_area;
+    return answer;
+}
