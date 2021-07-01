@@ -1,0 +1,102 @@
+#include <string>
+#include <vector>
+#include <math.h>
+using namespace std;
+int gyo(vector<string> a, vector<string> b)
+{
+    vector<string> temp;
+    vector<string> strFirst(a);
+    vector<string> strSecond(b);
+    for(int i=0; i<strFirst.size();i++)
+    {
+        for(int j=0; j<strSecond.size();j++)
+        {
+            if(strFirst[i]==strSecond[j])
+            {
+                if(strSecond[j]!="1")
+                {
+                    temp.push_back(strFirst[i]);
+                    strSecond[j]="1";
+                    break;
+                }
+            }
+        }
+    }
+    
+    return temp.size();
+}
+int hap(vector<string> a, vector<string> b)
+{
+    vector<string> temp;
+    vector<string> strFirst(a);
+    vector<string> strSecond(b);
+    for(int i=0; i<strFirst.size();i++)
+    {
+        for(int j=0; j<strSecond.size();j++)
+        {
+            if(strFirst[i]==strSecond[j])
+            {
+                if(strSecond[j]!="1")
+                {
+                    temp.push_back(strFirst[i]);
+                    strSecond[j]="1";
+                    break;
+                }
+            }
+        }
+    }
+    int ans=strFirst.size();
+    for(int i=0;i<strSecond.size();i++)
+    {
+        if(strSecond[i]!="1")
+            ans++;
+    }
+    return ans;
+}
+int solution(string str1, string str2) {
+    int answer = 0;
+    vector<string> strFirst;
+    vector<string> strSecond;
+    if(str1.size()==0 && str2.size()==0)
+        return 1;
+    for(int i=0; i<str1.size()-1;i++)
+    {
+        char a=str1[i];
+        char b=str1[i+1];
+        if(a>='a'&&a<='z')
+            a=a-32;
+        if(a<'A'||a>'Z')
+            continue;
+        if(b>='a'&&b<='z')
+            b=b-32;
+        if(b<'A'||b>'Z')
+            continue;
+        string temp;
+        temp.push_back(a);
+        temp.push_back(b);
+        strFirst.push_back(temp);
+    }
+    for(int i=0; i<str2.size()-1;i++)
+    {
+        char a=str2[i];
+        char b=str2[i+1];
+        if(a>='a'&&a<='z')
+            a=a-32;
+        if(a<'A'||a>'Z')
+            continue;
+        if(b>='a'&&b<='z')
+            b=b-32;
+        if(b<'A'||b>'Z')
+            continue;
+        string temp;
+        temp.push_back(a);
+        temp.push_back(b);
+        strSecond.push_back(temp);
+    }
+    if (strFirst.size() == 0 && strSecond.size() == 0)
+        return 1*65536;
+    int same=gyo(strFirst,strSecond);
+    int all=hap(strFirst,strSecond);
+    answer=floor((same/(float)all)*65536);
+    return answer;
+}
