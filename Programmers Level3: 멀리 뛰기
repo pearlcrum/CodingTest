@@ -1,0 +1,41 @@
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+long long solution(int n) {
+    long long answer = 0;
+    queue<int> q;
+    long long arr[2001];
+    arr[1]=1;
+    arr[2]=2;
+    for(int i=3;i<=n;i++)
+    {
+        arr[i]=(arr[i-1]+arr[i-2])%1234567;
+    }
+    answer=arr[n];
+    return answer;
+}
+
+/*
+long long solution(int n) {
+    long long answer = 0;
+    queue<int> q;
+    q.push(0);
+    n=6;
+    while(!q.empty())
+    {
+        int now=q.front();
+        q.pop();
+        if(now==n)
+        {
+            answer++;
+            continue;
+        }
+        if(now+1<=n)
+            q.push(now+1);
+        if(now+2<=n)
+            q.push(now+2);
+    }
+    return answer%1234567;
+}*/
