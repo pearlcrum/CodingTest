@@ -1,0 +1,35 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int a, b;
+int minX(int a, int b)
+{
+	int temp = min(a, b);
+	for (int i = temp; i >=1; i--)
+	{
+		int tempA = a % i;
+		int tempB = b % i;
+		if (tempA == 0 && tempB == 0)
+		{
+			return i;
+		}
+	}
+}
+int maxX(int a, int b, int minTemp)
+{
+	int tempA = a / minTemp;
+	int tempB = b / minTemp;
+	return minTemp * tempA * tempB;
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> a >> b;
+	int minTemp = minX(a, b);
+	int maxTemp = maxX(a, b, minTemp);
+	cout << minTemp << "\n";
+	cout << maxTemp;
+}
