@@ -6,7 +6,6 @@ using namespace std;
 bool visited[101][101];
 int vx[4]={1,0,0,-1};
 int vy[4]={0,1,-1,0};
-// 전역 변수를 정의할 경우 함수 내에 초기화 코드를 꼭 작성해주세요.
 int number_of_area;
 int max_size_of_one_area;
 void bfs(int m, int n, vector<vector<int>> picture,int i,int j)
