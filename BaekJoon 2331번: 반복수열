@@ -1,0 +1,39 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <math.h>
+#include <map>
+#include <set>
+using namespace std;
+int a, p;
+
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> a >> p;
+	map<int, int> m;
+	int result;
+	int count = 1;
+	m[a] = count++;
+	while (1)
+	{
+		result = 0;
+		while (a > 0)
+		{
+			result += (int)pow(a % 10, p);
+			a = a / 10;
+		}
+		if (m[result] != 0)
+		{
+			cout << m[result]-1;
+			break;
+		}
+		else
+		{
+			m[result]=count++;
+			a = result;
+		}
+	}
+}
