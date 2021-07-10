@@ -1,0 +1,82 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <stack>
+#include <math.h>
+#include <map>
+#include <set>
+using namespace std;
+
+int k;
+int w, h;
+int arr[201][201];
+bool visited[201][201][31];
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+int bx[8] = {-1,-2,-2,-1,1,2,2,1};
+int by[8] = {-2,-1,1,2,2,1,-1,-2 };
+void bfs()
+{
+	queue < pair<int, pair<int,pair< int,int>>>> q;
+	visited[0][0][0] = true;
+	q.push({ 0,{0,{0,0}}});
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second.first;
+		int cnt = q.front().second.second.first;
+		int nowK = q.front().second.second.second;
+		q.pop();
+		if (nowX == w - 1 && nowY == h - 1 && arr[nowX][nowY]==0)
+		{
+			cout << cnt;
+			return;
+		}
+		if (nowK < k)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				int nextX = nowX + bx[i];
+				int nextY = nowY + by[i];
+				if (nextX < 0 || nextY < 0 || nextX >= w || nextY >= h)
+					continue;
+				if(!visited[nextX][nextY][nowK+1] && arr[nextX][nextY]==0)
+				{
+					visited[nextX][nextY][nowK+1] = true;
+					q.push({ nextX,{nextY,{cnt + 1,nowK + 1}} });
+				}
+	
+			}
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+			if (nextX < 0 || nextY < 0 || nextX >= w || nextY >= h)
+				continue;
+			if (!visited[nextX][nextY][nowK] && arr[nextX][nextY]== 0)
+			{
+				visited[nextX][nextY][nowK] = true;
+				q.push({ nextX,{nextY,{cnt + 1,nowK}} });
+			}
+
+		}
+
+	}
+	cout << -1;
+	return;
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> k;
+	cin >> h >> w;
+	for (int i = 0; i < w; i++)
+	{
+		for (int j = 0; j < h; j++)
+			cin >> arr[i][j];
+	}
+	bfs();
+}
