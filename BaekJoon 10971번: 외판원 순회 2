@@ -1,3 +1,60 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <stack>
+#include <math.h>
+#include <map>
+#include <set>
+using namespace std;
+
+int n;
+int arr[11][11];
+bool visited[11];
+int startnode;
+int minRes = 1000000000;
+
+void dfs(int node, int val, int cnt)
+{
+	if (cnt == n)
+	{
+		if (arr[node][startnode] != 0)
+		{
+			minRes = min(minRes, val + arr[node][startnode]);
+			return;
+		}
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		if (arr[node][i] != 0 && !visited[i])
+		{
+			visited[i] = true;
+			dfs(i, val + arr[node][i], cnt + 1);
+			visited[i] = false;
+		}
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+			cin >> arr[i][j];
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		startnode = i;
+		visited[i] = true;
+		dfs(i, 0, 1);
+		visited[i] = false;
+	}
+	
+	cout << minRes;
+}
+---------------------------------
 #include <iostream>
 #include <string>
 #include <algorithm>
