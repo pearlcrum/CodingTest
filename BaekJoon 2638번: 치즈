@@ -1,0 +1,141 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <vector>
+#define INF 987654321
+using namespace std;
+
+int n, m;
+int arr[101][101];
+int arr2[101][101];
+int outSide[101][101];
+bool visited[101][101];
+bool visited2[101][101];
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+bool isEmpty()
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (arr[i][j] == 1)
+				return true;
+		}
+	}
+	return false;
+}
+void divideOutSide(int a, int b) //외부 공기 나누기
+{
+	visited2[a][b] = true;
+	queue<pair<int, int>> q;
+	q.push({ a,b });
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second;
+		q.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+			if (nextX < 0 || nextY < 0 || nextX >= n  || nextY >= m)
+				continue;
+			if (arr[nextX][nextY] == 0 && !visited2[nextX][nextY])
+			{
+				visited2[nextX][nextY] = true; //외부공기 배열에 담음
+				q.push({ nextX,nextY });
+
+			}
+		}
+	}
+}
+void bfs(int a, int b)
+{
+	visited[a][b] = true;
+	queue<pair<int, int>> q;
+	q.push({ a,b });
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second;
+		q.pop();
+
+		int cnt = 0;
+		for (int j = 0; j < 4; j++)
+		{
+			int checkX = nowX + vx[j];
+			int checkY = nowY + vy[j];
+			if (checkX < 0 || checkY < 0 || checkX >= n || checkY >= m)
+				continue;
+			if (arr[checkX][checkY] == 0 && visited2[checkX][checkY]) //외부 공기와 접촉면 갯수 확인
+				cnt++;
+		}
+		if (cnt >= 2)
+			arr2[nowX][nowY] = 0;
+
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+			if (nextX < 1 || nextY < 1 || nextX >= n - 1 || nextY >= m - 1)
+				continue;
+			if (arr[nextX][nextY] == 1 && !visited[nextX][nextY])
+			{
+				visited[nextX][nextY] = true;
+				q.push({ nextX,nextY });
+				
+			}
+		}
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+			cin >> arr[i][j];
+	int resAns = 0;
+	while (isEmpty())
+	{
+		resAns++;
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				visited[i][j] = false;
+				visited2[i][j] = false;
+				arr2[i][j] = arr[i][j];
+			}
+		}
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				divideOutSide(0, 0);
+			}
+		}
+		
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				if (arr[i][j] == 1&&!visited[i][j])
+					bfs(i, j);
+			}
+		}
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				arr[i][j] = arr2[i][j];
+			}
+		}
+
+	}
+	cout << resAns;
+}
