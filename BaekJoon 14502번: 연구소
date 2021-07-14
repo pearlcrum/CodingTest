@@ -1,0 +1,110 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <vector>
+#define INF 987654321
+using namespace std;
+
+int n, m;
+int arr[8][8];
+int temp[8][8];
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+bool visited[8][8][3];
+int result = 0;
+void bfs()
+{
+	int c_arr[8][8];
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+			c_arr[i][j] = temp[i][j];
+	}
+	queue<pair<int, int>> q;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+			if (c_arr[i][j] == 2)
+				q.push({ i,j });
+	}
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second;
+		q.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+			if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m)
+				continue;
+			if (c_arr[nextX][nextY] == 0)
+			{
+				c_arr[nextX][nextY] = 2;
+				q.push({ nextX,nextY });
+			}
+			
+		}
+	}
+	int theResult = 0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (c_arr[i][j] == 0)
+				theResult++;
+		}
+	}
+	result = max(result, theResult);
+}
+void makeWall(int cnt)
+{
+	if (cnt == 3)
+	{
+		bfs();
+		return;
+	}
+	for(int i=0; i<n;i++)
+		for(int j=0;j<m;j++)
+			if (temp[i][j] == 0)
+			{
+				temp[i][j] = 1;
+				makeWall(cnt + 1);
+				temp[i][j] = 0;
+			}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+	
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (arr[i][j] == 0)
+			{
+				for (int k = 0; k < n; k++)
+				{
+					for (int l = 0; l < m; l++)
+					{
+						temp[k][l] = arr[k][l];
+					}
+				}
+				temp[i][j] = 1;
+				makeWall(1);
+				temp[i][j] = 0;
+			}
+		}
+	}
+	cout << result;
+}
