@@ -1,0 +1,140 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <vector>
+#include <math.h>
+#include <map>
+#define INF 987654321
+using namespace std;
+
+int n;
+int arr[16][16];
+bool visited[16][16];
+int vx[3] = { 0,1,1 };
+int vy[3] = { 1,0,1 };
+int cnt = 0;
+void bfs()
+{
+	queue<pair<int, pair<int, int>> >q;
+	q.push({ 0,{1,0} });
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second.first;
+		int nowD = q.front().second.second;
+		q.pop();
+		if (nowX == n - 1 && nowY == n - 1)
+			cnt++;
+		if (nowD == 0)//가로일 경우
+		{
+			int nextX = nowX + vx[0]; //가로 이동
+			int nextY = nowY + vy[0]; // 가로 이동
+			if (nextX >= 0 && nextY >= 0 && nextX < n && nextY < n)
+			{
+				if (arr[nextX][nextY] != 1)
+					q.push({ nextX,{nextY,0} });
+			}
+			nextX = nowX + vx[2]; //대각선
+			nextY = nowY + vy[2]; // 대각선
+			if (nextX >= 0 && nextY >= 0 && nextX < n && nextY < n)
+			{
+				bool check = false;
+				for (int j = 0; j < 3; j++)
+				{
+					int checkX = nowX + vx[j];
+					int checkY = nowY + vy[j];
+					if (checkX >= 0 && checkY >= 0 && checkX < n && checkY < n)
+					{
+						if (arr[checkX][checkY] == 1)
+							check = true;
+					}
+					else
+						check = true;
+				}
+				if (check == false)
+					q.push({ nextX,{nextY,2} });//대각선
+			}
+		}
+		else if (nowD == 1)
+		{
+			int nextX = nowX + vx[1]; //세로 이동
+			int nextY = nowY + vy[1]; // 세로 이동
+			if (nextX >= 0 && nextY >= 0 && nextX < n && nextY < n)
+			{
+				if (arr[nextX][nextY] != 1)
+					q.push({ nextX,{nextY,1} });
+			}
+			nextX = nowX + vx[2]; //대각선
+			nextY = nowY + vy[2]; // 대각선
+			if (nextX >= 0 && nextY >= 0 && nextX < n && nextY < n)
+			{
+				bool check = false;
+				for (int j = 0; j < 3; j++)
+				{
+					int checkX = nowX + vx[j];
+					int checkY = nowY + vy[j];
+					if (checkX >= 0 && checkY >= 0 && checkX < n && checkY < n)
+					{
+						if (arr[checkX][checkY] == 1)
+							check = true;
+					}
+					else
+						check = true;
+				}
+				if (check==false)
+					q.push({ nextX,{nextY,2} });//대각선
+			}
+		}
+		else if (nowD == 2)
+		{
+			int nextX = nowX + vx[0]; //가로 이동
+			int nextY = nowY + vy[0]; // 가로 이동
+			if (nextX >= 0 && nextY >= 0 && nextX < n && nextY < n)
+			{
+				if (arr[nextX][nextY] != 1)
+					q.push({ nextX,{nextY,0} });
+			}
+			nextX = nowX + vx[1]; //세로 이동
+			nextY = nowY + vy[1]; // 세로 이동
+			if (nextX >= 0 && nextY >= 0 && nextX < n && nextY < n)
+			{
+				if (arr[nextX][nextY] != 1)
+					q.push({ nextX,{nextY,1} });
+			}
+			nextX = nowX + vx[2]; //대각선
+			nextY = nowY + vy[2]; // 대각선
+			if (nextX >= 0 && nextY >= 0 && nextX < n && nextY < n)
+			{
+				bool check = false;
+				for (int j = 0; j < 3; j++)
+				{
+					int checkX = nowX + vx[j];
+					int checkY = nowY + vy[j];
+					if (checkX >= 0 && checkY >= 0 && checkX < n && checkY < n)
+					{
+						if (arr[checkX][checkY] == 1)
+							check = true;
+					}
+					else
+						check = true;
+				}
+				if (check == false)
+					q.push({ nextX,{nextY,2} });//대각선
+			}
+		}
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+			cin >> arr[i][j];
+	}
+	bfs();
+	cout << cnt;
+}
