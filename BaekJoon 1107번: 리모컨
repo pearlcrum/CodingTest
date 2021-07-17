@@ -1,0 +1,46 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <vector>
+#include <math.h>
+#include <map>
+#define INF 987654321
+using namespace std;
+
+int n, m;
+bool visited[10];
+bool check(int now)
+{
+	string temp = to_string(now);
+	for (int j = 0; j < temp.size(); j++)
+	{
+		if (visited[temp[j] - '0'])
+			return false;
+	}
+	return true;
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n>>m;
+	int tmp;
+	for (int i = 0; i < m; i++)
+	{
+		cin >> tmp;
+		visited[tmp] = true;
+	}
+	string st = to_string(n);
+	int minimum = (int)abs(n - 100);
+
+	for (int i = 0; i <= 1000000; i++)
+	{
+		if (check(i))
+		{
+			int tep = (int)abs(n - i) + to_string(i).size();
+			minimum = min(minimum, tep);
+		}
+	}
+	cout << minimum;
+}
