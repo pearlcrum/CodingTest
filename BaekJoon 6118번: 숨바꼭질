@@ -1,0 +1,72 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include <vector>
+#include <math.h>
+#include <map>
+#define INF 987654321
+using namespace std;
+
+vector<vector<int>> arr(20001);
+bool visited[20001];
+int n, m;
+vector<pair<int, int>> vec;
+bool compare(pair<int, int>a, pair<int, int>b)
+{
+	if (a.first < b.first)
+		return true;
+	else
+		return false;
+}
+void bfs(int start)
+{
+	visited[start] = true;
+	queue < pair<int,int>> q;
+	q.push({ start,0 });
+	int p = 0;
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int cnt = q.front().second;
+		q.pop();
+
+		if (p < cnt)
+		{
+			p = cnt;
+			vec.clear();
+		}
+		if (p == cnt)
+		{
+			vec.push_back({ nowX,cnt });
+		}
+		for (int i = 0; i < arr[nowX].size(); i++)
+		{
+			int nextX = arr[nowX][i];
+			if (!visited[nextX])
+			{
+				visited[nextX] = true;
+				q.push({ nextX,cnt + 1 });
+			}
+		}
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int p = 0; p < m; p++)
+	{
+		int a, b;
+		cin >> a >> b;
+		arr[a].push_back(b);
+		arr[b].push_back(a);
+	}
+	bfs(1);
+	sort(vec.begin(), vec.end(), compare);
+
+
+	cout << vec[0].first << " " << vec[0].second << " " << vec.size();
+}
