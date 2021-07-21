@@ -1,0 +1,33 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#define INF 987654321
+using namespace std;
+
+int n, k;
+int arr[10001];
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> k;
+	vector<int> cases;
+	for (int i = 0; i < n; i++)
+	{
+		int a;
+		cin >> a;
+		cases.push_back(a);
+	}
+	arr[0] = 1;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 1; j <= k; j++)
+		{
+			if (j - cases[i] < 0)
+				continue;
+			arr[j] = arr[j] + arr[j - cases[i]];
+		}
+	}
+	cout << arr[k];
+}
