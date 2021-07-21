@@ -1,0 +1,41 @@
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#define INF 987654321
+using namespace std;
+
+int n, k;
+int arr[10001];
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> k;
+	vector<int> cases;
+	for (int i = 0; i < n; i++)
+	{
+		int a;
+		cin >> a;
+		cases.push_back(a);
+	}
+	for (int i = 1; i <=k; i++)
+		arr[i] = INF;
+
+
+
+	arr[0] = 0;
+	for (int i = 0; i < cases.size(); i++)
+	{
+		for (int j = 1; j <= k; j++)
+		{
+			if (j - cases[i] < 0)
+				continue;
+			arr[j] = min(arr[j], arr[j - cases[i]] + 1);
+		}
+	}
+	if (arr[k] == INF)
+		cout << -1;
+	else
+		cout << arr[k];
+}
