@@ -1,3 +1,35 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#define INF 987654321
+using namespace std;
+
+int n;
+int t[16];
+int p[16];
+int dp[30];
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+	{
+		cin >> t[i] >> p[i];
+	}
+	for (int i = 1; i <= n; i++)
+	{
+
+		dp[i + t[i]] = max(dp[i + t[i]], dp[i] + p[i]);
+		dp[i + 1] = max(dp[i+1],dp[i]);
+	}
+	cout << dp[n + 1];
+}
+
+
+================================
 #include <iostream>
 #include <algorithm>
 using namespace std;
