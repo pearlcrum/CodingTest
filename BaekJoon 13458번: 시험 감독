@@ -1,0 +1,45 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+#include <math.h>
+#define INF 987654321
+using namespace std;
+
+int n;
+int arr[1000001];
+int b, c;
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+		cin >> arr[i];
+	cin >> b >> c;
+
+	long long cnt = n; // int로 하면 틀린다....
+	for (int i = 1; i <= n; i++)
+	{
+		arr[i] = arr[i] - b;//총 감독관 수 줄이기
+		if (arr[i] < 0)
+			continue;
+		if (arr[i] / c == 0)
+		{
+			if (arr[i]== 0)
+				continue;
+			else
+				cnt++;
+		}
+		else if (arr[i]/c>0 && arr[i] % c == 0)
+		{
+			cnt += arr[i] / c;
+		}
+		else
+			cnt += (arr[i] / c + 1);
+	}
+	cout << cnt;
+	
+}
+
