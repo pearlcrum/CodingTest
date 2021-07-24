@@ -1,0 +1,118 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+#include <math.h>
+#define INF 987654321
+using namespace std;
+
+int n;
+int arr[11][11];
+int dp[11][11];
+int vx[5] = {0, 1,0,0,-1 };
+int vy[5] = {0, 0,1,-1,0 };
+bool visited[11][11][3];
+vector<int> vec;
+
+void visit(int a, int b,int cnt)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		int nextX = a + vx[i];
+		int nextY = b + vy[i];
+		if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= n)
+			continue;
+		visited[nextX][nextY][cnt] = true;
+	}
+
+}
+void leave(int a, int b,int cnt)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		int nextX = a + vx[i];
+		int nextY = b + vy[i];
+		if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= n)
+			continue;
+		visited[nextX][nextY][cnt] = false;
+	}
+}
+int hap(int a, int b)
+{
+	int temp=0;
+	for (int i = 0; i < 5; i++)
+	{
+		int nextX = a + vx[i];
+		int nextY = b + vy[i];
+		temp += arr[nextX][nextY];
+	}
+	return temp;
+}
+bool canPush(int a, int b)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		int nextX = a + vx[i];
+		int nextY = b + vy[i];
+		if (visited[nextX][nextY][0] || visited[nextX][nextY][1])
+			return false;
+	}
+	return true;
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+
+	for (int i = 1; i < n - 1; i++)
+	{
+		for (int j = 1; j < n - 1; j++)
+		{
+			dp[i][j]=hap(i, j); //씨앗을 심었을 떄 각 칸의 비용
+		}
+	}
+	for (int i = 1; i < n - 1; i++)
+	{
+		for (int j = 1; j < n - 1; j++)
+		{
+			visit(i, j,0);
+			for (int k = 1; k < n - 1; k++)
+			{
+				for (int l = 1; l < n - 1; l++)
+				{
+					if (canPush(k,l))
+					{
+						visit(k, l,1);
+						for (int o = 1; o < n - 1; o++)
+						{
+							for (int p = 1; p < n - 1; p++)
+							{
+								if (canPush(o, p))
+								{
+									vec.push_back(dp[i][j] + dp[k][l] + dp[o][p]);
+								}
+
+							}
+						}
+						leave(k, l,1);
+					}
+				}
+			}
+			leave(i, j,0);
+		}
+	}
+	sort(vec.begin(), vec.end());
+
+	cout << vec[0];
+	
+}
+
