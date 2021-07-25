@@ -1,0 +1,86 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <queue>
+#define INF 987654321
+using namespace std;
+
+int n;
+int arr[7][7];
+bool visited[7][7];
+int vx[8] = { -2,-2,-1,1,2,2,1,-1 };
+int vy[8] = { -1,1,2,2,1,-1,-2,-2 };
+
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	string s;
+	cin >> s;
+	int nowX = (int)(6 - (s[1] - '0'));
+	int nowY = (int)(s[0] - 'A');
+	int startX = nowX;
+	int startY = nowY;
+	for (int i = 1; i <= 35; i++)
+	{
+		string s;
+		cin >> s;
+		int nextX = (int)(6 - (s[1] - '0'));
+		int nextY = (int)(s[0] - 'A');
+		bool check = false;
+		for (int j = 0; j < 8; j++)
+		{
+			int valX = nowX + vx[j];
+			int valY = nowY + vy[j];
+			if (valX < 0 || valY < 0 || valX >= 6 || valY >= 6)
+				continue;
+			if (valX == nextX && valY == nextY&&!visited[valX][valY])
+			{
+				check = true;
+				nowX = nextX;
+				nowY = nextY;
+				visited[valX][valY] = true;
+				break;
+			}
+		}
+		if (check == false)
+		{
+			cout << "Invalid";
+			return 0;
+		}
+	}
+	bool check = false;
+	for (int j = 0; j < 8; j++)
+	{
+		int valX = nowX + vx[j];
+		int valY = nowY + vy[j];
+		if (valX < 0 || valY < 0 || valX >= 6 || valY >= 6)
+			continue;
+		if (valX == startX && valY == startY && !visited[valX][valY])
+		{
+			check = true;
+			visited[valX][valY] = true;
+			break;
+		}
+	}
+	if (check == false)
+	{
+		cout << "Invalid";
+		return 0;
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			if (visited[i][j] == false)
+			{
+				cout << "Invalid";
+				return 0;
+			}
+		}
+	}
+	cout << "Valid";
+}
+
