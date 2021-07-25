@@ -1,0 +1,132 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#define INF 987654321
+using namespace std;
+
+int n;
+int arr[9][9];
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	string king, stone;
+	cin >> king >> stone >> n;
+	int kingY = (int)(king[0] - 'A');
+	int kingX = (int)(8-(king[1] - '0'));
+
+	int stoneY = (int)(stone[0] - 'A');
+	int stoneX = (int)(8-(stone[1] - '0'));
+
+	arr[stoneX][stoneY] = 1;//stone은 1
+	arr[kingX][kingY] = 2;//king은 2;
+
+
+
+	for (int i = 0; i < n; i++)
+	{
+		string a;
+		cin >> a;
+		int nextStoneX;
+		int nextStoneY;
+		int nextKingX;
+		int nextKingY;
+		if (a == "R")
+		{
+			 nextStoneX = stoneX;
+			 nextStoneY = stoneY+1;
+			 nextKingX = kingX;
+			 nextKingY = kingY + 1;
+		}
+		else if (a == "L")
+		{
+			 nextStoneX = stoneX;
+			 nextStoneY = stoneY - 1;
+			 nextKingX = kingX;
+			 nextKingY = kingY - 1;
+
+		}
+		else if (a=="B")
+		{
+			 nextStoneX = stoneX+1;
+			 nextStoneY = stoneY ;
+			 nextKingX = kingX+1;
+			 nextKingY = kingY;
+		}
+		else if (a == "T")
+		{
+			 nextStoneX = stoneX-1;
+			 nextStoneY = stoneY;
+			 nextKingX = kingX-1;
+			 nextKingY = kingY;
+		}
+		else if (a == "RT")
+		{
+			 nextStoneX = stoneX-1;
+			 nextStoneY = stoneY + 1;
+			 nextKingX = kingX-1;
+			 nextKingY = kingY + 1;
+		}
+		else if (a == "LT")
+		{
+			 nextStoneX = stoneX-1;
+			 nextStoneY = stoneY - 1;
+			 nextKingX = kingX-1;
+			 nextKingY = kingY - 1;
+		}
+		else if (a == "RB")
+		{
+			 nextStoneX = stoneX+1;
+			 nextStoneY = stoneY + 1;
+			 nextKingX = kingX+1;
+			 nextKingY = kingY + 1;
+		}
+		else if (a == "LB")
+		{
+			 nextStoneX = stoneX+1;
+			 nextStoneY = stoneY - 1;
+			 nextKingX = kingX+1;
+			 nextKingY = kingY - 1;
+		}
+
+		if (nextKingX < 0 || nextKingY < 0 || nextKingX >= 8 || nextKingY>=8)
+		{
+
+			continue;
+		}
+		if (arr[nextKingX][nextKingY] == 1)//돌이랑 겹치는 위치이면
+		{
+
+			if (nextStoneX < 0 ||  nextStoneY < 0 || nextStoneX >= 8 || nextStoneY >= 8)
+				continue;
+			arr[stoneX][stoneY] = 0;
+			arr[kingX][kingY] = 0;
+			stoneX = nextStoneX;
+			stoneY = nextStoneY;
+			kingX = nextKingX;
+			kingY = nextKingY;
+			arr[stoneX][stoneY] = 1;
+			arr[kingX][kingY] = 2;
+		}
+		else if(arr[nextKingX][nextKingY]==0)//돌이랑 안 겹치면
+		{
+
+			arr[kingX][kingY] = 0;
+			kingX = nextKingX;
+			kingY = nextKingY;
+			arr[kingX][kingY] = 2;
+		}
+	}
+
+	string answerStone, answerKing; //A1,A2;
+	answerStone = char(stoneY)+'A';
+	answerStone.append(to_string(8 - stoneX));
+	answerKing = char(kingY)+'A';
+	answerKing.append(to_string(8 - kingX));
+	cout << answerKing << "\n";
+	cout << answerStone;
+
+}
+
