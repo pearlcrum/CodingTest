@@ -1,0 +1,216 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <queue>
+#define INF 987654321
+using namespace std;
+
+int n, m;
+int arr[1001][1001];
+bool visited[1001][1001];
+int knightNum, queenNum, pawnNum;
+int vx[8] = { -2,-2,-1,1,2,2,1,-1 };
+int vy[8] = { -1,1,2,2,1,-1,-2,-2 };
+
+vector<pair<int, int>> qPair;
+vector<pair<int, int>> kPair;
+int cnt = 0;
+void checkKnight()
+{
+	for (int p = 0; p < kPair.size(); p++)
+	{
+		int nowX = kPair[p].first;
+		int nowY = kPair[p].second;
+		for (int i = 0; i < 8; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+			if (nextX<1 || nextY<1 || nextX>n || nextY>m)
+				continue;
+			if (!visited[nextX][nextY] && arr[nextX][nextY]==0)
+			{
+				visited[nextX][nextY] = true;
+				cnt++;
+			}
+		}
+	}
+}
+void checkQueen()
+{
+	for (int p = 0; p < qPair.size(); p++)
+	{
+		int nowX = qPair[p].first;
+		int nowY = qPair[p].second;
+		//상하좌우
+		for (int i = nowX-1; i >= 1; i--)//상
+		{
+			if (arr[i][nowY] == 0)
+			{
+				if (!visited[i][nowY])
+				{
+					visited[i][nowY] = true;
+					cnt++;
+				}
+			}
+			else
+				break;
+		}
+		for (int i = nowX+1; i <=n; i++)//하
+		{
+			if (arr[i][nowY] == 0)
+			{
+				if (!visited[i][nowY])
+				{
+					visited[i][nowY] = true;
+					cnt++;
+				}
+			}
+			else
+				break;
+		}
+		for (int i = nowY - 1; i >= 1; i--)//좌
+		{
+			if (arr[nowX][i] == 0)
+			{
+				if (!visited[nowX][i])
+				{
+					visited[nowX][i] = true;
+					cnt++;
+				}
+			}
+			else
+				break;
+		}
+		for (int i = nowY + 1; i <=m; i++)//우
+		{
+			if (arr[nowX][i] == 0)
+			{
+				if (!visited[nowX][i])
+				{
+					visited[nowX][i] = true;
+					cnt++;
+				}
+			}
+			else
+				break;
+		}
+		bool LU = true;
+		bool RU = true;
+		bool LD = true;
+		bool RD = true;
+		for (int i = 1;i<=n; i++)
+		{
+			int nextLUX = nowX - i; // 좌상
+			int nextLUY = nowY - i;
+			int nextRUX = nowX -i;
+			int nextRUY = nowY + i;//우상
+			int nextLDX = nowX + i;//좌하
+			int nextLDY = nowY - i;
+			int nextRDX = nowX + i;//우하
+			int nextRDY = nowY + i;
+			if (LU == true &&nextLUX >= 1 && nextLUY >=1)
+			{
+				if (arr[nextLUX][nextLUY]==0)
+				{
+					if (!visited[nextLUX][nextLUY])
+					{
+						visited[nextLUX][nextLUY] = true;
+						cnt++;
+					}
+				}
+				else
+				{
+					LU = false;
+				}
+			}
+			if (RU == true&& nextRUX >= 1 && nextRUY <= m)
+			{
+				if (arr[nextRUX][nextRUY] == 0)
+				{
+					if (!visited[nextRUX][nextRUY])
+					{
+						visited[nextRUX][nextRUY] = true;
+						cnt++;
+					}
+				}
+				else
+				{
+					RU = false;
+				}
+			}
+			if (LD == true&&nextLDX <= n && nextLDY >= 1)
+			{
+				if (arr[nextLDX][nextLDY] == 0)
+				{
+					if (!visited[nextLDX][nextLDY])
+					{
+						visited[nextLDX][nextLDY] = true;
+						cnt++;
+					}
+				}
+				else
+				{
+					LD = false;
+				}
+			}
+			if (RD == true&&nextRDX <= n && nextRDY <= m)
+			{
+				if (arr[nextRDX][nextRDY] == 0)
+				{
+					if (!visited[nextRDX][nextRDY])
+					{
+						visited[nextRDX][nextRDY] = true;
+						cnt++;
+					}
+				}
+				else
+				{
+					RD = false;
+				}
+			}
+			
+
+		}
+		//대각선
+
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+
+	cin >> queenNum;
+	for (int i = 0; i < queenNum; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		arr[a][b] = 1;//queen
+		qPair.push_back({ a,b });
+		cnt++;
+	}
+	cin >> knightNum;
+	for (int i = 0; i < knightNum; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		arr[a][b] = 2;//knight;
+		kPair.push_back({ a,b });
+		cnt++;
+	}
+	cin >> pawnNum;
+	for (int i = 0; i < pawnNum; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		arr[a][b] = 3;
+		cnt++;
+	}
+	checkKnight();
+	checkQueen();
+	cout << m*n-cnt;
+}
+
