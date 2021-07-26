@@ -100,7 +100,8 @@ void checkQueen()
 		bool RU = true;
 		bool LD = true;
 		bool RD = true;
-		for (int i = 1;i<=n; i++)
+		int repeat = max(n, m);
+		for (int i = 1;i<=repeat; i++)
 		{
 			int nextLUX = nowX - i; // 좌상
 			int nextLUY = nowY - i;
