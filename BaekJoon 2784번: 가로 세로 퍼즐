@@ -1,0 +1,146 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#define INF 987654321
+using namespace std;
+
+vector<string> vec;
+char arr[3][3];
+bool visited[6];
+bool vertVisit[3];
+
+vector<string> ans;
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	for (int i = 0; i < 6; i++)
+	{
+		string s;
+		cin >> s;
+		vec.push_back(s);
+	}
+	vector<string>vec2 = vec;
+
+	vector<int> comb;
+	for (int i = 0; i < 3; i++)
+		comb.push_back(1);
+	for (int i = 0; i < 3; i++)
+		comb.push_back(0);
+	
+	map<string, int> m;
+	
+	do {
+		string s;
+		memset(visited, 0, sizeof(visited));// 매번 초기화;
+		memset(vertVisit, 0, sizeof(vertVisit));
+		for (int i = 0; i < comb.size(); i++)
+		{
+			if (comb[i] == 1)
+			{
+				s.append(vec[i]); //가로 넣기
+			}
+		}
+		if (m.count(s) == 1)
+			continue;
+		else
+		{
+			m[s]++;
+			for (int j = 0; j < 3; j++)
+			{
+				string t;
+				for (int k = 0; k < 3; k++)
+				{
+					arr[j][k] = s[k + (3 * j)];
+					t += arr[j][k];
+				}
+				for (int p = 0; p < 6; p++)
+				{
+					if (!visited[p] && t == vec2[p])
+					{
+						visited[p] = true; // 가로에 넣은 것들 방문 check
+						break;
+					}
+				}
+			}
+
+			// 세로 확인
+			vector<string> vert;
+			for (int l = 0; l < 3; l++)
+			{
+				string t;
+				for (int j = 0; j < 3; j++)
+				{
+					t += arr[j][l];//char string에 붙이기
+				}
+				vert.push_back(t);
+			}
+			/*
+			for (int j = 0; j < 3; j++)
+			{
+				for (int k = 0; k < 3; k++)
+				{
+					cout << arr[j][k] << " ";
+				}
+				cout << endl;
+			}
+			for (int j = 0; j < vert.size(); j++)
+			{
+				cout << vert[j] << " ";
+			}
+			cout << endl;
+			*/
+			// 사용하지 않은 단어가 세로에 맞는지 확인
+			for (int k = 0; k < vec2.size(); k++)
+			{
+				if (!visited[k])//현재 가로에 있는 것 제외
+				{
+					for (int l = 0; l < vert.size(); l++)
+					{
+						if (vert[l] == vec2[k] && !vertVisit[l])
+						{
+							visited[k] = true;
+							vertVisit[l] = true;
+							break;
+						}
+					}
+				}
+			}
+			bool check = true;
+			for (int k = 0; k < 3; k++)
+			{
+				if (vertVisit[k] == false)
+				{
+					check = false;
+					break;
+				}
+			}
+
+			if (check == true)
+				ans.push_back(s);
+
+		}
+	} while (next_permutation(vec.begin(), vec.end()));
+
+	if (ans.size() == 0)
+	{
+		cout << 0;
+	}
+	else
+	{
+		sort(ans.begin(), ans.end());
+		string res = ans[0];
+		for (int i = 0; i < res.size(); i++)
+		{
+			cout << res[i];
+			if (i % 3 == 2)
+				cout << "\n";
+		}
+	}
+}
+
