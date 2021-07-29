@@ -1,0 +1,84 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#define INF 987654321
+using namespace std;
+
+int t;
+int n, m;
+int visited[1001];
+int arr[1001][1001];
+int cnt = 0;
+void clearArr(int a)
+{
+	for (int i = 1; i <= a; i++)
+	{
+		visited[i] = INF;
+		for (int j = 1; j <= a; j++)
+		{
+			arr[i][j] = 0;
+		}
+	}
+}
+void bfs(int a)
+{
+	queue<pair<int,int>> q;
+	q.push({ a,0 });
+	visited[a] = 0;
+	int cnt = 0;
+	while (!q.empty())
+	{
+		int now = q.front().first;
+		int count = q.front().second;
+		q.pop();
+		bool check = false;
+		for (int i = 1; i <= n; i++)
+		{
+			if (arr[now][i] == 1)
+			{
+				if (visited[i] > count + 1)
+				{
+					check = true;
+					visited[i] = count+1;
+					q.push({ i,count + 1 });
+					cnt++;
+				}
+			}
+		}
+	}
+	cout << cnt<<"\n";
+}
+void visitedCheck()
+{
+	for (int i = 1; i <= n; i++)
+		cout << visited[i] << " ";
+	cout << endl;
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> t;
+	while (t > 0)
+	{
+		cin >> n >> m;
+		clearArr(n);
+		for (int i = 0; i < m; i++)
+		{
+			int a, b;
+			cin >> a >> b;
+			arr[a][b] = 1;
+			arr[b][a] = 1;
+		}
+		cnt = 0;
+		bfs(1);
+
+		t--;
+	}
+}
+
