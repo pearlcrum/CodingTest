@@ -1,0 +1,92 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#define INF 987654321
+using namespace std;
+
+int r, c,k;
+int sr, sc;
+int arr[1001][1001];
+bool visited[1001][1001];
+int vx[5] = {0,-1,1,0,0};
+int vy[5] = { 0,0,0,-1,1 };
+vector<int> dir;
+void move()
+{
+	visited[sr][sc] = true;
+	queue<pair<int, pair<int,int>>> q;
+	q.push({ sr,{sc,1 } }); //초기 방향은 dir[1]
+	int lastX = sr;
+	int lastY = sc;
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second.first;
+		int nowD = q.front().second.second; // dir의 index
+		q.pop();
+		lastX = nowX;
+		lastY = nowY;
+
+		int nextX = nowX + vx[dir[nowD]]; //기존 방향으로 진행
+		int nextY = nowY + vy[dir[nowD]];
+		if (nextX >= 0 && nextY >= 0 && nextX < r && nextY < c && arr[nextX][nextY] == 0 && !visited[nextX][nextY]) // 범위 안의 값이며
+		{
+			visited[nextX][nextY] = true;
+			q.push({ nextX,{nextY,nowD} }); //dir의 index;
+
+		}
+		else // 기존 방향으로 진행이 불가능할때 
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				if (nowD + 1 > 4)
+					nowD = 1;
+				else
+					nowD++;
+
+				int nextX = nowX + vx[dir[nowD]];
+				int nextY = nowY + vy[dir[nowD]];
+
+
+				if (nextX < 0 || nextY < 0 || nextX >= r || nextY >= c)
+					continue;
+				if (arr[nextX][nextY] == 0 && !visited[nextX][nextY])
+				{
+					visited[nextX][nextY] = true;
+					q.push({ nextX,{nextY,nowD } });
+					break;
+				}
+			}
+			
+		}
+	}
+	cout << lastX <<" "<< lastY<<"\n";
+
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> r >> c >> k;
+	for (int i = 0; i < k; i++)
+	{
+		int br, bc;
+		cin >> br >> bc;
+		arr[br][bc] = 1;// 벽 세우기
+	}
+	cin >> sr >> sc;//시작 위치
+	dir.push_back(0);
+	for (int i = 0; i < 4; i++)
+	{
+		int d;
+		cin >> d;
+		dir.push_back(d);
+	}
+	move();
+}
+
