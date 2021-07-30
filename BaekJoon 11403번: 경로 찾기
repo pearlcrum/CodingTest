@@ -1,0 +1,89 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#define INF 987654321
+using namespace std;
+
+int n;
+int arr[101][101];
+int arr2[101][101];
+bool visited[101];
+void clearVisited()
+{
+	for (int i = 1; i <= n; i++)
+	{
+		visited[i] = false;
+	}
+}
+void checkpath(int a, int b)
+{
+	visited[b] = true;
+	queue<pair<int, int>> q;
+	q.push({ a,b });
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second;
+		q.pop();
+
+		for (int i = 1; i <= n; i++)
+		{
+			if (arr[nowY][i] == 1 && !visited[i])
+			{
+				visited[i] = true;
+				q.push({ nowY,i });
+			}
+		}
+	}
+}
+void makeArr2(int x)//행
+{
+	for (int i = 1; i <= n; i++)
+	{
+		if (visited[i] == true)
+		{
+			arr2[x][i] = 1;
+		}
+		else
+			arr2[x][i] = 0;
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			cin >> arr[i][j];
+		}
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		clearVisited();
+		for (int j = 1; j <= n; j++)
+		{
+			if (arr[i][j] == 1)
+			{
+				checkpath(i, j);
+			}
+		}
+		makeArr2(i);
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			cout << arr2[i][j] << " ";
+		}
+		cout << "\n";
+	}
+}
+
