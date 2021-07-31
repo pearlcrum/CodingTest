@@ -1,0 +1,45 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int vone[5]={1,2,3,4,5};
+int vtwo[8]={2,1,2,3,2,4,2,5};
+int vthree[10]={3,3,1,1,2,2,4,4,5,5};
+bool compare(pair<int,int> a, pair<int,int> b)
+{
+    if(a.second>b.second)
+        return true;
+    else
+        return false;
+}
+vector<int> solution(vector<int> answers) {
+    vector<int> answer;
+    vector<pair<int,int>> temp;
+    temp.push_back({0,0});
+    temp.push_back({1,0});
+    temp.push_back({2,0});
+    temp.push_back({3,0});
+    for(int i=0; i<answers.size();i++)
+    {
+        if(answers[i]==vone[i%5])
+            temp[1].second++;
+        if(answers[i]==vtwo[i%8])
+            temp[2].second++;
+        if(answers[i]==vthree[i%10])
+            temp[3].second++;
+    }
+    sort(temp.begin(),temp.end(),compare);
+    answer.push_back(temp[0].first);
+
+    for(int i=1; i<temp.size();i++)
+    {
+        if(temp[i-1].second==temp[i].second)
+        {
+            answer.push_back(temp[i].first);
+        }
+        else
+            break;
+    }
+    return answer;
+}
