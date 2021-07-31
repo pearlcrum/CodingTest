@@ -1,0 +1,138 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+int visited[17][17];
+vector<string> solution(int n, vector<int> arr1, vector<int> arr2) {
+    vector<string> answer;
+    for(int i=0;i<n;i++)
+    {
+        string temp="";
+        arr1[i]=arr1[i] | arr2[i]; // OR연산
+        while(temp.size() !=n)
+        {
+            if(arr1[i]%2==0)
+                temp.push_back(' ');
+            else
+                temp.push_back('#');
+            arr1[i]/=2;
+        }
+        reverse(temp.begin(),temp.end());
+        answer.push_back(temp);
+        
+    }
+    return answer;
+}
+
+====해당 코드 시간 초과=======
+#include <string>
+#include <vector>
+
+using namespace std;
+int visited[17][17];
+vector<string> solution(int n, vector<int> arr1, vector<int> arr2) {
+    vector<string> answer;
+    
+    for(int i=0; i<n;i++)
+    {
+        int x=arr1[i];
+        vector<int> temp;
+        while(1)
+        {
+            if(x==1)
+            {
+                temp.push_back(1);
+                break;
+            }
+            else if(x%2==0)
+            {
+                x=x/2;
+                temp.push_back(0);
+            }
+            else if(x%2==1)
+            {
+                x=x/2;
+                temp.push_back(1);
+            }
+        }//2진수 만들기
+        for(int j=0;j<n-temp.size();j++)
+        {
+            visited[i][j]=1;//빈칸은 1
+        }
+        int d=temp.size()-1;
+        
+        for(int j=n-temp.size();j<n;j++)
+        {
+            if(temp[d]==1)
+            {
+                visited[i][j]=2;//방문은 2
+            }
+            else if(temp[d]==0)
+            {
+                if(visited[i][j!=2])
+                    visited[i][j]=1;//처음 방문은 1
+            }
+            d--;
+        }
+        //--------------------------------------------------------
+        x=arr2[i];
+        temp.clear();
+        while(1)
+        {
+            if(x==1)
+            {
+                temp.push_back(1);
+                break;
+            }
+            else if(x%2==0)
+            {
+                x=x/2;
+                temp.push_back(0);
+            }
+            else if(x%2==1)
+            {
+                x=x/2;
+                temp.push_back(1);
+            }
+        }
+        for(int j=0;j<n-temp.size();j++)
+        {
+            if(visited[i][j]==2)
+                continue;
+            else
+                visited[i][j]=1;
+        }
+        d=temp.size()-1;
+        for(int j=n-temp.size();j<n;j++)
+        {
+            if(temp[d]==1)
+            {
+                visited[i][j]=2;
+            }
+            else if(temp[d]==0)
+            {
+                if(visited[i][j]!=2)
+                    visited[i][j]=1;
+            }
+            d--;
+        }
+        
+    }
+    
+    for(int i=0;i<n;i++)
+    {
+        string ans="";
+        for(int j=0; j<n;j++)
+        {
+            if(visited[i][j]==1)
+                ans+=" ";
+            else if(visited[i][j]==2)
+                ans+="#";
+        }
+        answer.push_back(ans);
+    }
+    
+    
+    return answer;
+}
