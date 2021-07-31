@@ -1,0 +1,47 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+bool lostT[31];
+int resT[31];
+int solution(int n, vector<int> lost, vector<int> reserve) {
+    int answer = 0;
+    for(int i=0; i<lost.size();i++)
+    {
+        lostT[lost[i]]=true;//없는 애들 true;
+    }
+    for(int i=0; i<reserve.size();i++)
+    {
+        resT[reserve[i]]++;//가진 애들
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(lostT[i]==false)
+        {
+            answer++; //있으면 증가.
+        }
+        else
+        {
+            if(resT[i]>0&&lostT[i]==true)
+            {
+                resT[i]--;
+                lostT[i]=false;
+                answer++;
+            }
+            else if(resT[i-1]>0&&lostT[i-1]==false)
+            {
+                resT[i-1]--;
+                lostT[i]=false;
+                answer++;
+            }
+            else if(resT[i+1]>0&&lostT[i+1]==false) //여기가 핵심이네
+            {
+                resT[i+1]--;
+                lostT[i]=false;
+                answer++;
+            }    
+            
+        }
+    }
+    return answer;
+}
