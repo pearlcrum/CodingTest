@@ -1,0 +1,136 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#define INF 987654321
+using namespace std;
+
+char arr[12][6];
+char arr2[12][6];
+bool visited[12][6];
+
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+int totalCount = 0;
+bool isDone()
+{
+	bool check = false;
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 6; j++)
+			if (arr[i][j] != '.')
+				return true;
+	}
+	return false;
+}
+void clearVisit()
+{
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			visited[i][j] = false;
+		}
+	}
+}
+
+bool bfs(int a, int b)
+{
+	queue<pair<int, int>> q;
+	visited[a][b] = true;
+	q.push({a,b});
+	vector<pair<int, int>> vec;
+	int count = 0;
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second;
+		q.pop();
+		count++;
+		vec.push_back({ nowX,nowY });
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+
+			if (nextX < 0 || nextY < 0 || nextX >= 12 || nextY >= 6)
+				continue;
+			if (arr[nextX][nextY] == arr[nowX][nowY] && !visited[nextX][nextY])
+			{
+				visited[nextX][nextY] = true;
+				q.push({ nextX,nextY });
+			}
+		}
+	}
+	if (count >= 4)
+	{
+		for (int i = 0; i < vec.size(); i++)
+		{
+			int nowX = vec[i].first;
+			int nowY = vec[i].second;
+			arr[nowX][nowY] = '.';
+		}
+		return true;
+	}
+	return false;
+}
+
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	for (int i = 0; i < 12; i++)
+	{
+		for (int j = 0; j < 6; j++)
+			cin>>arr[i][j];
+	}
+	bool change;
+	while (1)
+	{
+		clearVisit();
+		change = false;
+		for (int i = 0; i < 12; i++)
+		{
+			for (int j = 0; j < 6; j++)
+			{ 
+				if (arr[i][j] != '.'&&!visited[i][j])
+				{
+					bool check=bfs(i, j);
+					if (check == true)
+						change = true;
+				}
+				else
+				{
+					visited[i][j] == true;
+				}
+			}
+		}
+		if (change == false)
+			break;
+		else
+		{
+			totalCount++;
+			for (int k = 0; k < 6; k++)
+			{
+				for (int i = 0; i < 12; i++)
+				{
+					for (int j = 10; j >= 0; j--)
+					{
+						if (arr[j + 1][k] == '.' && arr[j][k] != '.')
+						{
+							arr[j + 1][k] = arr[j][k];
+							arr[j][k] = '.';
+						}
+					}
+				}
+			}
+		}
+	}
+	cout << totalCount;
+}
+
