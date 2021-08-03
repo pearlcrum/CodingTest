@@ -1,11 +1,8 @@
-#include <stdio.h>
 #include <iostream>
-
 #include<math.h>
 #include<algorithm>
 #include<vector>
 #include <string>
-#pragma warning(disable:4996)
 using namespace std;
 
 vector<int> bubbleSort(vector<int> a);
