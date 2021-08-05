@@ -1,0 +1,103 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#define INF 987654321
+using namespace std;
+
+int n, m;
+int arr[101][101];
+int arr2[101][101];
+bool visited[101][101];
+bool visitedOne[101][101];
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+int last = 0;
+int bfs(int a, int b)
+{
+	visited[a][b] = true;
+	queue < pair<int, pair<int, int>>> q;
+	q.push({ a,{b,0} });
+	last = 0;
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second.first;
+		int cnt = q.front().second.second;
+		q.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+			if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m)
+				continue;
+			if (arr[nextX][nextY] == 0 && !visited[nextX][nextY])
+			{
+				visited[nextX][nextY] = true;
+				q.push({ nextX,{nextY,0} });
+			}
+			else if (arr[nextX][nextY] == 1 && !visitedOne[nextX][nextY] && cnt == 0)
+			{
+				last++;
+				visitedOne[nextX][nextY] = true;
+				arr2[nextX][nextY] = 0;
+			}
+		}
+
+	}
+	return last;
+}
+void arrCopy()
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			arr[i][j] = arr2[i][j];
+			visitedOne[i][j] = false;
+			visited[i][j] = false;
+		}
+	}
+}
+bool allVisited()
+{
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (arr[i][j] == 1)
+				return false;
+		}
+	}
+	return true;
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	int count = 0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cin >> arr[i][j];
+			arr2[i][j] = arr[i][j];
+		}
+	}
+	int temp = 0;
+	while (!allVisited())
+	{
+		count++;
+		temp=bfs(0, 0);// 현재 빈 공간 체크
+		arrCopy();
+	}
+	cout << count << "\n";
+	cout << temp<<"\n";
+
+}
+
