@@ -1,55 +1,57 @@
 #include <string>
 #include <iostream>
+#include <vector>
 #include <algorithm>
-#include <queue>
-#include <deque>
+#include <math.h>
 #include <map>
-#include <set>
+#include <queue>
+#include <cstring>
+#define INF 987654321
 using namespace std;
 
-int t;
+int f, s, g, u, d;
+bool visited[1000010];
 int main()
 {
 	cin.tie(0);
 	ios::sync_with_stdio(false);
-	cin >> t;
-	for (int k = 0; k < t; k++)
+	cin >> f >> s >> g >> u >> d;
+	visited[s] = true;
+	queue<pair<int, int>> q;
+	q.push({ s,0 });
+	bool check = false;
+	while (!q.empty())
 	{
-		int n;
-		cin >> n;
-		multiset<int> s;
-		for (int i = 0; i < n; i++)
+		int nowStair = q.front().first;
+		int cnt = q.front().second;
+		q.pop();
+		if (nowStair == g)
 		{
-			char c;
-			int a;
-			cin >> c >> a;
-			if (c == 'I')
-				s.insert(a);
-			else
+			cout << cnt ;
+			check = true;
+			break;
+		}
+		int up = nowStair + u;
+		int down = nowStair - d;
+		if (up >= 1 && up <= f)
+		{
+			if (!visited[up])
 			{
-				if (s.empty())
-					continue;
-				if (a == 1)
-				{
-					auto it = s.end(); // 마지막 원소 다음을 가르키는 iterator 리턴
-					it--;
-					s.erase(it);
-				}
-				else if (a == -1)
-				{
-					auto it = s.begin();
-					s.erase(it);
-				}
+				visited[up] = true;
+				q.push({ up,cnt + 1 });
 			}
 		}
-		if (s.empty())
-			cout << "EMPTY"<<"\n";
-		else
+		if (down >= 1 && down <= f)
 		{
-			auto it = s.end();
-			it--;
-			cout << *it << " " << *s.begin() << "\n";
+			if (!visited[down])
+			{
+				visited[down] = true;
+				q.push({ down,cnt + 1 });
+			}
 		}
 	}
+	if(check==false)
+		cout << "use the stairs";
 
 }
+
