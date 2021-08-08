@@ -1,0 +1,101 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#define INF 987654321
+using namespace std;
+
+int n, m;
+int arr[501][501];
+bool visited[501][501];
+int ans = 0;
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+void dfs(int a, int b,int cnt,int sum)
+{
+	if (cnt == 4)
+	{
+		ans = max(sum, ans);
+		return;
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		int nextX = a + vx[i];
+		int nextY = b + vy[i];
+		if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m)
+			continue;
+		if (!visited[nextX][nextY])
+		{
+			visited[nextX][nextY] = true;
+			dfs(nextX, nextY,cnt+1,sum+arr[nextX][nextY]);
+			visited[nextX][nextY] = false;
+		}
+	}
+}
+void tetro(int a, int b)
+{
+	//4. ㅜ
+	if (b + 2 < m && a + 1 < n)
+	{
+		int sum = 0;
+		for (int i = b; i <= b + 2; i++)
+				sum += arr[a][i];
+		sum += arr[a + 1][b + 1];
+		ans = max(ans, sum);
+	}
+	//5. ㅏ
+	if (a + 2 < n && b + 1 < m)
+	{
+		int sum = 0;
+		for (int i = a; i <= a + 2; i++)
+			sum += arr[i][b];
+		sum += arr[a + 1][b + 1];
+		ans = max(ans, sum);
+	}
+	//6. ㅗ
+	if (a -1 >=0 && b + 2 < m)
+	{
+		int sum = 0;
+		for (int i = b; i <= b + 2; i++)
+			sum += arr[a][i];
+		sum += arr[a -1][b + 1];
+		ans = max(ans, sum);
+	}
+	//7. ㅓ
+	if (a+2 < n && b -1 >=0)
+	{
+		int sum = 0;
+		for (int i = a; i <= a + 2; i++)
+			sum += arr[i][b];
+		sum += arr[a+1][b-1];
+		ans = max(ans, sum);
+	}
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+			cin >> arr[i][j];
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			visited[i][j] = true;
+			dfs(i, j,1,arr[i][j]);
+			visited[i][j] = false;
+
+			tetro(i, j);// ㅜ ㅏ ㅗ ㅓ
+		}
+	}
+	cout << ans;
+}
+
