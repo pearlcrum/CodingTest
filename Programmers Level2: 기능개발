@@ -12,6 +12,40 @@ vector<int> solution(vector<int> progresses, vector<int> speeds) {
     }
     while(!q.empty())
     {
+        int nowP=q.front().first;
+        int nowS=q.front().second;
+        q.pop();
+        int temp=1;//겹치는 개수
+        int cnt=1;//queue 맨 앞에 있는 애가 없어지려면 필요한 개수
+        while(nowP+nowS<100)
+        {
+            nowP=nowP+nowS;
+            cnt++;
+        }
+        while(!q.empty() &&q.front().first+q.front().second*cnt>=100)
+        {
+            temp++;
+            q.pop();
+        }
+        answer.push_back(temp);
+    }
+    return answer;
+}
+========================================================================
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
+    vector<int> answer;
+    queue<pair<int,int>> q;
+    for(int i=0; i<progresses.size();i++)
+    {
+        q.push({progresses[i],speeds[i]});
+    }
+    while(!q.empty())
+    {
         int a=q.front().first;
         int b=q.front().second;
         int count=1;//갯수 확인
