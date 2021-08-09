@@ -7,6 +7,37 @@ using namespace std;
 
 int solution(vector<int> numbers, int target) {
     int answer = 0;
+    queue<pair<int,int>>q;
+    q.push({0,0});
+    while(!q.empty())
+    {
+        int now=q.front().first;
+        int cnt=q.front().second;
+        q.pop();
+        if(now==target&&cnt==numbers.size())
+        {
+            answer++;
+            continue;
+        }
+        if(cnt<numbers.size())
+        {
+            q.push({now-numbers[cnt],cnt+1});
+            q.push({now+numbers[cnt],cnt+1});
+        }
+    }
+    return answer;
+}
+======================================================
+
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+
+
+
+int solution(vector<int> numbers, int target) {
+    int answer = 0;
     queue<pair<int,int>> q;
     q.push({0,0});
     while(!q.empty())
