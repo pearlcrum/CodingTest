@@ -1,0 +1,173 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#include <stack>
+#define INF 987654321
+using namespace std;
+int arr[20][20];
+
+int vx[4] = { 0,1,1,-1 };
+int vy[4] = { 1,1,0,1};
+int answer = 0;
+int ansX, ansY;
+bool check = false;
+
+void dfs(int a, int b, int wb, int cnt,int dir)
+{
+	if (cnt == 5)
+	{
+		int nextX = a + vx[dir];
+		int nextY = b + vy[dir];
+		if (nextX >= 1 && nextY >= 1 && nextX <= 19 && nextY <= 19)//진행하던 방향대로 더 갈 수 있는 경우
+		{
+			if (arr[nextX][nextY] != wb)
+			{
+				answer = wb;
+				check = true;
+				return;
+			}
+		}
+		else//진행하던 방향이 범위 밖이면
+		{
+			answer = wb;
+			check = true;
+			return;
+		}
+	}
+	else
+	{
+		int nextX = a + vx[dir];
+		int nextY = b + vy[dir];
+		if (nextX >= 1 && nextY >= 1 && nextX <= 19 && nextY <= 19)
+		{
+			if (arr[nextX][nextY] == wb )
+			{
+				dfs(nextX, nextY, wb, cnt + 1, dir);
+			}
+		}
+	}
+}
+
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	for (int i = 1; i <= 19; i++)
+		for (int j = 1; j <= 19; j++)
+			cin >> arr[i][j];
+
+	for (int i = 1; i <= 19; i++)
+	{
+		for (int j = 1; j <= 19; j++)
+		{
+			if (arr[i][j] == 1)//흰색
+			{
+				for (int k = 0; k < 4; k++)
+				{
+					int nextX = i + vx[k];
+					int nextY = j + vy[k];
+					if (nextX >= 1 && nextY >= 1 && nextX <= 19 && nextY <= 19)
+					{
+						if (arr[nextX][nextY] == 1)//진행할 수 있는 경우
+						{
+							int prevX = 0;
+							int prevY = 0;
+							if (k == 0)
+							{
+								prevX = i;
+								prevY = j - 1;
+							}
+							else if (k == 1)
+							{
+								prevX = i-1;
+								prevY = j - 1;
+							}
+							else if (k == 2)
+							{
+								prevX = i-1;
+								prevY = j;
+							}
+							else
+							{
+								prevX = i + 1;
+								prevY = j - 1;
+							}
+							if (prevX >= 1 && prevY >= 1 && prevX <= 19 && prevY <= 19)
+							{
+								if (arr[prevX][prevY] == 1)
+									continue;
+							}
+							dfs(nextX, nextY, 1, 2,k);
+							if (check == true)
+							{
+								ansX = i;
+								ansY = j;
+								cout << answer << "\n";
+								cout << ansX << " " << ansY;
+								return 0;
+							}
+						}
+					}
+				}
+			}
+			else if (arr[i][j] == 2)//검은색
+			{
+				for (int k = 0; k < 4; k++)
+				{
+					int nextX = i + vx[k];
+					int nextY = j + vy[k];
+					if (nextX >= 1 && nextY >= 1 && nextX <= 19 && nextY <= 19)//진행할 수 있는 경우
+					{
+						if (arr[nextX][nextY] == 2)
+						{
+							int prevX = 0;
+							int prevY = 0;
+							if (k == 0)
+							{
+								prevX = i;
+								prevY = j - 1;
+							}
+							else if (k == 1)
+							{
+								prevX = i - 1;
+								prevY = j - 1;
+							}
+							else if (k == 2)
+							{
+								prevX = i - 1;
+								prevY = j;
+							}
+							else
+							{
+								prevX = i + 1;
+								prevY = j - 1;
+							}
+							if (prevX >= 1 && prevY >= 1 && prevX <= 19 && prevY <= 19)
+							{
+								if (arr[prevX][prevY] == 2)
+									continue;
+							}
+							dfs(nextX, nextY, 2, 2,k);
+							if (check == true)
+							{
+								ansX = i;
+								ansY = j;
+								cout << answer << "\n";
+								cout << ansX << " " << ansY;
+								return 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	cout << answer;
+
+}
+
