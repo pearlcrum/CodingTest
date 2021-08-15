@@ -1,0 +1,97 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#include <stack>
+#define INF 987654321
+using namespace std;
+int n, m,t;
+int arr[101][101];
+bool visited[101][101];
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+int ans = 0;
+void bfs(int a, int b, int val)
+{
+	int cnt = 0;
+	visited[a][b] = true;
+	queue<pair<int, int>> q;
+	q.push({ a,b });
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second;
+		q.pop();
+		cnt++;
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = nowX + vx[i];
+			int nextY = nowY + vy[i];
+			if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m)
+				continue;
+			if (arr[nextX][nextY] == val && !visited[nextX][nextY])
+			{
+				visited[nextX][nextY] = true;
+				q.push({ nextX,nextY });
+			}
+		}
+	}
+	ans = max(ans, cnt);
+}
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> m >> n;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			arr[i][j] = 1;
+		}
+	}
+	cin >> t;
+	for (int p = 0; p < t; p++)
+	{
+		int a, b;
+		cin >> a >> b;
+		if (a == 0)
+		{
+			for (int i = 0; i < b; i++)
+			{
+				for (int j = 0; j < m; j++)
+				{
+					arr[i][j]++;
+				}
+			}
+		}
+		else//세로
+		{
+			for (int j= 0; j < b; j++)
+			{
+				for (int i = 0; i < n; i++)
+				{
+					arr[i][j]++;
+				}
+			}
+		}
+	}
+	
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (!visited[i][j])
+			{
+				bfs(i, j, arr[i][j]);
+			}
+		}
+	}
+	cout << ans;
+
+}
+
