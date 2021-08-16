@@ -1,0 +1,53 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#include <stack>
+#define INF 987654321
+using namespace std;
+int n;
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false); //백준 2303
+	cin >> n;
+	int ans = 0;
+	int index = 0;
+	for (int i = 1; i <= n; i++)
+	{
+		vector<int> vec;
+		for (int j = 0; j < 5; j++)
+		{
+			int a;
+			cin >> a;
+			vec.push_back(a);
+		}
+		sort(vec.begin(), vec.end());//오름차순 정렬
+		vector<int> temp;
+		temp.push_back(1); temp.push_back(1); temp.push_back(1); temp.push_back(0); temp.push_back(0);//3개 뽑을 것이니
+		do {
+			int answer = 0;
+			for (int k = 0; k < temp.size(); k++)
+			{
+				if (temp[k] == 1)
+				{
+					answer += vec[k];
+				}
+			}
+			if (answer % 10 >= ans)
+			{
+				ans = answer % 10;
+				index = i;
+			}
+
+		} while (next_permutation(vec.begin(), vec.end()));
+		
+	}
+	cout << index;
+
+}
+
