@@ -1,0 +1,75 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <map>
+#include <queue>
+#include <cstring>
+#include <stack>
+#define INF 987654321
+using namespace std;
+
+int n,m;
+int arr[101];
+
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false); //백준 2303
+	cin >> n;
+	for (int i = 1; i <= n; i++)
+		cin >> arr[i];
+	cin >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int gender, now;
+		cin >> gender >> now;
+		if (gender == 1)//남자
+		{
+			int mul = 1;
+			while (now*mul <= n)
+			{
+				if (arr[now*mul] == 1)
+				{
+					arr[now*mul] = 0;
+
+				}
+				else
+				{
+					arr[now*mul] = 1;
+				}
+				mul++;
+			}
+		}
+		else//여자
+		{
+			if (arr[now] == 1)//현재 값 바꾸고
+				arr[now] = 0;
+			else
+				arr[now] = 1;
+			int near = 1;
+			while (now-near>=1 && now+near<=n&&arr[now - near] == arr[now + near])
+			{
+				if (arr[now - near] == 1)
+				{
+					arr[now - near] = 0;
+					arr[now + near] = 0;
+				}
+				else
+				{
+					arr[now - near] = 1;
+					arr[now + near] = 1;
+				}
+				near++;
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		cout << arr[i] << " ";
+		if (i % 20 == 0)
+			cout << "\n";
+	}
+}
+
