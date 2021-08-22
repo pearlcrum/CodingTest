@@ -1,0 +1,74 @@
+bool visited[7];
+vector<int> vec;
+
+void dfs(string a, int size, string numbers) {
+
+	if (a.size() == size) {
+		bool check = false;
+		for (int i = 0; i < vec.size(); i++)
+		{
+			if (vec[i] == stoi(a)){
+				check = true;
+                break;
+            }
+		}
+		if (check == false)
+		{
+			vec.push_back(stoi(a));
+		}
+		return;
+	}
+	else
+	{
+		for (int i = 0; i < numbers.size(); i++)
+		{
+			if (visited[i] == false)
+			{
+				visited[i] = true;
+				a += numbers[i];
+				dfs(a, size,numbers);
+				a.pop_back();
+				visited[i] = false;
+			}
+		}
+	}
+}
+
+int solution(string numbers) {
+    int answer = 0;
+    vector<int> vec;
+    int size = 1;
+	while (size <= numbers.size()) {
+		string a = "";
+		for (int i = 0; i < numbers.size(); i++)
+		{
+			if (numbers[i]-'0' != 0)
+			{
+				visited[i] = true;
+				a += numbers[i];
+				dfs(a, size, numbers);
+				a.pop_back();
+				visited[i] = false;
+			}
+		}
+		size++;
+	}
+    //소수 찾기
+    for(int i=0; i<vec.size();i++)
+    {
+        if(vec[i]==1)
+            continue;
+        bool check=false;
+        for(int j=2;j<=sqrt(vec[i]);j++)
+        {
+            if(vec[i]%j==0){
+                check=true;
+                break;
+            }
+        }
+        if(check==false)
+            answer++;
+    }
+    return answer;
+}
+           
