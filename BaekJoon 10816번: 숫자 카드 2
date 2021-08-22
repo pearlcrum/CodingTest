@@ -1,3 +1,45 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include<unordered_map>
+
+#include <cstring>
+#include <stack>
+#define INF 987654321
+using namespace std;
+
+unordered_map<int, int> mp;
+vector<int> vec;
+int n, m;
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int a;
+		cin >> a;
+		mp[a]++;
+	}
+	cin >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a;
+		cin >> a;
+		vec.push_back(mp[a]);
+	}
+	for (int i = 0; i < m; i++)
+	{
+		cout << vec[i] << " ";
+	}
+}
+
+
+=======================================================================
+
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
