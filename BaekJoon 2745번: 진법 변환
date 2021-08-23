@@ -1,0 +1,29 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include <cstring>
+#include <stack>
+#define INF 987654321
+using namespace std;
+
+string n;
+int m;
+int main()
+{
+	cin.tie(0);
+	ios::sync_with_stdio(false);
+	cin >> n;
+	cin >> m;
+	int sum = 0;
+	for (int i = 0; i < n.size(); i++)
+	{
+		if (n[i] >= '0' && n[i] <= '9')
+			sum += (n[i] - '0') * (int)pow(m, n.size() - 1 - i);
+		else
+			sum+=(int)(n[i]-55) * (int)pow(m, n.size() - 1 - i);
+	}
+	cout << sum;
+}
+
