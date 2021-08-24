@@ -1,0 +1,26 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+map<string,int> mp;
+bool solution(vector<string> phone_book) {
+    bool answer = true;
+    sort(phone_book.begin(),phone_book.end());
+    mp.insert({phone_book[0],0});
+    for(int i=1;i<phone_book.size();i++)
+    {
+        string s="";
+        for(int j=0;j<phone_book[i].size();j++)
+        {
+            s+=phone_book[i][j];
+            if(mp.find(s)!=mp.end()){
+                answer=false;
+                return answer;
+            }
+        }
+        mp.insert({phone_book[i],0});
+    }
+    return answer;
+}
