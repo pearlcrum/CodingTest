@@ -1,0 +1,90 @@
+#include <string>
+#include <cstring>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+bool checkChange(string u)
+{
+    stack<char> st;
+    for(int i=u.size()-1; i>=1;i--)
+    {
+        st.push(u[i]);
+    }
+    int left=0;
+    int right=0;
+    char c=u[0];
+    if(c=='(')
+        left++;
+    else
+        right++;
+    while(!st.empty())
+    {
+        char c=st.top();
+        st.pop();
+        if(c=='(')
+            left++;
+        else if(c==')'&&left>0)
+            left--;
+        else if(c==')'&&left==0){
+            left=-1;
+            break;
+        }
+            
+    }
+    if(left==0)
+        return true;
+    else
+        return false;
+}
+
+string solution(string p) {
+    string answer = "";
+    if(p.size()==0) 
+        return "";
+    int left=0;
+    int right=0;
+    string u="";
+    string v="";
+    for(int i=0; i<p.size();i++)
+    {
+        if(p[i]=='(')
+            left++;
+        else
+            right++;
+        if(left==right){
+            for(int j=0; j<=i;j++)
+                u+=p[j];
+            if(i+1<p.size())
+            {
+                for(int j=i+1; j<p.size();j++)
+                    v+=p[j];
+            }
+            else
+                v="";
+            break;
+        }
+    }
+    if(checkChange(u))
+    {
+        answer=u+solution(v);
+    }
+    else
+    {
+        string n="";
+        n+='(';
+        n+=solution(v);
+        n+=')';
+        for(int i=1;i<u.size()-1;i++)
+        {
+            if(u[i]=='(')
+                n+=')';
+            else
+                n+='(';
+        }
+        answer=n;
+    }
+    
+    return answer;
+}
