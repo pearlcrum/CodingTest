@@ -2,6 +2,83 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+using namespace std;
+vector<vector<int>> vec(20001);
+int answer = 0;
+int dist[20001];
+bool compare(int a, int b)
+{
+    if(a<=b)
+        return false;
+    else
+        return true;
+}
+
+void dijk(int n)
+{
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    pq.push({0,1});
+    dist[1]=0;
+    while(!pq.empty())
+    {
+        int cost=pq.top().first;
+        int curIndex=pq.top().second;
+        pq.pop();
+        if(dist[curIndex]<cost)
+            continue;
+        
+        for(int i=0; i<vec[curIndex].size();i++)
+        {
+            int nextCost=cost+1;
+            if(dist[vec[curIndex][i]] >nextCost)
+            {
+                dist[vec[curIndex][i]]  =nextCost;
+                pq.push({nextCost,vec[curIndex][i]});
+            }
+        }
+        
+    }
+    
+    vector<int> temp;
+    for(int i=1;i<=n;i++)
+    {
+        temp.push_back(dist[i]);   
+    }
+    
+    sort(temp.begin(),temp.end(),compare);//역순 정렬
+    int max=temp[0];
+    if(temp.size()>=1)
+    {
+        for(int i=0;i<temp.size();i++)
+        {
+            if(temp[i]==max)
+                 answer++;
+            else
+                break;
+        }
+    }
+    
+}
+
+int solution(int n, vector<vector<int>> edge) {
+   
+    for(int i=1;i<=n;i++)
+        dist[i]=5000000;
+    for(int i=0; i<edge.size();i++)
+    {
+        vec[edge[i][0]].push_back(edge[i][1]);
+        
+        vec[edge[i][1]].push_back(edge[i][0]);
+    }
+    dijk(n);
+    
+    return answer;
+}
+==============================================================
+#include <string>
+#include <vector>
+#include <queue>
+#include <algorithm>
 #define INF 20002
 using namespace std;
 vector<pair<int,int>> arr[20001];
