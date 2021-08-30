@@ -6,6 +6,69 @@ using namespace std;
 
 int arr[51][51];
 int dist[51];
+int answer = 0;
+void dijk(int start, int N, int K)
+{
+    priority_queue<pair<int,int>, vector<pair<int,int>>,greater<pair<int,int>>> pq;
+    pq.push({0,start});
+    dist[start]=0;
+    while(!pq.empty())
+    {
+        int cost=pq.top().first;
+        int curIndex=pq.top().second;
+        pq.pop();
+        if(dist[curIndex]<cost)
+            continue;
+        for(int i=1;i<=N;i++)
+        {
+            if(arr[curIndex][i]==10001)
+                continue;
+            int nextCost=cost+arr[curIndex][i];
+            if(dist[i]>nextCost)
+            {
+                dist[i]=nextCost;
+                pq.push({nextCost,i});
+            }
+        }
+    }
+    for(int i=1;i<=N;i++)
+    {
+        if(dist[i]<=K)
+            answer++;
+    }
+    
+}
+int solution(int N, vector<vector<int> > road, int K) {
+    for(int i=1;i<=N;i++)
+    {
+        for(int j=1;j<=N;j++)
+        {
+            arr[i][j]=10001;
+        }
+        dist[i]=500001;
+    }
+    for(int i=0; i<road.size();i++)
+    {
+        int start=road[i][0];
+        int end=road[i][1];
+        int weight=road[i][2];
+        arr[start][end]=min(arr[start][end],weight);
+        arr[end][start]=min(arr[end][start],weight);
+    }
+    
+    dijk(1,N,K);
+    return answer;
+}
+
+=====================================
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int arr[51][51];
+int dist[51];
 int answer = 0; 
 void dijk(int start, int N, int K)
 {
