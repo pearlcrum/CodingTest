@@ -1,0 +1,50 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include <map>
+using namespace std;
+
+map<string,int> mp;
+
+vector<int> solution(int n, vector<string> words) {
+    vector<int> answer;
+    mp[words[0]]++;
+    int turn=1;
+    int num=1;
+    string word=words[0];
+    
+    for(int i=1; i<words.size();i++)
+    {
+        char first=words[i][0];//새롭게 들어오는 것 맨 처음
+        num++;
+        if(mp.find(words[i])!=mp.end()) // 이미 했던 말
+        {
+            answer.push_back(num);
+            answer.push_back(turn);
+            break;
+        }
+        else if(first==word[word.size()-1]) // 끝말있기 성공
+        {
+            word=words[i];
+            mp[words[i]]++;        
+        }
+        else //끝말있기 실패
+        {
+            answer.push_back(num);
+            answer.push_back(turn);
+            break;
+        }
+        if(num%n==0)
+        {
+            num=0;
+            turn++;
+        }
+    }
+    if(answer.size()==0)
+    {
+        answer.push_back(0);
+        answer.push_back(0);
+    }
+
+    return answer;
+}
