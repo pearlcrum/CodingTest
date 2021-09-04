@@ -1,3 +1,66 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+int n;
+vector<long long> vec;
+vector<long long> answer;
+int main()
+{
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        int a; cin >> a; vec.push_back(a);
+    }
+    sort(vec.begin(), vec.end());
+    long long minAns=123456789123456789;
+
+    int left = 0;
+    int right = vec.size() - 1;
+    while (left < right)
+    {
+        long long sum = vec[left]+vec[right];
+        if (sum==0)
+        {
+            answer.clear(); answer.push_back(vec[left]); answer.push_back(vec[right]);
+            break;
+        }
+        else if (sum > 0)
+        {
+            if (abs(sum) < minAns)
+            {
+                minAns = abs(sum);
+                answer.clear();
+                answer.push_back(vec[left]); answer.push_back(vec[right]);
+            }
+            right--;
+        }
+        else
+        {
+            if (abs(sum) < minAns)
+            {
+                minAns = abs(sum);
+                answer.clear();
+                answer.push_back(vec[left]); answer.push_back(vec[right]);
+            }
+            left++;
+        }
+    }
+    for (int i = 0; i < answer.size(); i++)
+    {
+        cout << answer[i] << " ";
+    }
+    
+    
+}
+================================================
 #include <algorithm>
 #include <iostream>
 #include <vector>
