@@ -1,3 +1,44 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <map>
+using namespace std;
+int n;
+
+
+vector<string> vec;
+bool compare(string s1, string s2)
+{
+    if (s1.size() == s2.size())
+        return s1< s2;
+    else
+        return s1.size() < s2.size();
+}
+int main()
+{
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        string s;
+        cin >> s;
+        if(find(vec.begin(),vec.end(),s)==vec.end())
+            vec.push_back(s);
+    }
+
+    sort(vec.begin(), vec.end(), compare);
+    for (int i = 0; i < vec.size(); i++)
+    {
+        cout << vec[i] << "\n";
+    }
+}
+
+
+=============================
 #include <stdio.h>
 #include <iostream>
 #include<math.h>
