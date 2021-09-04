@@ -1,0 +1,44 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <map>
+using namespace std;
+
+
+int alphabet[27];
+void clear()
+{
+    for(int i = 0; i < 27; i++)
+        alphabet[i] = 0;
+}
+int main()
+{
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    string a;
+    string b;
+    while (getline(cin,a), getline(cin,b))
+    {
+        clear();
+        for (int i = 0; i < a.size(); i++)
+        {
+            alphabet[a[i] - 'a']++;
+        }
+        string ans = "";
+        for (int i = 0; i < b.size(); i++)
+        {
+            if (alphabet[b[i] - 'a'] > 0)
+            {
+                alphabet[b[i] - 'a']--;
+                ans += b[i];
+            }
+        }
+        sort(ans.begin(), ans.end());
+        cout << ans << "\n";
+    }
+    
+    
+}
