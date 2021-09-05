@@ -1,0 +1,109 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+//3190번 뱀
+int arr[101][101];
+bool visited[101][101];
+int n, k,l;
+vector < pair<int,char>> vec;
+int dirx[4] = { 0,0,1,-1 };
+int diry[4] = { 1,-1,0,0 };
+int ans = 0;
+void bfs(int a, int b, int c)
+{
+	queue < pair<int, pair<int, pair<int,pair<int,int>>>>> q;
+	q.push({ 1,{1,{0,{0,0}}} });
+	visited[1][1] = true;
+
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second.first;
+		int cnt = q.front().second.second.first;
+		int dir = q.front().second.second.second.first;
+		int curIndex = q.front().second.second.second.second;
+		if (curIndex<vec.size() &&vec[curIndex].first == cnt) //방향 전환
+		{
+			if (vec[curIndex].second == 'L')
+			{
+				if (dir == 0)
+					dir = 3;
+				else if (dir == 1)
+					dir = 2;
+				else if (dir == 2)
+					dir = 0;
+				else
+					dir = 1;
+			}
+			else
+			{
+				if (dir == 0)
+					dir = 2;
+				else if (dir == 1)
+					dir = 3;
+				else if (dir == 2)
+					dir = 1;
+				else
+					dir = 0;
+			}
+			curIndex++;
+		}
+		int nextX = nowX + dirx[dir];
+		int nextY = nowY + diry[dir];
+		if (nextX < 1 || nextY < 1 || nextX > n || nextY > n || visited[nextX][nextY])
+		{
+			ans = cnt + 1;
+			break;
+		}
+		else if (!visited[nextX][nextY] && arr[nextX][nextY] == 1)//사과 있는 경우
+		{
+
+			visited[nextX][nextY] = true;
+			visited[nowX][nowY] = false;
+			arr[nextX][nextY] = 0;
+			//queue 맨 뒤에 있는 값을 한번 더 반복 시켜줘야 할듯 싶은데
+			int prevdir = q.back().second.second.second.first;
+			int prevX = q.back().first-dirx[prevdir];
+			int prevY = q.back().second.first-diry[prevdir];
+			int prevcnt = q.back().second.second.first-1;
+			int prevIndex = q.back().second.second.second.second;
+			q.push({ prevX,{prevY,{prevcnt,{prevdir,prevIndex}}} });
+			q.push({ nextX,{nextY,{cnt + 1,{dir,curIndex}}} });
+		}
+		else
+		{
+			visited[nextX][nextY] = true;
+			visited[nowX][nowY] = false;
+			q.push({ nextX,{nextY,{cnt + 1,{dir,curIndex}}} });
+		}
+		q.pop();
+
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> k;
+	for (int i = 0; i < k; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		arr[a][b] = 1;
+	}
+	cin >> l;
+	for (int i = 0; i < l; i++)
+	{
+		int a; char d;
+		cin >> a >> d;
+		vec.push_back({ a,d });
+	}
+	bfs(1, 1, 0);
+	cout << ans;
+}
