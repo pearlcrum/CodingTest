@@ -1,3 +1,58 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int arr[8];
+int visited[8];
+int n, m;
+vector<int> ans;
+void back(int a,int cnt)
+{
+	if (cnt == m)
+	{
+		for (int i = 0; i < ans.size(); i++)
+			cout<<ans[i] << " ";
+		cout << "\n";
+		return;
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		if (!visited[i])
+		{
+			visited[i] = true;
+			ans.push_back(i);
+			back(i, cnt + 1);
+			ans.pop_back();
+			visited[i] = false;
+		}
+	}
+
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		arr[i] = i;
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		visited[i] = true;
+		ans.push_back(i);
+		back(i,1);
+		ans.pop_back();
+		visited[i] = false;
+	}
+
+}
+================================================
+
 //DFS 알고리즘에 대한 이해를 기반으로 푼 문제
 
 
