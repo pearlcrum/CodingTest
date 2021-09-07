@@ -1,3 +1,43 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int n, m;
+int arr[9];
+bool visited[9];
+
+void back(int a, int cnt)
+{
+	if (cnt == m)
+	{
+		for (int i = 1; i <= cnt; i++)
+			cout << arr[i] << " ";
+		cout << "\n";
+		return;
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		arr[cnt + 1] = i;
+		back(i, cnt + 1);
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++)
+	{
+		arr[1] = i;
+		back(i, 1);
+	}
+
+}
+=================================
 #include <iostream>
 #include <vector>
 #include <algorithm>
