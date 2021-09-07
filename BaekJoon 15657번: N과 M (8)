@@ -1,3 +1,49 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int n, m;
+vector<int> vec;
+int arr[9];
+void back(int index, int cnt)
+{
+	if (cnt == m)
+	{
+		for (int i = 1; i <= cnt; i++)
+			cout << arr[i] << " ";
+		cout << "\n";
+		return;
+	}
+	for (int i = index; i < vec.size(); i++)
+	{
+		arr[cnt + 1] = vec[i];
+		back(i, cnt + 1);
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		int a; cin >> a; vec.push_back(a);
+	}
+	sort(vec.begin(), vec.end());
+	for (int i = 0; i < vec.size(); i++)
+	{
+		arr[1] = vec[i];
+		back(i, 1);
+	}
+	
+}
+=======================================================
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
