@@ -1,3 +1,68 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int n;
+int arr[21][21];
+int minN = 1234567890;
+bool visited[21];
+void backtracking(int sum, int index, int cnt)
+{
+	if (cnt == n / 2)
+	{
+		int sumElse=0;
+		for (int i = 1; i <= n; i++)
+		{
+			if (!visited[i])
+			{
+				for (int j = i + 1; j <= n; j++)
+				{
+					if (!visited[j])
+					{
+						sumElse += arr[i][j] + arr[j][i];
+					}
+				}
+			}
+		}
+		minN = min(minN, abs(sumElse - sum));
+		return;
+	}
+	for (int i = index + 1; i <= n; i++)
+	{
+		if (!visited[i])
+		{
+			int temp = sum;
+			for (int j = 1; j <= n; j++)
+			{
+				if (visited[j])
+				{
+					temp += arr[i][j] + arr[j][i];
+				}
+			}
+			visited[i] = true;
+			backtracking(temp, i, cnt + 1);
+			visited[i] = false;
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;//n은 짝수
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n; j++)
+			cin >> arr[i][j];
+	visited[0] = true;
+	backtracking(0, 0,0);
+	cout << minN;
+}
+===============================================================
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
