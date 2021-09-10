@@ -1,0 +1,52 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int n, s;
+int arr[21];
+bool visited[21];
+int ans = 0;
+void backtracking(int index, int sum)
+{
+	if (sum == s)
+	{
+		ans++;
+	}
+	else if (index == n + 1)
+	{
+		return;
+	}
+	for (int i = index + 1; i <= n; i++)
+	{
+		if (!visited[i])
+		{
+			int temp;
+			visited[i] = true;
+			temp = sum + arr[i];
+			backtracking(i, temp);
+			visited[i] = false;
+
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> s;
+	for (int i = 1; i <= n; i++)
+	{
+		cin >> arr[i];
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		visited[i] = true;
+		backtracking(i, arr[i]);
+		visited[i] = false;
+	}
+	cout << ans;
+}
