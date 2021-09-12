@@ -3,7 +3,6 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
-#define INF 987654321
 using namespace std;
 
 int n;
