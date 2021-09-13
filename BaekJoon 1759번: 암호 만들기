@@ -1,0 +1,52 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int l, c;
+
+vector<char> arr;
+char ans[16];
+bool visited[16];
+void backtracking(int index, int cnt,int mo, int ja) {
+	if (cnt == l)
+	{
+		if (mo >= 1 && ja >= 2) {
+			for (int i = 1; i <= cnt; i++)
+			{
+				cout << ans[i];
+			}
+			cout << "\n";
+		}
+		return;
+	}
+	for (int i = index + 1; i <= c; i++) {
+		if (!visited[i]) {
+			visited[i] = true;
+			ans[cnt + 1] = arr[i];
+			if(arr[i]=='a' || arr[i]=='e'||arr[i]=='i'||arr[i]=='o'||arr[i]=='u')
+				backtracking(i, cnt + 1,mo+1,ja);
+			else
+				backtracking(i, cnt + 1, mo, ja+1);
+			visited[i] = false;
+		}
+	}
+}
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	cin >> l >> c;
+	arr.push_back(0);
+	for (int i = 1; i <= c; i++) {
+		char d; cin >> d;
+		arr.push_back(d);
+	}
+	sort(arr.begin(), arr.end());
+	backtracking(0, 0,0,0);
+}
