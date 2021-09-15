@@ -1,0 +1,63 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+vector<pair<int, int>> vec;
+int n;
+int ans = 0;
+bool check(int index)
+{
+	for (int i = 0; i < n; i++)
+	{
+		if (index == i)
+			continue;
+		if (vec[i].first > 0)
+			return false;
+	}
+	return true;
+}
+void backtracking(int index, int cnt)
+{
+	if (index == n) {
+		ans = max(ans, cnt);
+		return;
+	}
+	if (vec[index].first <= 0 || check(index))
+		backtracking(index + 1, cnt);
+	else
+	{
+		for (int i = 0; i < n; i++)
+		{
+			if (index != i && vec[i].first > 0)
+			{
+				vec[i].first -= vec[index].second;
+				vec[index].first -=  vec[i].second;
+				int nextcnt = cnt;
+				if (vec[i].first <= 0)
+					nextcnt++;
+				if (vec[index].first <= 0)
+					nextcnt++;
+				backtracking(index + 1, nextcnt);
+				vec[i].first += vec[index].second;
+				vec[index].first += vec[i].second;
+			}
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int a, b; cin >> a >> b;
+		vec.push_back({ a,b });
+	}
+	backtracking(0, 0); //왼쪽부터 차례로 한번씩만 든다. 최대한 많은 계란을 깬다.
+	cout << ans;
+}
+
