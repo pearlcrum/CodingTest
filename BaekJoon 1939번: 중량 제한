@@ -1,0 +1,72 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int n, m;
+int ans=0;
+vector<pair<int, int>> vec[10001];// [] 2차원 행은 가변 열은 고정
+int start, theEnd;
+vector<bool> visited(10001);
+bool bfs(int weight)
+{
+	visited[start] = true;
+	queue<int> q;
+	q.push(start);
+	while (!q.empty())
+	{
+		int nowX = q.front();
+		q.pop();
+		if (nowX == theEnd)
+			return 1;
+		for (int i = 0; i < vec[nowX].size(); i++)
+		{
+			int nextX = vec[nowX][i].first;
+			int nextVal = vec[nowX][i].second;
+			if (!visited[nextX] && nextVal >= weight)
+			{
+				visited[nextX] = true;
+				q.push(nextX);
+			}
+		}
+	}
+	return 0;
+}
+void binarySearch() {
+	int low = 0;
+	int high = ans;
+	while (low <= high)
+	{
+		int mid = (low + high) / 2;
+		for (int i = 0; i <= n; i++)
+		{
+			visited[i] = false;//초기화
+		}
+		if (bfs(mid) == true)
+			low = mid + 1;
+		else
+			high = mid - 1;
+	}
+	cout << high;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	for (int i = 0; i < m; i++)
+	{
+		int a, b, c;
+		cin >> a >> b >> c;
+		vec[a].push_back({ b,c });
+		vec[b].push_back({ a,c });
+		ans = max(ans, c);
+	}
+	cin >> start >> theEnd;
+	binarySearch();
+}
+
+
