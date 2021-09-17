@@ -39,6 +39,87 @@ void backtracking(int index, int cnt)
 	}
 	for (int i = index; i < 26; i++)
 	{
+		if (visited[i])
+			continue;
+		visited[i] = true;
+		backtracking(i+1, cnt + 1);
+		visited[i] = false;
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> k;
+	if (k < 5)
+	{
+		cout << 0; return 0;
+	}
+	visited['a' - 'a'] = true; visited['n' - 'a'] = true;visited['t' - 'a'] = true;
+	visited['c' - 'a'] = true;visited['i' - 'a'] = true;
+	for (int i = 0; i < n; i++)
+	{
+		string s; cin >> s;
+		int length = s.size()-8;
+		s = s.substr(4, length);//필요 없는 부분 자른다.
+		string str = "";
+		for (int j = 0; j < s.size(); j++)
+		{
+			if (!visited[s[j] - 'a'])
+			{
+				str += s[j];
+			}
+		}
+		vec.push_back(str);
+	}
+	k = k - 5;
+	backtracking(0, 0);
+	cout << ans;
+
+}
+=====================================================
+
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <set>
+using namespace std;
+
+int n, k;
+bool visited[26];
+vector<string> vec;
+int ans = 0;
+void checkString()
+{
+	int cnt = 0;
+	for (int i = 0; i < vec.size(); i++)
+	{
+		bool check = true;
+		for (int j = 0; j < vec[i].size(); j++)
+		{
+			if (!visited[vec[i][j]-'a'])
+			{
+				check = false;
+				break;
+			}
+		}
+		if (check == true)
+			cnt++;
+	}
+	ans = max(ans, cnt);
+}
+void backtracking(int index, int cnt)
+{
+	if (cnt == k)
+	{
+		checkString();
+		return;
+	}
+	for (int i = index; i < 26; i++)
+	{
 		if (visited[i])//이미 방문한 건 제낀다.
 			continue;
 		visited[i] = true;
