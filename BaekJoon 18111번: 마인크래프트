@@ -1,0 +1,85 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <set>
+using namespace std;
+
+int n, m, b;
+int arr[501][501];
+int minVal = 1000000000;
+int maxVal = 0;
+int minSec= 1000000000;
+int height = 0;
+void check(int val)
+{
+	int nowD = b;
+	int nowSec = 0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			if (arr[i][j] > val)
+			{
+				nowD += arr[i][j] - val;
+				nowSec += 2 * (arr[i][j] - val);
+			}
+			else if (arr[i][j] < val)
+			{
+				nowD -= val - arr[i][j];
+				nowSec += val - arr[i][j];
+			}
+		}
+	}
+	if (nowD >= 0 && minSec >= nowSec)
+	{
+		minSec = nowSec;
+		height = val;
+	}
+}
+/*
+void binarySearch(int low, int high)
+{
+	while (low <= high)
+	{
+		if (low < 0 || high>256)
+			break;
+		int mid = (low + high) / 2;
+		if (check(mid))
+			low = mid + 1;
+		else
+			high = mid - 1;
+	}
+	cout <<minSec<<" "<< high;
+}
+*/
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m >> b;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++) {
+			cin >> arr[i][j];
+			if (arr[i][j] < minVal)
+			{
+				minVal = arr[i][j];
+			}
+			if (arr[i][j] > maxVal)
+			{
+				maxVal = arr[i][j];
+			}
+		}
+	}
+	for (int i = minVal; i <= maxVal; i++)
+	{
+		check(i);
+	}
+	cout << minSec << " " << height;
+
+	//이분 탐색을 활용해보자. 반례 발생
+	//binarySearch(minVal, maxVal);
+}
