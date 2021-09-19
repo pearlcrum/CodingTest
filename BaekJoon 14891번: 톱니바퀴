@@ -1,0 +1,189 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <set>
+#include <math.h>
+using namespace std;
+
+int arr[8][5];
+int k;
+void rotRight(int which)
+{
+	int now = arr[7][which];
+	for (int i = 7; i >=1; i--)
+	{
+		arr[i][which] = arr[i - 1][which];
+	}
+	arr[0][which] = now;
+}
+void rotLeft(int which)
+{
+	int now = arr[0][which];
+	for (int i = 1; i <= 7; i++)
+	{
+		arr[i-1][which] = arr[i][which];
+	}
+	arr[7][which] = now;
+}
+void rotate(int which, int dir)
+{
+	bool checkOne = false;//1번 톱니 2번, 2번 톱니 6번
+	bool checkTwo = false;//2번 톱니 2번, 3번 톱니 6번
+	bool checkThree = false;//3번 톱니 2번, 4번 톱니 6번
+	if (arr[2][1] != arr[6][2])
+		checkOne = true;
+	if (arr[2][2] != arr[6][3])
+		checkTwo = true;
+	if (arr[2][3] != arr[6][4])
+		checkThree = true;
+	if (dir == 1)//시계
+	{
+		rotRight(which);
+		if (which == 1)
+		{
+			if (checkOne == true)
+			{
+				rotLeft(which + 1);
+				if (checkTwo == true)
+				{
+					rotRight(which + 2);
+					if (checkThree == true)
+						rotLeft(which + 3);
+				}
+
+			}
+		}
+		else if (which == 2)
+		{
+			if (checkOne == true)
+			{
+				rotLeft(which - 1);
+			}
+			if (checkTwo == true)
+			{
+				rotLeft(which + 1);
+				if (checkThree == true)
+				{
+					rotRight(which + 2);
+				}
+			}
+		}
+		else if (which == 3)
+		{
+			if (checkTwo== true)
+			{
+				rotLeft(which - 1);
+				if (checkOne == true)
+					rotRight(which - 2);
+			}
+			if (checkThree == true)
+			{
+				rotLeft(which + 1);
+				
+			}
+		}
+		else
+		{
+			if (checkThree == true)
+			{
+				rotLeft(which - 1);
+				if (checkTwo == true)
+				{
+					rotRight(which - 2);
+					if (checkOne == true)
+						rotLeft(which - 3);
+				}
+			}
+		}
+	}
+	else
+	{
+		rotLeft(which);
+		if (which == 1)
+		{
+			if (checkOne == true)
+			{
+				rotRight(which + 1);
+				if (checkTwo == true)
+				{
+					rotLeft(which + 2);
+					if (checkThree == true)
+						rotRight(which + 3);
+				}
+
+			}
+		}
+		else if (which == 2)
+		{
+			if (checkOne == true)
+			{
+				rotRight(which - 1);
+			}
+			if (checkTwo == true)
+			{
+				rotRight(which + 1);
+				if (checkThree == true)
+				{
+					rotLeft(which + 2);
+				}
+			}
+		}
+		else if (which == 3)
+		{
+			if (checkTwo == true)
+			{
+				rotRight(which - 1);
+				if (checkOne == true)
+					rotLeft(which - 2);
+			}
+			if (checkThree == true)
+			{
+				rotRight(which + 1);
+
+			}
+		}
+		else
+		{
+			if (checkThree == true)
+			{
+				rotRight(which - 1);
+				if (checkTwo == true)
+				{
+					rotLeft(which - 2);
+					if (checkOne == true)
+						rotRight(which - 3);
+				}
+			}
+		}
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	for (int i = 1; i <= 4; i++)
+	{
+		string s; cin >> s;
+		for (int j = 0; j < s.size(); j++) {
+			arr[j][i] = (s[j] - '0');
+		}
+	}
+	cin >> k;
+	for (int t = 0; t < k; t++) {
+		int a, b; cin >> a >> b;
+		rotate(a, b);
+	}
+	int ans = 0;
+	for (int i = 1; i <= 4; i++)
+	{
+		if (arr[0][i]==1)
+		{
+			ans += (int)(pow(2, i-1));
+		}
+	}
+	cout << ans;
+
+}
