@@ -1,0 +1,146 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <unordered_set>
+#include <math.h>
+using namespace std;
+
+int n;
+int arr[21][21];
+bool visited[21][21];
+int startX, startY;
+int nowSize = 2;
+int nowCnt = 0;
+int vx[4] = { 1,0,0,-1 };
+int vy[4] = { 0,1,-1,0 };
+int ans = 0;
+bool compare(pair<int, int> a, pair<int, int> b)
+{
+	if (a.first < b.first)
+		return true;
+	else if (a.first == b.first)
+	{
+		if (a.second < b.second)
+			return true;
+		else
+			return false;
+	}
+	else
+		return false;
+}
+int checkSmall()
+{
+	int cnt = 0;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			if (arr[i][j]!=0 && arr[i][j] < nowSize)
+				cnt++;
+		}
+	}
+	return cnt;
+}
+int bfs(int a, int b)
+{
+	queue<pair<int, pair<int, int>>> q;
+	int minSec=0;
+	visited[a][b] = true;
+	q.push({ a,{b,0} });
+	vector<pair<int, int>> vec;
+	while (!q.empty())
+	{
+		int nowX = q.front().first;
+		int nowY = q.front().second.first;
+		int cnt = q.front().second.second;
+		q.pop();
+		if (arr[nowX][nowY] != 0 && arr[nowX][nowY]<nowSize)
+		{
+			minSec = cnt;
+			vec.push_back({ nowX,nowY });
+			while (!q.empty())
+			{
+				nowX = q.front().first;
+				nowY = q.front().second.first;
+				int Ccnt = q.front().second.second;
+				q.pop();
+				if (Ccnt != cnt)
+					break;
+				if (arr[nowX][nowY] != 0 && arr[nowX][nowY] < nowSize)
+				{
+					vec.push_back({ nowX,nowY });
+				}
+			}
+			break;
+		}
+		else {
+			for (int i = 0; i < 4; i++)
+			{
+				int nextX = nowX + vx[i];
+				int nextY = nowY + vy[i];
+				if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= n)
+					continue;
+				if (arr[nextX][nextY] <= nowSize && !visited[nextX][nextY])
+				{
+					visited[nextX][nextY] = true;
+					q.push({ nextX,{nextY,cnt + 1} });
+				}
+			}
+		}
+	}
+	if (vec.size() >= 1)
+	{
+		sort(vec.begin(), vec.end(), compare);
+		nowCnt++;
+		startX = vec[0].first;
+		startY = vec[0].second;
+		arr[a][b] = 0;
+		arr[startX][startY] = 9;
+	}
+	return minSec;
+}
+void clearVisited()
+{
+	for(int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			visited[i][j] = false;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> arr[i][j];
+			if (arr[i][j] == 9)
+			{
+				startX = i;
+				startY = j;
+			}
+		}
+	}
+	while (checkSmall())
+	{
+		//if (nowCnt == 7)
+		//	break;
+		clearVisited();
+		int t=bfs(startX, startY);
+		if (t == 0)
+			break;
+		ans += t;
+		if (nowCnt == nowSize)
+		{
+			if (nowSize >= 7)
+				continue;
+			nowSize++;
+			nowCnt = 0;
+		}
+	}
+	cout << ans;
+}
