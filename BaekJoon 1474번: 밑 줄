@@ -1,0 +1,77 @@
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <unordered_map>
+#include <math.h>
+using namespace std;
+
+int n, m;
+vector<string> words;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n >> m;
+	int wordLen = 0;
+	for (int i = 0; i < n; i++)
+	{
+		string s; cin >> s;
+		wordLen += s.size();
+		words.push_back(s);
+	}
+	int min_ = (m-wordLen) / (n - 1);
+	int leftOver = (m-wordLen) - (min_ * (n - 1));
+	string s = words[0];
+	int leftWord = words.size() - 1;
+	for (int i = 1; i < words.size(); i++)
+	{
+		if (words[i][0] >= 'A' && words[i][0] <= 'Z')
+		{
+			if (leftWord == leftOver)
+			{
+				for (int j = 0; j < min_+1; j++)
+				{
+					s += '_';
+				}
+				s += words[i];
+				leftOver--;
+				leftWord--;
+			}
+			else
+			{
+				for (int j = 0; j < min_; j++)
+				{
+					s += '_';
+				}
+				s += words[i];
+				leftWord--;
+			}
+		}
+		else//소문자
+		{
+			if (leftOver > 0)
+			{
+				for (int j = 0; j < min_ + 1; j++)
+				{
+					s += '_';
+				}
+				s += words[i];
+				leftOver--;
+				leftWord--;
+			}
+			else
+			{
+				for (int j = 0; j < min_; j++)
+				{
+					s += '_';
+				}
+				s += words[i];
+				leftWord--;
+			}
+		}
+	}
+	cout << s;
+}
