@@ -1,0 +1,44 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <math.h>
+using namespace std;
+
+bool compare(int a, int b)
+{
+    if(a<=b)
+        return false;
+    else
+        return true;
+}
+long long solution(int n, vector<int> works) {
+    long long answer = 0;
+    sort(works.begin(),works.end(),compare);
+    int minNum=works[works.size()-1];
+    int cmp=0;
+    if(works.size()>1)
+        cmp=1;
+    while(n!=0)
+    {
+        if(works[0]==0)
+            break;
+        for(int i=0; i<cmp;i++)
+        {
+            if(works[cmp]<works[i] && n!=0)
+            {
+                works[i]--;
+                n--;
+            }
+            else
+            {
+                cmp++;
+                break;
+            }
+        }
+    }
+    for(int i=0; i<works.size();i++)
+    {
+        answer+=(int)pow(works[i],2);
+    }
+    return answer;
+}
