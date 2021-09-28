@@ -1,0 +1,92 @@
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+int vx[4]={1,0,0,-1};
+int vy[4]={0,1,-1,0};
+bool visited[31][31];
+vector<pair<int,int>> vec;
+void clearVisited(int m, int n)
+{
+    for(int i=0; i<m;i++)
+    {
+        for(int j=0; j<n;j++)
+            visited[i][j]=false;
+    }
+}
+
+int solution(int m, int n, vector<string> board) {
+    int answer = 0;
+    bool check=true;
+    while(check)
+    {
+        check=false;
+        vec.clear();//'0'으로 만들어야 할 배열 초기화
+        clearVisited(m,n);
+        for(int i=0; i<m-1;i++)//행 순회
+        {
+            for(int j=0; j<n-1;j++)//열 순회
+            {
+                if(board[i][j]=='0')
+                    continue;
+                else//0이 아닌 다른 값
+                {
+                    char c=board[i][j];
+                    if(board[i+1][j]==c && board[i][j+1]==c && board[i+1][j+1]==c)//좌 상단 기준 2x2 완성
+                    {
+                        check=true;
+                       if(!visited[i+1][j])
+                       {
+                            visited[i+1][j]=true;
+                            vec.push_back({i+1,j});
+                            answer++;
+                       }
+                       if(!visited[i][j])
+                       {
+                            visited[i][j]=true;
+                            vec.push_back({i,j});
+                            answer++;
+                       }
+                        if(!visited[i+1][j+1])
+                       {
+                            visited[i+1][j+1]=true;
+                            vec.push_back({i+1,j+1});
+                            answer++;
+                       }
+                        if(!visited[i][j+1])
+                       {
+                            visited[i][j+1]=true;
+                            vec.push_back({i,j+1});
+                            answer++;
+                       }
+                        
+                    }
+                }
+            }
+        }
+        if(check==true)
+        {
+            for(int i=0; i<vec.size();i++)//비운 값 초기화
+            {
+                int cX=vec[i].first;
+                int cY=vec[i].second;
+                board[cX][cY]='0';
+            }
+            for(int i=0; i<n;i++)//좌측 열부터
+            {
+                for(int k=0; k<m;k++)
+                {
+                    for(int j=m-1;j>=1;j--)//하단 행부터
+                    {
+                        if(board[j][i]=='0')
+                        {
+                            board[j][i]=board[j-1][i];
+                            board[j-1][i]='0';
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return answer;
+}
