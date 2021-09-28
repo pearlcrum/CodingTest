@@ -1,0 +1,15 @@
+#include <string>
+#include <vector>
+#define t 1000000007
+using namespace std;
+vector<int> vec;
+int solution(int n) {
+    int answer = 0;
+    vec.push_back(1);
+    vec.push_back(2);
+    for(int i=2;i<n;i++)
+    {
+        vec.push_back( (vec[i-2]%t+vec[i-1]%t)%t  );
+    }
+    return vec[n-1];
+}
