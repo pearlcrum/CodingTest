@@ -4,6 +4,55 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <unordered_map>
+#include <math.h>
+#include <stack>
+using namespace std;
+int n;
+vector<long long> vec;
+vector<long long> ans;
+long long minAns = 123456789123456789;
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int a; cin >> a;
+		vec.push_back(a);
+	}
+	sort(vec.begin(), vec.end());
+	for (int i = 0; i < vec.size(); i++)
+	{
+		int low = i + 1;
+		int high = vec.size() - 1;
+		while (low < high)
+		{
+			if (minAns > abs(vec[low] + vec[i] + vec[high]))
+			{
+				minAns = abs(vec[low] + vec[i] + vec[high]);
+				ans.clear();
+				ans.push_back(vec[low]); ans.push_back(vec[i]), ans.push_back(vec[high]);
+			}
+			if (vec[low] + vec[i] + vec[high] < 0)
+				low++;
+			else
+				high--;
+		}
+	}
+	sort(ans.begin(), ans.end());
+	for (int i = 0; i < 3; i++)
+		cout << ans[i] << " ";
+}
+------------------------------------------------------------------------
+
+#include <string>
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <queue>
+#include <algorithm>
 #include <map>
 using namespace std;
 
