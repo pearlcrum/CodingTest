@@ -1,0 +1,103 @@
+#include <string>
+#include <vector>
+#include <queue>
+using namespace std;
+char arr[6][6];
+bool visited[6][6];
+int vx[4]={1,0,0,-1};
+int vy[4]={0,1,-1,0};
+void clear()
+{
+    for(int i=0; i<6;i++)
+    {
+        for(int j=0; j<6;j++)
+        {
+            arr[i][j]='0';
+            visited[i][j]=false;
+        }
+    }
+}
+bool bfs(int a, int b)
+{
+    queue<pair<int,pair<int, int>>> q;
+    visited[a][b]=true;
+    q.push({a,{b,0}});
+    while(!q.empty())
+    {
+        int nowX=q.front().first;
+        int nowY=q.front().second.first;
+        int cnt=q.front().second.second;
+        q.pop();
+        if(cnt==3)
+            return true;
+        for(int i=0; i<4;i++)
+        {
+            int nextX=nowX+vx[i];
+            int nextY=nowY+vy[i];
+            if(nextX<0|| nextY<0|| nextX>=5|| nextY>=5)
+                continue;
+            if(arr[nextX][nextY]=='O' && !visited[nextX][nextY])
+            {
+                visited[nextX][nextY]=true;
+                q.push({nextX,{nextY,cnt+1}});
+            }
+            if(arr[nextX][nextY]=='P' && !visited[nextX][nextY])
+            {
+                if(cnt!=2)
+                    return false;
+                else
+                {
+                    visited[nextX][nextY]=true;
+                    q.push({nextX,{nextY,cnt+1}});
+                }
+            }
+        }
+    }
+    return true;
+}
+void clearVisited()
+{
+     for(int i=0; i<6;i++)
+    {
+        for(int j=0; j<6;j++)
+        {
+            visited[i][j]=false;
+        }
+    }
+}
+vector<int> solution(vector<vector<string>> places) {
+    vector<int> answer;
+    for(int i=0; i<places.size();i++)
+    {
+        clear();
+        for(int j=0; j<places[i].size();j++)
+        {
+            string s=places[i][j];
+            for(int k=0; k<s.size();k++)
+            {
+                arr[j][k]=s[k];
+            }
+        }
+        bool check=true;
+        for(int j=0; j<5;j++)
+        {
+            for(int k=0; k<5;k++)
+            {
+                if(arr[j][k]=='P')
+                {
+                    clearVisited();
+                    check=bfs(j,k);
+                    if(check==false)
+                        break;
+                }
+            }
+            if(check==false)
+                break;
+        }
+        if(check==true)
+            answer.push_back(1);
+        else
+            answer.push_back(0);
+    }
+    return answer;
+}
