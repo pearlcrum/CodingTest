@@ -1,0 +1,58 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool visited[51];
+int answer = 2000000000;
+bool checkOne(string begin, string s)
+{
+    bool check=true;
+  
+    for(int i=0; i<begin.size();i++)
+    {
+        if(begin[i]==s[i])
+            continue;
+        else if(check==true && begin[i]!=s[i])
+            check=false;
+        else if(check==false && begin[i]!=s[i])
+            return false;
+    }
+    return true;
+    
+}
+bool allVisited(vector<string> words)
+{
+    for(int i=0; i<words.size();i++)
+    {
+        if(!visited[i])
+            return false;
+    }
+    return true;
+}
+void backtracking(string newS, string target, vector<string> words, int cnt)
+{
+    if(newS==target)
+    {
+        answer=min(answer,cnt);
+        return;
+    }
+    if(allVisited(words))
+        return;
+    for(int i=0; i<words.size();i++)
+    {
+        if(!visited[i]&& checkOne(newS,words[i]))
+        {
+            visited[i]=true;
+            backtracking(words[i],target,words,cnt+1);
+            visited[i]=false;
+        }
+    }
+}
+int solution(string begin, string target, vector<string> words) {
+    
+    backtracking(begin,target,words,0);
+    if(answer==2000000000)
+        answer=0;
+    return answer;
+}
