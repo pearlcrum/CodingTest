@@ -8,8 +8,6 @@
 #include <string>
 #include<map>
 #include<stack>
-#include<queue>
-#pragma warning(disable:4996)
 using namespace std;
 
 ///////////////////////////////////////////// 우선순위 큐 사용 없이 푼 문제///////////////////////////////////////
