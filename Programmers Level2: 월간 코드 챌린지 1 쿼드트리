@@ -1,0 +1,40 @@
+#include <string>
+#include <vector>
+using namespace std;
+
+vector<int> answer(2);
+vector<vector<int>> arr;
+void backtracking(int x1, int y1,int n)
+{
+    bool check=false;
+    int a=arr[x1][y1];
+    for(int i=x1;i<x1+n;i++)
+    {
+        for(int j=y1;j<y1+n;j++)
+        {
+            if(a!=arr[i][j])
+            {
+                check=true;
+                break;
+            }
+        }
+    }
+    if(check==false)
+    {
+        if(arr[x1][y1]==1)
+            answer[1]++;
+        else
+            answer[0]++;
+    }else{
+        backtracking(x1 ,y1 ,n/2); 
+        backtracking(x1,y1+n/2,n/2); 
+        backtracking(x1+n/2,y1,n/2);
+        backtracking(x1+n/2,y1+n/2,n/2);
+    }
+}
+vector<int> solution(vector<vector<int>> vec) {
+    arr=vec;
+    int n=arr.size();//행
+    backtracking(0,0,n);
+    return answer;
+}
