@@ -1,0 +1,95 @@
+#include <string>
+#include <vector>
+#include <math.h>
+#include <algorithm>
+#include <queue>
+
+
+using namespace std;
+int N;
+int arr[101][101];
+bool visited[101][101];
+int bfs(int a, int b)
+{
+    queue<pair<int,pair<int,int>>> q;
+    q.push({a,{b,0}});
+    visited[a][b]=true;
+    
+    visited[b][a]=true;
+    int ans=1;
+    while(!q.empty())
+    {
+        int nowX=q.front().first;
+        int nowY=q.front().second.first;
+        int cnt=q.front().second.second;
+        q.pop();
+        for(int i=1;i<=N;i++)
+        {
+           if(arr[nowX][i]==1 && !visited[nowX][i])
+            {
+                visited[nowX][i]=true;
+                visited[i][nowX]=true;
+                ans++;
+                q.push({nowX,{i,cnt+1}});
+            }
+            if(arr[nowY][i]==1 && !visited[nowY][i])
+            {
+                visited[nowY][i]=true;
+                visited[i][nowY]=true;
+                ans++;
+                q.push({nowY,{i,cnt+1}});
+            }
+        }
+    }
+    return ans;
+}
+void clear(int n)
+{
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            arr[i][j]=0;
+            visited[i][j]=false;
+        }
+    }
+}
+int solution(int n, vector<vector<int>> wires) {
+    
+    N=n;
+    int answer=1000000000;
+    for(int j=0; j<wires.size();j++)
+    {
+        clear(n);
+        for(int i=0;i<wires.size();i++)
+        {
+            if(i==j)
+                continue;
+            int a=wires[i][0];
+            int b=wires[i][1];
+            arr[a][b]=1;
+            arr[b][a]=1;
+        }
+        bool check=false;
+        int ans1=0;
+        int ans2=0;
+        for(int t=1;t<=n;t++)
+        {
+            for(int k=1;k<=n;k++)
+            {
+                if(arr[t][k]==1 && check==false && !visited[t][k])
+                {
+                    check=true;
+                    ans1=bfs(t,k);
+                }
+                else if(arr[t][k]==1 && check==true&& !visited[t][k])
+                {
+                    ans2=bfs(t,k);
+                }
+            }
+        }
+        answer=min(answer,abs(ans1-ans2));
+    }
+    
+    return answer;
+}
