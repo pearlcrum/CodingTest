@@ -1,0 +1,47 @@
+#include <string>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+string solution(string number, int k) {
+    string answer = "";
+    stack<char> st;
+    int t=k;
+    k=number.size()-k;//총 들어가야하는 개수
+    for(int i=0; i<number.size();i++)
+    {
+        int j=number.size()-i;//더 넣을 수 있는 예비 개수
+        if(st.empty())
+        {
+            st.push(number[i]);
+            continue;
+        }
+        if(st.top()<number[i])//현재 값보다 작으면 계속 뺀다.
+        {
+            while(!st.empty() && st.size()+j>k && st.top()<number[i])
+            {
+                st.pop();
+            }
+            st.push(number[i]);
+        }
+        else// 같거나 클 경우는 계속 넣는다.
+        {
+            st.push(number[i]);
+        }  
+    }
+    if(st.size()>k)
+    {
+        while(st.size()!=k)
+        {
+            st.pop();
+        }
+    }
+    while(!st.empty())
+    {
+        answer+=st.top();
+        st.pop();
+    }
+    reverse(answer.begin(),answer.end());
+    return answer;
+}
