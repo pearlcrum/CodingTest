@@ -1,0 +1,51 @@
+#include <string>
+#include <vector>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+
+
+string toBinary(int n)
+{
+    string s="";
+    while(n!=1)
+    {
+        if(n%2==0)
+            s+="0";
+        else
+            s+="1";
+        n=n/2;
+    }
+    s+="1";
+    reverse(s.begin(),s.end()); //2진수로 변환
+    return s;
+    
+}
+int countOne(string s){
+    int cnt=0;
+    for(int i=0; i<s.size();i++)
+    {
+        if(s[i]=='1')
+            cnt++;
+    }
+    return cnt;
+}
+
+int solution(int n) {
+   
+   int answer=0; 
+   string s=toBinary(n);
+   int cnt=countOne(s);
+   for(int i=n+1;;i++)
+   {
+       string t=toBinary(i);
+       if(countOne(t)==cnt)
+       {
+           answer=i;
+           break;
+       }
+    }
+   
+    
+    return answer;
+}
