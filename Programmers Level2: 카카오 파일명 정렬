@@ -1,0 +1,64 @@
+#include <string>
+#include <vector>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+vector<string> file;
+vector<pair<string,pair<string,pair<int,int>>>> vec;
+bool compare(pair<string,pair<string,pair<int,int>>>a, pair<string,pair<string,pair<int,int>>>b){
+    if(a.second.first<b.second.first)
+        return true;
+    if(a.second.first==b.second.first) //head 같은 경우
+    {
+        if(a.second.second.first<b.second.second.first)
+            return true;
+        if(a.second.second.first==b.second.second.first)//number 같은 경우
+        {
+            if(a.second.second.second<b.second.second.second)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+    else
+        return false;
+}
+string makeBig(string s)
+{
+    for(int i=0; i<s.size();i++)
+    {
+        s[i]=toupper(s[i]);
+    }
+    return s;
+}
+vector<string> solution(vector<string> files) {
+    vector<string> answer;
+    file=files;
+    for(int i=0; i<file.size();i++)
+    {
+        //파일/헤드/넘버/인덱스
+        int j=0;int k=0;
+        for(j=0;j<file[i].size();j++)
+        {
+            if(file[i][j]>='0'&&file[i][j]<='9')
+                break;
+        }
+        string head=file[i].substr(0,j);
+        head=makeBig(head);
+        for(k=j;k<file[i].size();k++)
+        {
+            if(file[i][j]<'0'&&file[i][j]>'9')
+                break;
+        }
+        string num=file[i].substr(j,k);
+        int number=stoi(num);
+        vec.push_back({file[i],{head,{number,i}}});
+    }
+    sort(vec.begin(),vec.end(),compare);
+    for(int i=0; i<vec.size();i++){
+        answer.push_back(vec[i].first);
+    }
+    return answer;
+}
