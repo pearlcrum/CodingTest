@@ -1,0 +1,31 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+vector<int> vec;
+
+string solution(string s) {
+    string answer = "";
+    string t="";
+    int i=0;
+    while(1){
+        for(i=0; i<s.size();i++)
+        {
+            if(s[i]==' ')
+                break;
+            else
+                t+=s[i];
+        }
+        vec.push_back(stoi(t));
+        if(i<=s.size()-1){
+            s=s.substr(i+1);
+            t="";
+        }else
+            break;
+    }
+    sort(vec.begin(), vec.end());
+    answer+=to_string(vec[0]);
+    answer+=" ";
+    answer+=to_string(vec[vec.size()-1]);
+    return answer;
+}
