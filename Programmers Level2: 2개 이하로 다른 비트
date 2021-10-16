@@ -1,0 +1,58 @@
+
+
+=========================답은 맞으나 시간 초과====================================
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+string makeTwo(long long a){
+    string ans="";
+    while(a!=1){
+        if(a%2==0)
+            ans+='0';
+        else
+            ans+='1';
+        a=a/2;
+    }
+    ans+='1';
+    reverse(ans.begin(),ans.end());
+    return ans;
+}
+bool checkCompare(string s, string s1){
+    if(s.size()!=s1.size())
+    {
+        reverse(s.begin(),s.end());
+        s+='0';
+        reverse(s.begin(),s.end());
+    }
+    int cnt=0;
+    for(int i=0; i<s.size();i++)
+    {
+        if(s[i]!=s1[i])
+        {
+            cnt++;
+        }
+        if(cnt>3)
+            break;
+    }
+    if(cnt>=1 && cnt<=2)
+        return true;
+    else
+        return false;
+}
+vector<long long> solution(vector<long long> numbers) {
+    vector<long long> answer;
+    for(int i=0; i<numbers.size();i++){
+        string s=makeTwo(numbers[i]);
+        for(long long j=numbers[i]+1;;j++)
+        {
+            string s1=makeTwo(j);
+            if(checkCompare(s,s1)){
+                answer.push_back(j);
+                break;
+            }
+        }
+    }
+    return answer;
+}
