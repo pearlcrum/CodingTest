@@ -1,0 +1,58 @@
+#include <string>
+#include <vector>
+#include <sstream>
+
+using namespace std;
+
+vector<int> solution(vector<string> info, vector<string> query) {
+    vector<int> answer;
+    vector<pair<string,pair<string,pair<string,pair<string,int>>>>> vec;
+    vector<pair<string,pair<string,pair<string,pair<string,int>>>>> vec2;
+    for(int i=0; i<info.size();i++){
+        istringstream is(info[i]);
+        string buffer;
+        int cnt=0;
+        vector<string> e;
+        while(getline(is,buffer,' ')){
+            e.push_back(buffer);
+        }
+        vec.push_back({e[0],{e[1],{e[2],{e[3],stoi(e[4])}}}});
+    }
+    for(int i=0; i<query.size();i++){
+        istringstream is(query[i]);
+        string buffer;
+        vector<string> e;
+        while(getline(is,buffer,' ')){
+            e.push_back(buffer);
+        }
+        vec2.push_back({e[0],{e[2],{e[4],{e[6],stoi(e[7])}}}});
+    }
+    for(int i=0; i<vec2.size();i++){
+        int count=0;
+        for(int j=0; j<vec.size();j++){
+            if(vec2[i].first==vec[j].first || vec2[i].first=="-"){
+                if(vec2[i].second.first==vec[j].second.first|| vec2[i].second.first=="-"){
+                    if(vec2[i].second.second.first==vec[j].second.second.first|| vec2[i].second.second.first=="-"){
+                        if(vec2[i].second.second.second.first==vec[j].second.second.second.first|| vec2[i].second.second.second.first=="-"){
+                            if(vec2[i].second.second.second.second<=vec[j].second.second.second.second){
+                                count++;
+                            }else{
+                                continue;
+                            }
+                        }else{
+                            continue;
+                        }
+                    }else{
+                        continue;
+                    }
+                }else{
+                    continue;
+                }
+            }else{
+                continue;
+            }
+        }
+        answer.push_back(count);
+    }
+    return answer;
+}
