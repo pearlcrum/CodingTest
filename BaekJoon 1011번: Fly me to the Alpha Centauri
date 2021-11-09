@@ -4,7 +4,6 @@
 #include<algorithm>
 #include<vector>
 #include <string>
-#pragma warning(disable:4996)
 using namespace std;
 
 
