@@ -1,0 +1,24 @@
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(int k, vector<vector<int>> dungeons) {
+    int answer = -1;
+    vector<int> vec;
+    for(int i=0; i<dungeons.size();i++){
+        vec.push_back(i);   
+    }
+    do{
+        int nowHealth=k;
+        int cnt=0;
+        for(int i=0; i<vec.size();i++){
+            if(nowHealth<dungeons[vec[i]][0])
+                continue;
+            nowHealth-=dungeons[vec[i]][1];
+            cnt++;
+        }
+        answer=max(answer,cnt);
+    }while(next_permutation(vec.begin(),vec.end()));
+    return answer;
+}
